@@ -1,53 +1,48 @@
 package icbm.classic.command.system;
 
-import net.minecraft.command.*;
+import net.minecraft.command.CommandException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
 
 /**
  * Entry point for all ICBM commands
  */
-public class CommandEntryPoint extends CommandBase
-{
-    public final String id;
-    public final ICommandGroup commandGroup;
+public class CommandEntryPoint extends CommandBase {
 
-    public CommandEntryPoint(String id, ICommandGroup commandGroup)
-    {
-        this.id = id;
-        this.commandGroup = commandGroup;
-    }
+	public final String id;
+	public final ICommandGroup commandGroup;
 
-    @Override
-    public String getName()
-    {
-        return id;
-    }
+	public CommandEntryPoint(String id, ICommandGroup commandGroup) {
+		this.id = id;
+		this.commandGroup = commandGroup;
+	}
 
-    @Override
-    public String getUsage(ICommandSender sender)
-    {
-        return "/" + id;
-    }
+	@Override
+	public String getName() {
+		return id;
+	}
 
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
-    {
-        commandGroup.handleCommand(server, sender, args);
-    }
+	@Override
+	public String getUsage(ICommandSender sender) {
+		return "/" + id;
+	}
 
-    @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 2;
-    }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		commandGroup.handleCommand(server, sender, args);
+	}
 
-    @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
-    {
-        return commandGroup.getTabSuggestions(server, sender, args, targetPos);
-    }
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 2;
+	}
+
+	@Override
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+		return commandGroup.getTabSuggestions(server, sender, args, targetPos);
+	}
+
 }

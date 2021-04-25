@@ -2,9 +2,9 @@ package icbm.classic.content.blocks.explosive;
 
 import icbm.classic.ICBMClassic;
 import icbm.classic.api.ICBMClassicAPI;
-import icbm.classic.lib.NBTConstants;
 import icbm.classic.api.tile.IRotatable;
 import icbm.classic.content.entity.EntityExplosive;
+import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.state.IBlockState;
@@ -18,104 +18,91 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 
-public class TileEntityExplosive extends TileEntity implements IRotatable
-{
-    /**
-     * Is the tile currently exploding
-     */
-    public boolean hasBeenTriggered = false;
+public class TileEntityExplosive extends TileEntity implements IRotatable {
 
-    public CapabilityExplosiveStack capabilityExplosive = new CapabilityExplosiveStack(null);
+	/**
+	 * Is the tile currently exploding
+	 */
+	public boolean hasBeenTriggered = false;
 
-    /**
-     * Reads a tile entity from NBT.
-     */
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        capabilityExplosive = new CapabilityExplosiveStack(new ItemStack((NBTTagCompound)nbt.getTag(NBTConstants.EXPLOSIVE_STACK)));
-    }
+	public CapabilityExplosiveStack capabilityExplosive = new CapabilityExplosiveStack(null);
 
-    /**
-     * Writes a tile entity to NBT.
-     */
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        if (capabilityExplosive != null && capabilityExplosive.toStack() != null)
-        {
-            nbt.setTag(NBTConstants.EXPLOSIVE_STACK, capabilityExplosive.toStack().serializeNBT());
-        }
-        return super.writeToNBT(nbt);
-    }
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		capabilityExplosive = new CapabilityExplosiveStack(new ItemStack((NBTTagCompound) nbt.getTag(NBTConstants.EXPLOSIVE_STACK)));
+	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY && capabilityExplosive != null || super.hasCapability(capability, facing);
-    }
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		if (capabilityExplosive != null && capabilityExplosive.toStack() != null) {
+			nbt.setTag(NBTConstants.EXPLOSIVE_STACK, capabilityExplosive.toStack().serializeNBT());
+		}
+		return super.writeToNBT(nbt);
+	}
 
-    @Override
-    @Nullable
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY)
-        {
-            return (T) capabilityExplosive;
-        }
-        return super.getCapability(capability, facing);
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY && capabilityExplosive != null || super.hasCapability(capability, facing);
+	}
 
-    public void trigger(boolean setFire)
-    {
-        if (!hasBeenTriggered)
-        {
-            hasBeenTriggered = true;
-            EntityExplosive entityExplosive = new EntityExplosive(world, new Pos(pos).add(0.5), getDirection(), capabilityExplosive.toStack());
-            //TODO check for tick rate, trigger directly if tick is less than 3
+	@Override
+	@Nullable
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
+			return (T) capabilityExplosive;
+		}
+		return super.getCapability(capability, facing);
+	}
 
-            if (setFire)
-            {
-                entityExplosive.setFire(100);
-            }
+	public void trigger(boolean setFire) {
+		if (!hasBeenTriggered) {
+			hasBeenTriggered = true;
+			EntityExplosive entityExplosive = new EntityExplosive(world, new Pos(pos).add(0.5), getDirection(), capabilityExplosive.toStack());
+			//TODO check for tick rate, trigger directly if tick is less than 3
 
-            world.spawnEntity(entityExplosive);
-            world.setBlockToAir(pos);
+			if (setFire) {
+				entityExplosive.setFire(100);
+			}
 
-            ICBMClassic.logger().info("TileEntityExplosive: Triggered ITEM{" + capabilityExplosive.toStack() + "] " + capabilityExplosive.getExplosiveData().getRegistryName() + " at location " + getPos());
-        }
-    }
+			world.spawnEntity(entityExplosive);
+			world.setBlockToAir(pos);
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
-    }
+			ICBMClassic.logger().info("TileEntityExplosive: Triggered ITEM{" + capabilityExplosive.toStack() + "] " + capabilityExplosive.getExplosiveData().getRegistryName() + " at location " + getPos());
+		}
+	}
 
-    @Override
-    public NBTTagCompound getUpdateTag()
-    {
-        return writeToNBT(new NBTTagCompound());
-    }
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+	}
 
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-    {
-        readFromNBT(pkt.getNbtCompound());
-    }
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return writeToNBT(new NBTTagCompound());
+	}
 
-    @Override
-    public EnumFacing getDirection()
-    {
-        return EnumFacing.byIndex(this.getBlockMetadata());
-    }
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		readFromNBT(pkt.getNbtCompound());
+	}
 
-    @Override
-    public void setDirection(EnumFacing facingDirection)
-    {
-        IBlockState state = world.getBlockState(pos);
-        state = state.withProperty(BlockExplosive.ROTATION_PROP, facingDirection);
-        this.world.setBlockState(pos, state, 2);
-    }
+	@Override
+	public EnumFacing getDirection() {
+		return EnumFacing.byIndex(this.getBlockMetadata());
+	}
+
+	@Override
+	public void setDirection(EnumFacing facingDirection) {
+		IBlockState state = world.getBlockState(pos);
+		state = state.withProperty(BlockExplosive.ROTATION_PROP, facingDirection);
+		this.world.setBlockState(pos, state, 2);
+	}
+
 }

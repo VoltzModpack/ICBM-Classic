@@ -1,34 +1,34 @@
 {
   "result": {
-    "item": "icbmclassic:radargun",
-    "data": 0,
-    "count": 1
+	"item": "icbmclassic:radargun",
+	"data": 0,
+	"count": 1
   },
   "pattern": [
-    "gci",
-    " bw"
+	"gci",
+	" bw"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
-    "g": {
-      "item": "minecraft:glass",
-      "data": 0
-    },
-    "b": {
-      "item": "minecraft:stone_button",
-      "data": 0
-    },
-    "i": {
-      "type": "forge:ore_dict",
-      "ore": "ingotSteel"
-    },
-    "c": {
-      "type": "forge:ore_dict",
-      "ore": "circuitBasic"
-    },
-    "w": {
-      "type": "forge:ore_dict",
-      "ore": "plankWood"
-    }
+	"g": {
+	  "item": "minecraft:glass",
+	  "data": 0
+	},
+	"b": {
+	  "item": "minecraft:stone_button",
+	  "data": 0
+	},
+	"i": {
+	  "type": "forge:ore_dict",
+	  "ore": "ingotSteel"
+	},
+	"c": {
+	  "type": "forge:ore_dict",
+	  "ore": "circuitBasic"
+	},
+	"w": {
+	  "type": "forge:ore_dict",
+	  "ore": "plankWood"
+	}
   }
 }

@@ -9,18 +9,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemSignalDisrupter extends ItemICBMElectrical
-{
-    public ItemSignalDisrupter()
-    {
-        super("signalDisrupter");
-        setMaxStackSize(1);
-    }
+public class ItemSignalDisrupter extends ItemICBMElectrical {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag)
-    {
-        list.add("\u00a7cNot Implemented");
-    }
+	public ItemSignalDisrupter() {
+		super("signalDisrupter");
+		setMaxStackSize(1);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
+		list.add("\u00a7cNot Implemented");
+	}
+
 }

@@ -1,7 +1,6 @@
 package icbm.classic.lib.transform.region;
 
 import com.builtbroken.jlib.data.vector.IPos3D;
-
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.rotation.EulerAngle;
 import icbm.classic.lib.transform.vector.Pos;
@@ -11,88 +10,82 @@ import net.minecraft.util.math.BlockPos;
 /**
  * Created by robert on 1/12/2015.
  */
-public abstract class Shape3D
-{
-    EulerAngle angle;
-    Pos center;
+public abstract class Shape3D {
 
-    public Shape3D(Pos center)
-    {
-        this.center = center;
-    }
+	EulerAngle angle;
+	Pos center;
 
-    public Shape3D(NBTTagCompound nbt)
-    {
-        this(new Pos(nbt.getCompoundTag(NBTConstants.CENTER)));
-        angle = new EulerAngle(nbt.getDouble(NBTConstants.YAW), nbt.getDouble(NBTConstants.PITCH), nbt.getDouble(NBTConstants.ROLL));
-    }
+	public Shape3D(Pos center) {
+		this.center = center;
+	}
 
-    /**
-     * Is the vector(x, y, z) inside the shape
-     */
-    abstract boolean isWithin(double x, double y, double z);
+	public Shape3D(NBTTagCompound nbt) {
+		this(new Pos(nbt.getCompoundTag(NBTConstants.CENTER)));
+		angle = new EulerAngle(nbt.getDouble(NBTConstants.YAW), nbt.getDouble(NBTConstants.PITCH), nbt.getDouble(NBTConstants.ROLL));
+	}
 
-    /**
-     * Volume of the 3D shape
-     */
-    abstract double getVolume();
+	/**
+	 * Is the vector(x, y, z) inside the shape
+	 */
+	abstract boolean isWithin(double x, double y, double z);
 
-    /**
-     * Surface area of the shape
-     */
-    abstract double getArea();
+	/**
+	 * Volume of the 3D shape
+	 */
+	abstract double getVolume();
 
-    /**
-     * Distance the shape takes in the Xaxis
-     */
-    abstract double getSizeX();
+	/**
+	 * Surface area of the shape
+	 */
+	abstract double getArea();
 
-    /**
-     * Distance the shape takes in the Y axis
-     */
-    abstract double getSizeY();
+	/**
+	 * Distance the shape takes in the Xaxis
+	 */
+	abstract double getSizeX();
 
-    /**
-     * Distance the shape takes in the Z axis
-     */
-    abstract double getSizeZ();
+	/**
+	 * Distance the shape takes in the Y axis
+	 */
+	abstract double getSizeY();
 
-    /**
-     * gets the max distance a corner of the shape will reach from the center
-     */
-    double getSize()
-    {
-        double r = getSizeX();
-        if (getSizeY() > r)
-            r = getSizeY();
-        if (getSizeZ() > r)
-            r = getSizeZ();
-        return r;
-    }
+	/**
+	 * Distance the shape takes in the Z axis
+	 */
+	abstract double getSizeZ();
 
-    /**
-     * Center of the 3D shape
-     */
-    public IPos3D getCenter()
-    {
-        return center;
-    }
+	/**
+	 * gets the max distance a corner of the shape will reach from the center
+	 */
+	double getSize() {
+		double r = getSizeX();
+		if (getSizeY() > r)
+			r = getSizeY();
+		if (getSizeZ() > r)
+			r = getSizeZ();
+		return r;
+	}
 
-    public double distance(IPos3D pos)
-    {
-        return center.distance(pos);
-    }
+	/**
+	 * Center of the 3D shape
+	 */
+	public IPos3D getCenter() {
+		return center;
+	}
 
-    /**
-     * Is the vector(x, y, z) inside the shape
-     */
-    public boolean isWithin(IPos3D vec)
-    {
-        return isWithin(vec.x(), vec.y(), vec.z());
-    }
+	public double distance(IPos3D pos) {
+		return center.distance(pos);
+	}
 
-    public boolean isWithin(BlockPos vec)
-    {
-        return isWithin(vec.getX(), vec.getY(), vec.getZ());
-    }
+	/**
+	 * Is the vector(x, y, z) inside the shape
+	 */
+	public boolean isWithin(IPos3D vec) {
+		return isWithin(vec.x(), vec.y(), vec.z());
+	}
+
+	public boolean isWithin(BlockPos vec) {
+		return isWithin(vec.getX(), vec.getY(), vec.getZ());
+	}
+
 }

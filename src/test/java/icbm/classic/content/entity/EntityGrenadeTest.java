@@ -15,52 +15,47 @@ import org.mockito.Mockito;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 3/28/2020.
  */
-public class EntityGrenadeTest
-{
-    private static TestManager testManager = new TestManager("EntityGrenade", Assertions::fail);
+public class EntityGrenadeTest {
 
+	private static TestManager testManager = new TestManager("EntityGrenade", Assertions::fail);
 
-    @BeforeAll
-    static void setup()
-    {
-        ICBMClassicAPI.EXPLOSIVE_CAPABILITY = (Capability<IExplosive>) Mockito.mock(Capability.class);
-    }
+	@BeforeAll
+	static void setup() {
+		ICBMClassicAPI.EXPLOSIVE_CAPABILITY = (Capability<IExplosive>) Mockito.mock(Capability.class);
+	}
 
-    @AfterEach
-    public void cleanupBetweenTests()
-    {
-        testManager.cleanupBetweenTests();
-    }
+	@AfterEach
+	public void cleanupBetweenTests() {
+		testManager.cleanupBetweenTests();
+	}
 
-    @AfterAll
-    public static void tearDown()
-    {
-        testManager.tearDownTest();
-        ICBMClassicAPI.EXPLOSIVE_CAPABILITY = null;
-    }
+	@AfterAll
+	public static void tearDown() {
+		testManager.tearDownTest();
+		ICBMClassicAPI.EXPLOSIVE_CAPABILITY = null;
+	}
 
-    @Test
-    void hasCapability_explosiveCap()
-    {
-        final EntityGrenade entityGrenade = new EntityGrenade(testManager.getWorld());
-        Assertions.assertTrue(entityGrenade.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null));
-    }
+	@Test
+	void hasCapability_explosiveCap() {
+		final EntityGrenade entityGrenade = new EntityGrenade(testManager.getWorld());
+		Assertions.assertTrue(entityGrenade.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null));
+	}
 
-    @Test
-    void getCapability_explosiveCap()
-    {
-        final EntityGrenade entityGrenade = new EntityGrenade(testManager.getWorld());
+	@Test
+	void getCapability_explosiveCap() {
+		final EntityGrenade entityGrenade = new EntityGrenade(testManager.getWorld());
 
-        //Mock cast as mockito is odd
-        Mockito.when(ICBMClassicAPI.EXPLOSIVE_CAPABILITY.cast(entityGrenade.explosive)).thenReturn(entityGrenade.explosive);
+		//Mock cast as mockito is odd
+		Mockito.when(ICBMClassicAPI.EXPLOSIVE_CAPABILITY.cast(entityGrenade.explosive)).thenReturn(entityGrenade.explosive);
 
-        final IExplosive capability = entityGrenade.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
+		final IExplosive capability = entityGrenade.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
 
-        //Should return a capability for an entity
-        Assertions.assertTrue(capability instanceof CapabilityExplosiveEntity, "Should have an explosive entity cap");
-        final CapabilityExplosiveEntity cap = (CapabilityExplosiveEntity)capability;
+		//Should return a capability for an entity
+		Assertions.assertTrue(capability instanceof CapabilityExplosiveEntity, "Should have an explosive entity cap");
+		final CapabilityExplosiveEntity cap = (CapabilityExplosiveEntity) capability;
 
-        //Should contain the entity in question
-        Assertions.assertSame(cap.entity, entityGrenade);
-    }
+		//Should contain the entity in question
+		Assertions.assertSame(cap.entity, entityGrenade);
+	}
+
 }

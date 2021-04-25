@@ -17,102 +17,87 @@ import java.util.function.Consumer;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 10/8/2018.
  */
-public abstract class BlastThreaded extends Blast
-{
-    private boolean hasThreadStarted = false;
+public abstract class BlastThreaded extends Blast {
 
-    public BlastThreaded()
-    {
-    }
+	private boolean hasThreadStarted = false;
 
-    protected IThreadWork getWorkerTask()
-    {
-        return new ThreadWorkBlast((steps, edits) -> doRun(steps, edits), edits -> onWorkerThreadComplete(edits));
-    }
+	public BlastThreaded() {
+	}
 
-    /**
-     * @param loops - current loop count
-     * @param edits - list of blocks to edit
-     * @return true to run another iteration
-     */
-    public abstract boolean doRun(int loops, Consumer<BlockPos> edits);
+	protected IThreadWork getWorkerTask() {
+		return new ThreadWorkBlast((steps, edits) -> doRun(steps, edits), edits -> onWorkerThreadComplete(edits));
+	}
 
-    /**
-     * Builds a sorter to sort all of the blocks post thread run
-     *
-     * @return
-     */
-    protected Comparator<BlockPos> buildSorter()
-    {
-        return new PosDistanceSorter(location, false);
-    }
+	/**
+	 * @param loops - current loop count
+	 * @param edits - list of blocks to edit
+	 * @return true to run another iteration
+	 */
+	public abstract boolean doRun(int loops, Consumer<BlockPos> edits);
 
-    protected void onPostThreadJoinWorld()
-    {
-        doExplode(-1);
-        onBlastCompleted();
-    }
+	/**
+	 * Builds a sorter to sort all of the blocks post thread run
+	 *
+	 * @return
+	 */
+	protected Comparator<BlockPos> buildSorter() {
+		return new PosDistanceSorter(location, false);
+	}
 
-    /**
-     * Called when the thread completes, is still inside of the thread when called.
-     *
-     * @param edits
-     */
-    protected void onWorkerThreadComplete(List<BlockPos> edits)
-    {
-        if (world instanceof WorldServer)
-        {
-            //Sort distance
-            edits.sort(buildSorter());
+	protected void onPostThreadJoinWorld() {
+		doExplode(-1);
+		onBlastCompleted();
+	}
 
-            //Schedule edits to run in the world
-            ((WorldServer) world).addScheduledTask(() -> {
+	/**
+	 * Called when the thread completes, is still inside of the thread when called.
+	 *
+	 * @param edits
+	 */
+	protected void onWorkerThreadComplete(List<BlockPos> edits) {
+		if (world instanceof WorldServer) {
+			//Sort distance
+			edits.sort(buildSorter());
 
-                if (skipQueue())
-                {
-                    edits.forEach(blockPos -> destroyBlock(blockPos));
-                }
-                else
-                {
-                    //Queue edits
-                    BlockEditHandler.queue(world, edits, blockPos -> destroyBlock(blockPos));
-                }
+			//Schedule edits to run in the world
+			((WorldServer) world).addScheduledTask(() -> {
 
-                //Notify blast we have entered world again
-                onPostThreadJoinWorld();
-            });
-        }
-    }
+				if (skipQueue()) {
+					edits.forEach(blockPos -> destroyBlock(blockPos));
+				} else {
+					//Queue edits
+					BlockEditHandler.queue(world, edits, blockPos -> destroyBlock(blockPos));
+				}
 
-    protected boolean skipQueue()
-    {
-        return false;
-    }
+				//Notify blast we have entered world again
+				onPostThreadJoinWorld();
+			});
+		}
+	}
 
-    @Override
-    protected boolean doExplode(int callCount)
-    {
-        if (!hasThreadStarted)
-        {
-            hasThreadStarted = true;
-            WorkerThreadManager.INSTANCE.addWork(getWorkerTask());
-        }
-        return false;
-    }
+	protected boolean skipQueue() {
+		return false;
+	}
 
-    @Override
-    protected void onBlastCompleted()
-    {
+	@Override
+	protected boolean doExplode(int callCount) {
+		if (!hasThreadStarted) {
+			hasThreadStarted = true;
+			WorkerThreadManager.INSTANCE.addWork(getWorkerTask());
+		}
+		return false;
+	}
 
-    }
+	@Override
+	protected void onBlastCompleted() {
 
-    public void destroyBlock(BlockPos pos)
-    {
-        IBlockState state = this.world().getBlockState(pos);
-        if (!state.getBlock().isAir(state, world(), pos))
-        {
-            state.getBlock().onBlockExploded(this.world(), pos, this);
-        }
-    }
+	}
+
+	public void destroyBlock(BlockPos pos) {
+		IBlockState state = this.world().getBlockState(pos);
+		if (!state.getBlock().isAir(state, world(), pos)) {
+			state.getBlock().onBlockExploded(this.world(), pos, this);
+		}
+	}
 
 }

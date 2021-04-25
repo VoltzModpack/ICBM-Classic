@@ -15,159 +15,140 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
-public class EntityLightBeam extends Entity implements IEntityAdditionalSpawnData
-{
-    //Render color
-    public float red = 1;
-    public float green = 0;
-    public float blue = 0;
+public class EntityLightBeam extends Entity implements IEntityAdditionalSpawnData {
 
-    //Render Size
-    public float beamSize = 0.5f;
-    public float beamGlowSize = 1f;
+	//Render color
+	public float red = 1;
+	public float green = 0;
+	public float blue = 0;
 
-    //Client state
-    public float clientBeamProgress = 0;
+	//Render Size
+	public float beamSize = 0.5f;
+	public float beamGlowSize = 1f;
 
-    //State
-    public boolean deathCycle = false;
-    public float targetBeamProgress = 1;
-    public float beamGrowthRate = 0.05f;
+	//Client state
+	public float clientBeamProgress = 0;
 
-    //Data
-    private static final DataParameter<Float> BEAM_PROGRESS = EntityDataManager.createKey(EntityLightBeam.class, DataSerializers.FLOAT);
+	//State
+	public boolean deathCycle = false;
+	public float targetBeamProgress = 1;
+	public float beamGrowthRate = 0.05f;
 
-    public EntityLightBeam(World world)
-    {
-        super(world);
-        this.setSize(1F, 1F);
-        this.preventEntitySpawning = true;
-        this.ignoreFrustumCheck = true;
-        this.height = 1;
-        this.width = 1;
-    }
+	//Data
+	private static final DataParameter<Float> BEAM_PROGRESS = EntityDataManager.createKey(EntityLightBeam.class, DataSerializers.FLOAT);
 
-    @Override
-    protected void entityInit()
-    {
-        this.getDataManager().register(BEAM_PROGRESS, -1f);
-    }
+	public EntityLightBeam(World world) {
+		super(world);
+		this.setSize(1F, 1F);
+		this.preventEntitySpawning = true;
+		this.ignoreFrustumCheck = true;
+		this.height = 1;
+		this.width = 1;
+	}
 
-    public EntityLightBeam setPosition(IPos3D position)
-    {
-        this.setPosition(position.x(), position.y(), position.z());
-        return this;
-    }
+	@Override
+	protected void entityInit() {
+		this.getDataManager().register(BEAM_PROGRESS, -1f);
+	}
 
-    public EntityLightBeam setColor(float red, float green, float blue)
-    {
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        return this;
-    }
+	public EntityLightBeam setPosition(IPos3D position) {
+		this.setPosition(position.x(), position.y(), position.z());
+		return this;
+	}
 
-    public void startDeathCycle()
-    {
-        deathCycle = true;
-    }
+	public EntityLightBeam setColor(float red, float green, float blue) {
+		this.red = red;
+		this.green = green;
+		this.blue = blue;
+		return this;
+	}
 
-    public void setTargetBeamProgress(float value)
-    {
-        targetBeamProgress = value;
-    }
+	public void startDeathCycle() {
+		deathCycle = true;
+	}
 
-    public void setActualBeamProgress(float value)
-    {
-        this.getDataManager().set(BEAM_PROGRESS, Math.min(1, Math.max(0, value)));
-    }
+	public void setTargetBeamProgress(float value) {
+		targetBeamProgress = value;
+	}
 
-    public float getBeamProgress()
-    {
-        return this.getDataManager().get(BEAM_PROGRESS);
-    }
+	public void setActualBeamProgress(float value) {
+		this.getDataManager().set(BEAM_PROGRESS, Math.min(1, Math.max(0, value)));
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(posX - 5, -10, posZ - 5, posX + 5, Double.POSITIVE_INFINITY, posZ + 5);
-    }
+	public float getBeamProgress() {
+		return this.getDataManager().get(BEAM_PROGRESS);
+	}
 
-    @Override
-    public void writeSpawnData(ByteBuf data)
-    {
-        data.writeFloat(this.red);
-        data.writeFloat(this.green);
-        data.writeFloat(this.blue);
-        data.writeFloat(this.beamSize);
-        data.writeFloat(this.beamGlowSize);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	@Nonnull
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(posX - 5, -10, posZ - 5, posX + 5, Double.POSITIVE_INFINITY, posZ + 5);
+	}
 
-    @Override
-    public void readSpawnData(ByteBuf data)
-    {
-        this.red = data.readFloat();
-        this.green = data.readFloat();
-        this.blue = data.readFloat();
-        this.beamSize = data.readFloat();
-        this.beamGlowSize = data.readFloat();
-    }
+	@Override
+	public void writeSpawnData(ByteBuf data) {
+		data.writeFloat(this.red);
+		data.writeFloat(this.green);
+		data.writeFloat(this.blue);
+		data.writeFloat(this.beamSize);
+		data.writeFloat(this.beamGlowSize);
+	}
 
-    @Override
-    public void onUpdate()
-    {
-        //Grow beam slowly
-        if (getBeamProgress() < targetBeamProgress)
-        {
-            setActualBeamProgress(Math.min(targetBeamProgress, getBeamProgress() + beamGrowthRate));
-        }
-        //Decrease size slowly
-        else if(getBeamProgress() > targetBeamProgress)
-        {
-            setActualBeamProgress(Math.max(targetBeamProgress, getBeamProgress() - beamGrowthRate));
-        }
+	@Override
+	public void readSpawnData(ByteBuf data) {
+		this.red = data.readFloat();
+		this.green = data.readFloat();
+		this.blue = data.readFloat();
+		this.beamSize = data.readFloat();
+		this.beamGlowSize = data.readFloat();
+	}
 
-        //Kill off beam when animation finishes
-        if (deathCycle && Math.abs(getBeamProgress() - targetBeamProgress) <= 0.01)
-        {
-            setDead();
-        }
-        //Safety in case the beam is never killed
-        else if (ticksExisted > 20 * 60 * 5) //ticks per second * seconds * mins = 5 mins
-        {
-            setDead();
-        }
-    }
+	@Override
+	public void onUpdate() {
+		//Grow beam slowly
+		if (getBeamProgress() < targetBeamProgress) {
+			setActualBeamProgress(Math.min(targetBeamProgress, getBeamProgress() + beamGrowthRate));
+		}
+		//Decrease size slowly
+		else if (getBeamProgress() > targetBeamProgress) {
+			setActualBeamProgress(Math.max(targetBeamProgress, getBeamProgress() - beamGrowthRate));
+		}
 
-    @Override
-    public boolean canBePushed()
-    {
-        return false;
-    }
+		//Kill off beam when animation finishes
+		if (deathCycle && Math.abs(getBeamProgress() - targetBeamProgress) <= 0.01) {
+			setDead();
+		}
+		//Safety in case the beam is never killed
+		else if (ticksExisted > 20 * 60 * 5) //ticks per second * seconds * mins = 5 mins
+		{
+			setDead();
+		}
+	}
 
-    @Override
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
 
-    @Override
-    public boolean canBeCollidedWith()
-    {
-        return false;
-    }
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
 
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound var1)
-    {
+	@Override
+	public boolean canBeCollidedWith() {
+		return false;
+	}
 
-    }
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound var1) {
 
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound var1)
-    {
+	}
 
-    }
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound var1) {
+
+	}
+
 }

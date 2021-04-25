@@ -15,23 +15,22 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = ICBMConstants.DOMAIN, name = "icbmclassic/main")
 @Config.LangKey("config.icbmclassic:main.title")
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
-public class ConfigMain
-{
-    @Config.Name("use_energy")
-    @Config.Comment("Range of tier 1 launcher")
-    public static boolean REQUIRES_POWER = true;
+public class ConfigMain {
 
-    @Config.Name("handheld_launcher_tier_limit")
-    @Config.Comment("Limits the max tier the handheld launcher can fire,} outside of creative mode")
-    @Config.RangeInt(min = 1, max = 4)
-    public static int ROCKET_LAUNCHER_TIER_FIRE_LIMIT = 2;
+	@Config.Name("use_energy")
+	@Config.Comment("Range of tier 1 launcher")
+	public static boolean REQUIRES_POWER = true;
 
-    @SubscribeEvent
-    public static void onConfigChangedEvent(final ConfigChangedEvent.OnConfigChangedEvent event)
-    {
-        if (event.getModID().equals(ICBMConstants.DOMAIN))
-        {
-            ConfigManager.sync(ICBMConstants.DOMAIN, Config.Type.INSTANCE);
-        }
-    }
+	@Config.Name("handheld_launcher_tier_limit")
+	@Config.Comment("Limits the max tier the handheld launcher can fire,} outside of creative mode")
+	@Config.RangeInt(min = 1, max = 4)
+	public static int ROCKET_LAUNCHER_TIER_FIRE_LIMIT = 2;
+
+	@SubscribeEvent
+	public static void onConfigChangedEvent(final ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.getModID().equals(ICBMConstants.DOMAIN)) {
+			ConfigManager.sync(ICBMConstants.DOMAIN, Config.Type.INSTANCE);
+		}
+	}
+
 }

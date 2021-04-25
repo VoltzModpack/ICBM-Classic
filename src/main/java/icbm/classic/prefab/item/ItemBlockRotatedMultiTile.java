@@ -13,32 +13,29 @@ import java.util.function.Function;
 
 /**
  * Handles placement check for asymmetric multi-block structures that need rotation
- *
- *
+ * <p>
+ * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/16/2018.
  */
-public class ItemBlockRotatedMultiTile extends ItemBlockSubTypes
-{
-    //Wrapper for getting the multi-block data for the rotation
-    protected final Function<EnumFacing, List<BlockPos>> multiBlockGetter;
+public class ItemBlockRotatedMultiTile extends ItemBlockSubTypes {
 
-    public ItemBlockRotatedMultiTile(Block block, Function<EnumFacing, List<BlockPos>> multiBlockGetter)
-    {
-        super(block);
-        this.multiBlockGetter = multiBlockGetter;
-    }
+	//Wrapper for getting the multi-block data for the rotation
+	protected final Function<EnumFacing, List<BlockPos>> multiBlockGetter;
 
-    @Override
-    protected boolean canPlace(EntityPlayer player, World worldIn, BlockPos pos, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (super.canPlace(player, worldIn, pos, itemstack, facing, hitX, hitY, hitZ))
-        {
-            List<BlockPos> multi_blocks = multiBlockGetter.apply(player.getHorizontalFacing());
-            if (multi_blocks != null)
-            {
-                return MultiBlockHelper.canBuild(worldIn, pos, multi_blocks, true);
-            }
-        }
-        return false;
-    }
+	public ItemBlockRotatedMultiTile(Block block, Function<EnumFacing, List<BlockPos>> multiBlockGetter) {
+		super(block);
+		this.multiBlockGetter = multiBlockGetter;
+	}
+
+	@Override
+	protected boolean canPlace(EntityPlayer player, World worldIn, BlockPos pos, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (super.canPlace(player, worldIn, pos, itemstack, facing, hitX, hitY, hitZ)) {
+			List<BlockPos> multi_blocks = multiBlockGetter.apply(player.getHorizontalFacing());
+			if (multi_blocks != null) {
+				return MultiBlockHelper.canBuild(worldIn, pos, multi_blocks, true);
+			}
+		}
+		return false;
+	}
+
 }

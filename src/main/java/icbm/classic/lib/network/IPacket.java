@@ -20,52 +20,47 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author tgame14, DarkCow
  * @since 26/05/14
  */
-public interface IPacket<P extends IPacket>
-{
+public interface IPacket<P extends IPacket> {
 
-    /**
-     * Encode the packet data into the ByteBuf stream. Complex data sets may need specific data handlers
-     *
-     * @param ctx    channel context
-     * @param buffer the buffer to encode into
-     *               PacketManager#writeData(io.netty.buffer.ByteBuf, Object...)
-     */
-    void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
+	/**
+	 * Encode the packet data into the ByteBuf stream. Complex data sets may need specific data handlers
+	 *
+	 * @param ctx    channel context
+	 * @param buffer the buffer to encode into PacketManager#writeData(io.netty.buffer.ByteBuf, Object...)
+	 */
+	void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
 
-    /**
-     * Decode the packet data from the ByteBuf stream. Complex data sets may need specific data handlers
-     *
-     * @param ctx    channel context
-     * @param buffer the buffer to decode from
-     */
-    void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
+	/**
+	 * Decode the packet data from the ByteBuf stream. Complex data sets may need specific data handlers
+	 *
+	 * @param ctx    channel context
+	 * @param buffer the buffer to decode from
+	 */
+	void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
 
-    default P addData(Object... objects)
-    {
-        return (P) this;
-    }
+	default P addData(Object... objects) {
+		return (P) this;
+	}
 
-    /**
-     * Handle a packet on the client side. Note this occurs after decoding has completed.
-     */
-    @SideOnly(Side.CLIENT)
-    default void handleClientSide()
-    {
-        handleClientSide((EntityPlayer)Minecraft.getMinecraft().player);
-    }
+	/**
+	 * Handle a packet on the client side. Note this occurs after decoding has completed.
+	 */
+	@SideOnly(Side.CLIENT)
+	default void handleClientSide() {
+		handleClientSide((EntityPlayer) Minecraft.getMinecraft().player);
+	}
 
-    default void handleClientSide(EntityPlayer player)
-    {
-        throw new UnsupportedOperationException("Unsupported operation for Packet: " + getClass().getSimpleName());
-    }
+	default void handleClientSide(EntityPlayer player) {
+		throw new UnsupportedOperationException("Unsupported operation for Packet: " + getClass().getSimpleName());
+	}
 
-    /**
-     * Handle a packet on the server side. Note this occurs after decoding has completed.
-     *
-     * @param player the player reference
-     */
-    default void handleServerSide(EntityPlayer player)
-    {
-        throw new UnsupportedOperationException("Unsupported operation for Packet: " + getClass().getSimpleName());
-    }
+	/**
+	 * Handle a packet on the server side. Note this occurs after decoding has completed.
+	 *
+	 * @param player the player reference
+	 */
+	default void handleServerSide(EntityPlayer player) {
+		throw new UnsupportedOperationException("Unsupported operation for Packet: " + getClass().getSimpleName());
+	}
+
 }

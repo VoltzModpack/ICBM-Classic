@@ -10,18 +10,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderCreeperXmas extends RenderLiving<EntityXmasCreeper>
-{
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/entity/creeper/creeper.png");
+public class RenderCreeperXmas extends RenderLiving<EntityXmasCreeper> {
 
-    public RenderCreeperXmas(RenderManager renderManagerIn)
-    {
-        super(renderManagerIn, new ModelCreeperXmas(), 0.5F);
-    }
+	private static final ResourceLocation TEXTURE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/entity/creeper/creeper.png");
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityXmasCreeper entity)
-    {
-        return TEXTURE;
-    }
+	public RenderCreeperXmas(RenderManager renderManagerIn) {
+		super(renderManagerIn, new ModelCreeperXmas(), 0.5F);
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityXmasCreeper entity) {
+		return TEXTURE;
+	}
+
 }

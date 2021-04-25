@@ -10,7 +10,8 @@ import net.minecraft.world.World;
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
 @FunctionalInterface
-public interface BlockActivateFunction
-{
-    boolean onActivate(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ);
+public interface BlockActivateFunction {
+
+	boolean onActivate(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ);
+
 }

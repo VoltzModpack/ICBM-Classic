@@ -17,40 +17,34 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by Dark(DarkGuardsman, Robert) on 8/4/2019.
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
-public class MissileEventHandler
-{
-    @SubscribeEvent
-    public static void onEntityMount(EntityMountEvent event)
-    {
-        if (event.isDismounting()
-                && event.getEntityBeingMounted() instanceof EntityMissile
-                && event.getEntityMounting() instanceof EntityPlayer)
-        {
-            event.setCanceled(MinecraftForge.EVENT_BUS.post(new MissileRideEvent.Stop((EntityMissile) event.getEntityBeingMounted(), (EntityPlayer) event.getEntityMounting())));
-        }
-    }
+public class MissileEventHandler {
 
-    @SubscribeEvent
-    public static void chunkUnload(ChunkEvent.Unload event)
-    {
-        final World world = event.getWorld();
-        if (!world.isRemote)
-        {
-            final Chunk chunk = event.getChunk();
-            final RadarMap map = RadarRegistry.getRadarMapForWorld(world);
-            if (map != null)
-            {
-                map.collectEntitiesInChunk(chunk.x, chunk.z, (radarEntity -> {
-                    if (radarEntity.entity instanceof EntityMissile)
-                    {
-                        final EntityMissile missile = (EntityMissile) radarEntity.entity;
-                        if(!missile.wasSimulated && missile.missileType == MissileFlightType.PAD_LAUNCHER)
-                        {
-                            MissileTrackerHandler.simulateMissile((EntityMissile) radarEntity.entity);
-                        }
-                    }
-                }));
-            }
-        }
-    }
+	@SubscribeEvent
+	public static void onEntityMount(EntityMountEvent event) {
+		if (event.isDismounting()
+			    && event.getEntityBeingMounted() instanceof EntityMissile
+			    && event.getEntityMounting() instanceof EntityPlayer) {
+			event.setCanceled(MinecraftForge.EVENT_BUS.post(new MissileRideEvent.Stop((EntityMissile) event.getEntityBeingMounted(), (EntityPlayer) event.getEntityMounting())));
+		}
+	}
+
+	@SubscribeEvent
+	public static void chunkUnload(ChunkEvent.Unload event) {
+		final World world = event.getWorld();
+		if (!world.isRemote) {
+			final Chunk chunk = event.getChunk();
+			final RadarMap map = RadarRegistry.getRadarMapForWorld(world);
+			if (map != null) {
+				map.collectEntitiesInChunk(chunk.x, chunk.z, (radarEntity -> {
+					if (radarEntity.entity instanceof EntityMissile) {
+						final EntityMissile missile = (EntityMissile) radarEntity.entity;
+						if (!missile.wasSimulated && missile.missileType == MissileFlightType.PAD_LAUNCHER) {
+							MissileTrackerHandler.simulateMissile((EntityMissile) radarEntity.entity);
+						}
+					}
+				}));
+			}
+		}
+	}
+
 }

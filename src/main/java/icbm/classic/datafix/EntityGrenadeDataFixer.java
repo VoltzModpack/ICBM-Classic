@@ -5,30 +5,27 @@ import icbm.classic.lib.NBTConstants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.IFixableData;
 
-public class EntityGrenadeDataFixer implements IFixableData
-{
-    @Override
-    public NBTTagCompound fixTagCompound(NBTTagCompound tag)
-    {
-        if(tag.hasKey(NBTConstants.ID) && tag.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.GRENADE.toString()))
-        {
-            String oldKey = "haoMa";
+public class EntityGrenadeDataFixer implements IFixableData {
 
-            if(tag.hasKey(oldKey))
-            {
-                int explosiveID = tag.getInteger(oldKey);
+	@Override
+	public NBTTagCompound fixTagCompound(NBTTagCompound tag) {
+		if (tag.hasKey(NBTConstants.ID) && tag.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.GRENADE.toString())) {
+			String oldKey = "haoMa";
 
-                tag.removeTag(oldKey); //remove the old entry to not have legacy data. the method name may be misleading, but it actually just removes the key from the tag map
-                tag.setInteger(NBTConstants.EXPLOSIVE_ID, explosiveID);
-            }
-        }
+			if (tag.hasKey(oldKey)) {
+				int explosiveID = tag.getInteger(oldKey);
 
-        return tag;
-    }
+				tag.removeTag(oldKey); //remove the old entry to not have legacy data. the method name may be misleading, but it actually just removes the key from the tag map
+				tag.setInteger(NBTConstants.EXPLOSIVE_ID, explosiveID);
+			}
+		}
 
-    @Override
-    public int getFixVersion()
-    {
-        return 1;
-    }
+		return tag;
+	}
+
+	@Override
+	public int getFixVersion() {
+		return 1;
+	}
+
 }

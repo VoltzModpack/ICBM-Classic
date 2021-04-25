@@ -15,7 +15,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -23,146 +25,124 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSpikes extends Block
-{
-    public static final SpikeProperty SPIKE_PROPERTY = new SpikeProperty();
+public class BlockSpikes extends Block {
 
-    public BlockSpikes()
-    {
-        super(Material.IRON);
-        this.setRegistryName(ICBMConstants.PREFIX + "spikes");
-        this.setTranslationKey(ICBMConstants.PREFIX + "spikes");
-        this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
-        this.setHardness(1.0F);
-    }
+	public static final SpikeProperty SPIKE_PROPERTY = new SpikeProperty();
 
-    @Override
-    public int damageDropped(IBlockState state)
-    {
-        return getMetaFromState(state);
-    }
+	public BlockSpikes() {
+		super(Material.IRON);
+		this.setRegistryName(ICBMConstants.PREFIX + "spikes");
+		this.setTranslationKey(ICBMConstants.PREFIX + "spikes");
+		this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
+		this.setHardness(1.0F);
+	}
 
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return null;
-    }
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, SPIKE_PROPERTY);
-    }
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		return null;
+	}
 
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-    {
-        return getDefaultState().withProperty(SPIKE_PROPERTY, EnumSpikes.get(meta));
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, SPIKE_PROPERTY);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(SPIKE_PROPERTY).ordinal();
-    }
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getDefaultState().withProperty(SPIKE_PROPERTY, EnumSpikes.get(meta));
+	}
 
-    @Deprecated
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(SPIKE_PROPERTY, EnumSpikes.get(meta));
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(SPIKE_PROPERTY).ordinal();
+	}
 
-    @Override
-    public boolean isBlockNormalCube(IBlockState blockState)
-    {
-        return false;
-    }
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(SPIKE_PROPERTY, EnumSpikes.get(meta));
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState blockState)
-    {
-        return false;
-    }
+	@Override
+	public boolean isBlockNormalCube(IBlockState blockState) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState blockState) {
+		return false;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @Override
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
-    {
-        // If the entity is a living entity
-        if (entity instanceof EntityLivingBase)
-        {
-            entity.attackEntityFrom(DamageSource.CACTUS, 1);
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 
-            if (world.getBlockState(pos).getValue(SPIKE_PROPERTY) == EnumSpikes.POISON) //TODO replace with state
-            {
-                ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), 7 * 20, 0));
-            }
-            else if (world.getBlockState(pos).getValue(SPIKE_PROPERTY) == EnumSpikes.FIRE)
-            {
-                entity.setFire(7);
-            }
-        }
-    }
+	@Override
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		// If the entity is a living entity
+		if (entity instanceof EntityLivingBase) {
+			entity.attackEntityFrom(DamageSource.CACTUS, 1);
 
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items)
-    {
-        if (tab == getCreativeTab())
-        {
-            for (EnumSpikes spikes : EnumSpikes.values())
-            {
-                items.add(new ItemStack(this, 1, spikes.ordinal()));
-            }
-        }
-    }
+			if (world.getBlockState(pos).getValue(SPIKE_PROPERTY) == EnumSpikes.POISON) //TODO replace with state
+			{
+				((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), 7 * 20, 0));
+			} else if (world.getBlockState(pos).getValue(SPIKE_PROPERTY) == EnumSpikes.FIRE) {
+				entity.setFire(7);
+			}
+		}
+	}
 
-    public static class SpikeProperty extends PropertyEnum<EnumSpikes>
-    {
-        protected SpikeProperty()
-        {
-            super("type", EnumSpikes.class, Lists.newArrayList(EnumSpikes.values()));
-        }
-    }
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (tab == getCreativeTab()) {
+			for (EnumSpikes spikes : EnumSpikes.values()) {
+				items.add(new ItemStack(this, 1, spikes.ordinal()));
+			}
+		}
+	}
 
-    public static enum EnumSpikes implements IStringSerializable
-    {
-        NORMAL,
-        POISON,
-        FIRE;
+	public static class SpikeProperty extends PropertyEnum<EnumSpikes> {
 
-        @Override
-        public String toString()
-        {
-            return this.getName();
-        }
+		protected SpikeProperty() {
+			super("type", EnumSpikes.class, Lists.newArrayList(EnumSpikes.values()));
+		}
 
-        @Override
-        public String getName()
-        {
-            return name().toLowerCase();
-        }
+	}
 
-        public static EnumSpikes get(int meta)
-        {
-            return meta >= 0 && meta < values().length ? values()[meta] : NORMAL;
-        }
-    }
+	public static enum EnumSpikes implements IStringSerializable {
+		NORMAL,
+		POISON,
+		FIRE;
+
+		@Override
+		public String toString() {
+			return this.getName();
+		}
+
+		@Override
+		public String getName() {
+			return name().toLowerCase();
+		}
+
+		public static EnumSpikes get(int meta) {
+			return meta >= 0 && meta < values().length ? values()[meta] : NORMAL;
+		}
+	}
+
 }

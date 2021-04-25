@@ -11,29 +11,28 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 7/28/2019.
  */
-public class ExRecipeFactory implements IRecipeFactory
-{
-    @Override
-    public IRecipe parse(JsonContext context, JsonObject json)
-    {
-        //Pull result from json
-        final JsonObject resultObject = JsonUtils.getJsonObject(json, "result");
-        final ItemStack resultStack = ExIngredientFactory.getStack(resultObject);
+public class ExRecipeFactory implements IRecipeFactory {
 
-        //Convert stack back to json
-        JsonObject newResult = new JsonObject();
-        newResult.addProperty("item", resultStack.getItem().getRegistryName().toString());
-        if (resultStack.getHasSubtypes())
-        {
-            newResult.addProperty("data", resultStack.getItemDamage());
-        }
-        newResult.addProperty("count", JsonUtils.getInt(json, "count", 1));
+	@Override
+	public IRecipe parse(JsonContext context, JsonObject json) {
+		//Pull result from json
+		final JsonObject resultObject = JsonUtils.getJsonObject(json, "result");
+		final ItemStack resultStack = ExIngredientFactory.getStack(resultObject);
 
-        //TODO add support NBT
+		//Convert stack back to json
+		JsonObject newResult = new JsonObject();
+		newResult.addProperty("item", resultStack.getItem().getRegistryName().toString());
+		if (resultStack.getHasSubtypes()) {
+			newResult.addProperty("data", resultStack.getItemDamage());
+		}
+		newResult.addProperty("count", JsonUtils.getInt(json, "count", 1));
 
-        //Update json
-        json.add("result", newResult);
+		//TODO add support NBT
 
-        return ShapedOreRecipe.factory(context, json);
-    }
+		//Update json
+		json.add("result", newResult);
+
+		return ShapedOreRecipe.factory(context, json);
+	}
+
 }

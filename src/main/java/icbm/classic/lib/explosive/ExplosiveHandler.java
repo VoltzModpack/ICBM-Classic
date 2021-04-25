@@ -28,100 +28,90 @@ import java.util.stream.Collectors;
  * Created by Dark(DarkGuardsman, Robert) on 4/9/2018.
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
-public class ExplosiveHandler
-{
-    public static final ArrayList<IBlast> activeBlasts = new ArrayList();
+public class ExplosiveHandler {
 
-    public static void add(Blast blast)
-    {
-        activeBlasts.add(blast);
-    }
+	public static final ArrayList<IBlast> activeBlasts = new ArrayList();
 
-    public static void remove(Blast blast)
-    {
-        activeBlasts.remove(blast);
-    }
+	public static void add(Blast blast) {
+		activeBlasts.add(blast);
+	}
 
-    @SubscribeEvent
-    public static void worldUnload(WorldEvent.Unload event)
-    {
-        if (!event.getWorld().isRemote)
-        {
-            final int dim = event.getWorld().provider.getDimension();
-            activeBlasts.stream()
-                    .filter(blast -> !blast.hasWorld() || blast.world().provider.getDimension() == dim)
-                    .forEach(IBlast::clearBlast);
-        }
-    }
+	public static void remove(Blast blast) {
+		activeBlasts.remove(blast);
+	}
 
-    /**
-     * Called to remove blasts near the location
-     *
-     * @param world = position
-     * @param x     - position
-     * @param y     - position
-     * @param z     - position
-     * @param range - distance from position, less than zero will turn into global
-     * @return number of blasts removed
-     */
-    public static int removeNear(World world, double x, double y, double z, double range)
-    {
-        final Pos pos = new Pos(x, y, z);
+	@SubscribeEvent
+	public static void worldUnload(WorldEvent.Unload event) {
+		if (!event.getWorld().isRemote) {
+			final int dim = event.getWorld().provider.getDimension();
+			activeBlasts.stream()
+				.filter(blast -> !blast.hasWorld() || blast.world().provider.getDimension() == dim)
+				.forEach(IBlast::clearBlast);
+		}
+	}
 
-        //Collect blasts marked for removal
-        final List<IBlast> toRemove = ExplosiveHandler.activeBlasts.stream()
-                .filter(blast -> blast.world() == world)
-                .filter(blast -> range < 0 || range > 0 && range > pos.distance(blast))
-                .collect(Collectors.toList());
+	/**
+	 * Called to remove blasts near the location
+	 *
+	 * @param world = position
+	 * @param x     - position
+	 * @param y     - position
+	 * @param z     - position
+	 * @param range - distance from position, less than zero will turn into global
+	 * @return number of blasts removed
+	 */
+	public static int removeNear(World world, double x, double y, double z, double range) {
+		final Pos pos = new Pos(x, y, z);
 
-        //Do removals
-        activeBlasts.removeAll(toRemove);
-        toRemove.forEach(IBlast::clearBlast);
+		//Collect blasts marked for removal
+		final List<IBlast> toRemove = ExplosiveHandler.activeBlasts.stream()
+			                              .filter(blast -> blast.world() == world)
+			                              .filter(blast -> range < 0 || range > 0 && range > pos.distance(blast))
+			                              .collect(Collectors.toList());
 
-        return toRemove.size();
-    }
+		//Do removals
+		activeBlasts.removeAll(toRemove);
+		toRemove.forEach(IBlast::clearBlast);
 
-    public static BlastState createExplosion(Entity cause, World world, double x, double y, double z, IExplosive capabilityExplosive)
-    {
-        if (capabilityExplosive == null || capabilityExplosive.getExplosiveData() == null)
-        {
-            ICBMClassic.logger().error("ExplosiveHandler: Missing capability for explosive, cap: " + capabilityExplosive + "  cause: " + cause, new RuntimeException());
-            return BlastState.NULL;
-        }
-        return createExplosion(cause, world, x, y, z, capabilityExplosive.getExplosiveData().getRegistryID(), 1, capabilityExplosive.getCustomBlastData());
-    }
+		return toRemove.size();
+	}
 
-    public static BlastState createExplosion(Entity cause, World world, double x, double y, double z, int blastID, float scale, NBTTagCompound customData)
-    {
-        final IBlast blast = createNew(cause, world, x, y, z, blastID, scale, customData);
-        if (blast != null)
-        {
-            return blast.runBlast();
-        }
-        return BlastState.NULL;
-    }
+	public static BlastState createExplosion(Entity cause, World world, double x, double y, double z, IExplosive capabilityExplosive) {
+		if (capabilityExplosive == null || capabilityExplosive.getExplosiveData() == null) {
+			ICBMClassic.logger().error("ExplosiveHandler: Missing capability for explosive, cap: " + capabilityExplosive + "  cause: " + cause, new RuntimeException());
+			return BlastState.NULL;
+		}
+		return createExplosion(cause, world, x, y, z, capabilityExplosive.getExplosiveData().getRegistryID(), 1, capabilityExplosive.getCustomBlastData());
+	}
 
-    public static IBlast createNew(Entity cause, World world, double x, double y, double z, int blastID, float scale, NBTTagCompound customData)
-    {
-        final IExplosiveData explosiveData = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(blastID);
-        return createNew(cause, world, x, y, z, explosiveData, scale, customData);
-    }
+	public static BlastState createExplosion(Entity cause, World world, double x, double y, double z, int blastID, float scale, NBTTagCompound customData) {
+		final IBlast blast = createNew(cause, world, x, y, z, blastID, scale, customData);
+		if (blast != null) {
+			return blast.runBlast();
+		}
+		return BlastState.NULL;
+	}
 
-    public static IBlast createNew(Entity cause, World world, double x, double y, double z, IExplosiveData data, float scale, NBTTagCompound customData)
-    {
-        if (data != null && data.getBlastFactory() != null) //TODO add way to hook blast builder to add custom blasts
-        {
-            final IBlastInit blast = data.getBlastFactory().create();
-            blast.setBlastWorld(world);
-            blast.setBlastPosition(x, y, z);
-            blast.scaleBlast(scale);
-            blast.setBlastSource(cause);
-            blast.setExplosiveData(data);
+	public static IBlast createNew(Entity cause, World world, double x, double y, double z, int blastID, float scale, NBTTagCompound customData) {
+		final IExplosiveData explosiveData = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(blastID);
+		return createNew(cause, world, x, y, z, explosiveData, scale, customData);
+	}
 
-            return blast.buildBlast();
-        }
+	public static IBlast createNew(Entity cause, World world, double x, double y, double z, IExplosiveData data, float scale, NBTTagCompound customData) {
+		if (data != null && data.getBlastFactory() != null) //TODO add way to hook blast builder to add custom blasts
+		{
+			final IBlastInit blast = data.getBlastFactory().create();
+			blast.setBlastWorld(world);
+			blast.setBlastPosition(x, y, z);
+			blast.scaleBlast(scale);
+			blast.setBlastSource(cause);
+			blast.setExplosiveData(data);
 
-        ICBMClassic.logger().error("ExplosiveHandler: Failed to create blast, data: " + data + " factory: " + (data != null ? data.getBlastFactory() : " nil"), new RuntimeException());
-        return null;
-    }
+			return blast.buildBlast();
+		}
+
+		ICBMClassic.logger().error("ExplosiveHandler: Failed to create blast, data: " + data + " factory: " + (data != null ? data.getBlastFactory() : " nil"), new RuntimeException());
+		return null;
+	}
+
 }

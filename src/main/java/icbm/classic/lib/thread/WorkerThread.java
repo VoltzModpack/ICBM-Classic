@@ -6,109 +6,90 @@ import icbm.classic.config.ConfigDebug;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 10/8/2018.
  */
-public class WorkerThread extends Thread
-{
-    public boolean doRun = true;
+public class WorkerThread extends Thread {
 
-    private IThreadWork activateTask;
-    private final ConcurrentLinkedQueue<IThreadWork> queue = new ConcurrentLinkedQueue();
-    private int workCount = 0;
+	public boolean doRun = true;
 
-    public WorkerThread(int index)
-    {
-        super(null, null, "ICBM-Classic-WorkerThread-" + index, 0);
-        this.setPriority(Thread.MIN_PRIORITY); //We don't care how fast this runs
-        this.setDaemon(true); //Fix for threads still running when MC closes
-    }
+	private IThreadWork activateTask;
+	private final ConcurrentLinkedQueue<IThreadWork> queue = new ConcurrentLinkedQueue();
+	private int workCount = 0;
 
-    @Override
-    public void interrupt()
-    {
-        if (ConfigDebug.DEBUG_THREADS)
-        {
-            ICBMClassic.logger().error(toString() + " was interrupted while running tasks",
-                    new RuntimeException("Trace"));
-        }
-        super.interrupt();
-    }
+	public WorkerThread(int index) {
+		super(null, null, "ICBM-Classic-WorkerThread-" + index, 0);
+		this.setPriority(Thread.MIN_PRIORITY); //We don't care how fast this runs
+		this.setDaemon(true); //Fix for threads still running when MC closes
+	}
 
-    @Override
-    public final void run()
-    {
-        while (doRun)
-        {
-            //IF task is set run
-            if (activateTask != null)
-            {
-                //Run step
-                if (!activateTask.doRun(1))
-                {
-                    //Complete
-                    activateTask.onCompleted();
-                    ICBMClassic.logger().debug(toString() + " complete work task " + activateTask);
+	@Override
+	public void interrupt() {
+		if (ConfigDebug.DEBUG_THREADS) {
+			ICBMClassic.logger().error(toString() + " was interrupted while running tasks",
+				new RuntimeException("Trace"));
+		}
+		super.interrupt();
+	}
 
-                    //Clear
-                    activateTask = null;
-                }
-            }
+	@Override
+	public final void run() {
+		while (doRun) {
+			//IF task is set run
+			if (activateTask != null) {
+				//Run step
+				if (!activateTask.doRun(1)) {
+					//Complete
+					activateTask.onCompleted();
+					ICBMClassic.logger().debug(toString() + " complete work task " + activateTask);
 
-            //Get next task if no task is set
-            if (activateTask == null)
-            {
-                nextTask();
-            }
+					//Clear
+					activateTask = null;
+				}
+			}
 
-            //If no tasks, sleep to give time to main thread
-            if (activateTask == null)
-            {
-                try
-                {
-                    sleep(100);
-                }
-                catch (InterruptedException e)
-                {
-                    ICBMClassic.logger().error(toString() + " was interrupted while sleeping",
-                            e);
-                }
-            }
-        }
-    }
+			//Get next task if no task is set
+			if (activateTask == null) {
+				nextTask();
+			}
 
-    protected void nextTask()
-    {
-        activateTask = queue.poll();
-        if (activateTask != null)
-        {
-            workCount--;
-            activateTask.onStarted();
-            if (ICBMClassic.runningAsDev)
-            {
-                ICBMClassic.logger().info(toString() + " starting work task " + activateTask);
-            }
-        }
-    }
+			//If no tasks, sleep to give time to main thread
+			if (activateTask == null) {
+				try {
+					sleep(100);
+				} catch (InterruptedException e) {
+					ICBMClassic.logger().error(toString() + " was interrupted while sleeping",
+						e);
+				}
+			}
+		}
+	}
 
-    protected IThreadWork getCurrentTask()
-    {
-        return activateTask;
-    }
+	protected void nextTask() {
+		activateTask = queue.poll();
+		if (activateTask != null) {
+			workCount--;
+			activateTask.onStarted();
+			if (ICBMClassic.runningAsDev) {
+				ICBMClassic.logger().info(toString() + " starting work task " + activateTask);
+			}
+		}
+	}
 
-    public void addWork(IThreadWork work)
-    {
-        queue.add(work);
-        workCount++;
-    }
+	protected IThreadWork getCurrentTask() {
+		return activateTask;
+	}
 
-    public int getWorkCount()
-    {
-        return workCount;
-    }
+	public void addWork(IThreadWork work) {
+		queue.add(work);
+		workCount++;
+	}
 
-    public void stopTasks()
-    {
-        doRun = false;
-    }
+	public int getWorkCount() {
+		return workCount;
+	}
+
+	public void stopTasks() {
+		doRun = false;
+	}
+
 }

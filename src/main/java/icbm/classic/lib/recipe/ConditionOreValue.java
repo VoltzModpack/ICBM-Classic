@@ -11,30 +11,26 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.function.BooleanSupplier;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 3/20/2018.
  */
-public class ConditionOreValue implements IConditionFactory
-{
-    @Override
-    public BooleanSupplier parse(JsonContext context, JsonObject json)
-    {
-        final boolean condition = Boolean.parseBoolean(JsonUtils.getString(json, "condition").toLowerCase());
-        final String value = JsonUtils.getString(json, "value");
-        return () -> hasOreValue(value, condition);
-    }
+public class ConditionOreValue implements IConditionFactory {
 
-    private boolean hasOreValue(String value, boolean check)
-    {
-        NonNullList<ItemStack> list = OreDictionary.getOres(value);
-        boolean hasValue = false;
-        for (ItemStack stack : list)
-        {
-            if (!stack.isEmpty())
-            {
-                return hasValue == check;
-            }
-        }
-        return hasValue == check;
-    }
+	@Override
+	public BooleanSupplier parse(JsonContext context, JsonObject json) {
+		final boolean condition = Boolean.parseBoolean(JsonUtils.getString(json, "condition").toLowerCase());
+		final String value = JsonUtils.getString(json, "value");
+		return () -> hasOreValue(value, condition);
+	}
+
+	private boolean hasOreValue(String value, boolean check) {
+		NonNullList<ItemStack> list = OreDictionary.getOres(value);
+		boolean hasValue = false;
+		for (ItemStack stack : list) {
+			if (!stack.isEmpty()) {
+				return hasValue == check;
+			}
+		}
+		return hasValue == check;
+	}
+
 }

@@ -25,129 +25,111 @@ import java.util.function.Predicate;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 4/13/2018.
  */
-public class CommandRemove extends SubCommand
-{
-    public static final String TRANSLATION_REMOVE = "command.icbmclassic:icbm.remove";
+public class CommandRemove extends SubCommand {
 
-    public CommandRemove()
-    {
-        super("remove");
-    }
+	public static final String TRANSLATION_REMOVE = "command.icbmclassic:icbm.remove";
 
-    @Override
-    protected void collectHelpForAll(Consumer<String> consumer)
-    {
-        consumer.accept("<all/missiles/explosions> <dim> <x> <y> <z> <radius>");
-    }
+	public CommandRemove() {
+		super("remove");
+	}
 
-    @Override
-    protected void collectHelpWorldOnly(Consumer<String> consumer)
-    {
-        consumer.accept("<all/missiles/explosions> [radius]");
-    }
+	@Override
+	protected void collectHelpForAll(Consumer<String> consumer) {
+		consumer.accept("<all/missiles/explosions> <dim> <x> <y> <z> <radius>");
+	}
 
-    @Override
-    public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException
-    {
-        if (args.length <= 0 || !doCommand(sender, args))
-        {
-            throw new WrongUsageException(ICBMCommands.TRANSLATION_UNKNOWN_COMMAND, getUsage(sender));
-        }
-    }
+	@Override
+	protected void collectHelpWorldOnly(Consumer<String> consumer) {
+		consumer.accept("<all/missiles/explosions> [radius]");
+	}
 
-    private boolean doCommand(@Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException
-    {
-        //Get type
-        final Predicate<Entity> entitySelector = buildSelector(args[0]);
+	@Override
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+		if (args.length <= 0 || !doCommand(sender, args)) {
+			throw new WrongUsageException(ICBMCommands.TRANSLATION_UNKNOWN_COMMAND, getUsage(sender));
+		}
+	}
 
-        //Get range
-        final int range = getRange(args);
+	private boolean doCommand(@Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+		//Get type
+		final Predicate<Entity> entitySelector = buildSelector(args[0]);
 
-        //Get position
-        World world;
-        double x, y, z;
+		//Get range
+		final int range = getRange(args);
 
-        //Long version, 5 args or 6 if range is applied
-        if (args.length >= 5)
-        {
-            world = CommandUtils.getWorld(sender, args[1], sender.getEntityWorld());
-            x = CommandUtils.getNumber(sender, args[2], sender.getPositionVector().x);
-            y = CommandUtils.getNumber(sender, args[3], sender.getPositionVector().y);
-            z = CommandUtils.getNumber(sender, args[4], sender.getPositionVector().z);
-        }
-        //Short version, 1 arg or 2 if range is applied
-        else if (!(sender instanceof MinecraftServer) && args.length <= 2)
-        {
-            world = sender.getEntityWorld();
-            x = sender.getPositionVector().x;
-            y = sender.getPositionVector().y;
-            z = sender.getPositionVector().z;
-        }
-        else
-        {
-            return false;
-        }
+		//Get position
+		World world;
+		double x, y, z;
 
-        //Find and set entities dead
-        final List<Entity> entities = CommandUtils.getEntities(world, x, y, z, range, entitySelector);
-        entities.forEach(Entity::setDead);
+		//Long version, 5 args or 6 if range is applied
+		if (args.length >= 5) {
+			world = CommandUtils.getWorld(sender, args[1], sender.getEntityWorld());
+			x = CommandUtils.getNumber(sender, args[2], sender.getPositionVector().x);
+			y = CommandUtils.getNumber(sender, args[3], sender.getPositionVector().y);
+			z = CommandUtils.getNumber(sender, args[4], sender.getPositionVector().z);
+		}
+		//Short version, 1 arg or 2 if range is applied
+		else if (!(sender instanceof MinecraftServer) && args.length <= 2) {
+			world = sender.getEntityWorld();
+			x = sender.getPositionVector().x;
+			y = sender.getPositionVector().y;
+			z = sender.getPositionVector().z;
+		} else {
+			return false;
+		}
 
-        //User feedback
-        sender.sendMessage(new TextComponentTranslation(TRANSLATION_REMOVE, entities.size(), range));
+		//Find and set entities dead
+		final List<Entity> entities = CommandUtils.getEntities(world, x, y, z, range, entitySelector);
+		entities.forEach(Entity::setDead);
 
-        return true;
-    }
+		//User feedback
+		sender.sendMessage(new TextComponentTranslation(TRANSLATION_REMOVE, entities.size(), range));
 
-    private int getRange(String[] args) throws NumberInvalidException
-    {
-        if(args.length == 2) {
-            return CommandBase.parseInt(args[1]);
-        } else  if(args.length == 6) {
-            return CommandBase.parseInt(args[5]);
-        }
-        return -1;
-    }
+		return true;
+	}
 
-    private boolean isRemoveMissile(String type)
-    {
-        return type.equalsIgnoreCase("missiles") || type.equalsIgnoreCase("missile");
-    }
+	private int getRange(String[] args) throws NumberInvalidException {
+		if (args.length == 2) {
+			return CommandBase.parseInt(args[1]);
+		} else if (args.length == 6) {
+			return CommandBase.parseInt(args[5]);
+		}
+		return -1;
+	}
 
-    private boolean isRemoveExplosion(String type)
-    {
-        return type.equalsIgnoreCase("explosions")
-                || type.equalsIgnoreCase("explosion")
-                || type.equalsIgnoreCase("explosive")
-                || type.equalsIgnoreCase("explosives")
-                || type.equalsIgnoreCase("ex");
-    }
+	private boolean isRemoveMissile(String type) {
+		return type.equalsIgnoreCase("missiles") || type.equalsIgnoreCase("missile");
+	}
 
-    private Predicate<Entity> buildSelector(String type)
-    {
-        final boolean remove_all = type.equalsIgnoreCase("all");
-        final boolean remove_missiles = isRemoveMissile(type);
-        final boolean remove_explosives = isRemoveExplosion(type);
+	private boolean isRemoveExplosion(String type) {
+		return type.equalsIgnoreCase("explosions")
+			       || type.equalsIgnoreCase("explosion")
+			       || type.equalsIgnoreCase("explosive")
+			       || type.equalsIgnoreCase("explosives")
+			       || type.equalsIgnoreCase("ex");
+	}
 
-        return (entity) -> {
-            if(entity.isEntityAlive())
-            {
-                if (remove_all)
-                {
-                    return CommandUtils.isICBMEntity(entity);
-                }
-                else if (remove_explosives)
-                {
-                    return entity instanceof EntityExplosive;
-                }
-                return remove_missiles && CommandUtils.isMissile(entity);
-            }
-            return false;
-        };
-    }
+	private Predicate<Entity> buildSelector(String type) {
+		final boolean remove_all = type.equalsIgnoreCase("all");
+		final boolean remove_missiles = isRemoveMissile(type);
+		final boolean remove_explosives = isRemoveExplosion(type);
 
-    @Override
-    public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos)
-    {
-        return args.length == 1 ? CommandBase.getListOfStringsMatchingLastWord(args, "all", "missile", "explosion") : new ArrayList<>();
-    }
+		return (entity) -> {
+			if (entity.isEntityAlive()) {
+				if (remove_all) {
+					return CommandUtils.isICBMEntity(entity);
+				} else if (remove_explosives) {
+					return entity instanceof EntityExplosive;
+				}
+				return remove_missiles && CommandUtils.isMissile(entity);
+			}
+			return false;
+		};
+	}
+
+	@Override
+	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
+		return args.length == 1 ? CommandBase.getListOfStringsMatchingLastWord(args, "all", "missile", "explosion") : new ArrayList<>();
+	}
+
 }

@@ -12,42 +12,40 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderGrenade extends Render<EntityGrenade>
-{
-    private EntityItem entityItem;
-    private RenderEntityItem renderEntityItem;
+public class RenderGrenade extends Render<EntityGrenade> {
 
-    public RenderGrenade(RenderManager renderManagerIn)
-    {
-        super(renderManagerIn);
-        renderEntityItem = new RenderEntityItem(renderManagerIn, Minecraft.getMinecraft().getRenderItem());
-        this.shadowSize = 0.15F;
-        this.shadowOpaque = 0.75F;
-    }
+	private EntityItem entityItem;
+	private RenderEntityItem renderEntityItem;
 
-    @Override
-    public void doRender(EntityGrenade entity, double x, double y, double z, float par8, float par9)
-    {
-        setupFakeItem(entity);
-        renderEntityItem.doRender(entityItem, x, y, z, par8, par9);
-    }
+	public RenderGrenade(RenderManager renderManagerIn) {
+		super(renderManagerIn);
+		renderEntityItem = new RenderEntityItem(renderManagerIn, Minecraft.getMinecraft().getRenderItem());
+		this.shadowSize = 0.15F;
+		this.shadowOpaque = 0.75F;
+	}
 
-    protected void setupFakeItem(EntityGrenade entity) {
+	@Override
+	public void doRender(EntityGrenade entity, double x, double y, double z, float par8, float par9) {
+		setupFakeItem(entity);
+		renderEntityItem.doRender(entityItem, x, y, z, par8, par9);
+	}
 
-        //Create fake item if missing
-        if(entityItem == null) {
-            entityItem = new EntityItem(entity.world);
-        }
+	protected void setupFakeItem(EntityGrenade entity) {
 
-        //Apply data from entity
-        entityItem.setWorld(entity.world);
-        entityItem.setPosition(entity.posX, entity.posY, entity.posZ);
-        entityItem.setItem(entity.explosive.toStack());
-    }
+		//Create fake item if missing
+		if (entityItem == null) {
+			entityItem = new EntityItem(entity.world);
+		}
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityGrenade entity)
-    {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
-    }
+		//Apply data from entity
+		entityItem.setWorld(entity.world);
+		entityItem.setPosition(entity.posX, entity.posY, entity.posZ);
+		entityItem.setItem(entity.explosive.toStack());
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityGrenade entity) {
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+	}
+
 }

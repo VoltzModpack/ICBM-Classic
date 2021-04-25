@@ -9,26 +9,23 @@ import net.minecraft.tileentity.TileEntity;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 12/15/2019.
  */
-public final class DummyMultiTile extends TileEntity implements IMultiTile
-{
+public final class DummyMultiTile extends TileEntity implements IMultiTile {
 
-    private IMultiTileHost host;
+	private IMultiTileHost host;
 
-    @Override
-    public IMultiTileHost getHost()
-    {
-        return host;
-    }
+	@Override
+	public IMultiTileHost getHost() {
+		return host;
+	}
 
-    @Override
-    public void setHost(IMultiTileHost host)
-    {
-        this.host = host;
-    }
+	@Override
+	public void setHost(IMultiTileHost host) {
+		this.host = host;
+	}
 
-    @Override
-    public boolean isHost(IMultiTileHost host)
-    {
-        return host == this.host;
-    }
+	@Override
+	public boolean isHost(IMultiTileHost host) {
+		return host == this.host;
+	}
+
 }

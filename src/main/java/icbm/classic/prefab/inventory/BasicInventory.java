@@ -10,373 +10,313 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Simple inventory implementation
- * Created by robert on 5/1/2015.
+ * Simple inventory implementation Created by robert on 5/1/2015.
  */
-public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, ItemStack>>
-{
-    /** Default slot max count */
-    protected int slots;
+public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, ItemStack>> {
 
-    /**
-     * How much to shift the start of the inventory map,
-     * used to adjust save/load process accordingly
-     */
-    protected int shiftSlotStart = 0;
+	/**
+	 * Default slot max count
+	 */
+	protected int slots;
 
-    protected boolean recalculateFillStatus = true;
-    protected boolean isFull = false;
+	/**
+	 * How much to shift the start of the inventory map, used to adjust save/load process accordingly
+	 */
+	protected int shiftSlotStart = 0;
 
-    /** Map of the inventory */
-    protected HashMap<Integer, ItemStack> inventoryMap = new HashMap();
+	protected boolean recalculateFillStatus = true;
+	protected boolean isFull = false;
 
-    public String inventoryName = "container.inventory.basic";
+	/**
+	 * Map of the inventory
+	 */
+	protected HashMap<Integer, ItemStack> inventoryMap = new HashMap();
 
-    protected boolean _loading = false;
+	public String inventoryName = "container.inventory.basic";
 
-    public BasicInventory(int slots)
-    {
-        this.slots = slots;
-    }
+	protected boolean _loading = false;
 
-    @Override
-    public int getSizeInventory()
-    {
-        return slots;
-    }
+	public BasicInventory(int slots) {
+		this.slots = slots;
+	}
 
-    public Collection<ItemStack> getContainedItems()
-    {
-        return this.inventoryMap.values();
-    }
+	@Override
+	public int getSizeInventory() {
+		return slots;
+	}
 
-    @Override
-    public ItemStack getStackInSlot(int slot)
-    {
-        if (slot >= 0 && slot < getSizeInventory())
-        {
-            return this.inventoryMap.containsKey(slot) ? this.inventoryMap.get(slot) : ItemStack.EMPTY;
-        }
-        return ItemStack.EMPTY;
-    }
+	public Collection<ItemStack> getContainedItems() {
+		return this.inventoryMap.values();
+	}
 
-    @Override
-    public ItemStack decrStackSize(int slot, int ammount)
-    {
-        if (this.getStackInSlot(slot) != null)
-        {
-            ItemStack var3;
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		if (slot >= 0 && slot < getSizeInventory()) {
+			return this.inventoryMap.containsKey(slot) ? this.inventoryMap.get(slot) : ItemStack.EMPTY;
+		}
+		return ItemStack.EMPTY;
+	}
 
-            if (this.getStackInSlot(slot).getCount() <= ammount)
-            {
-                var3 = this.getStackInSlot(slot);
-                setInventorySlotContents(slot, ItemStack.EMPTY);
-                markDirty();
-                return var3;
-            }
-            else
-            {
-                var3 = this.getStackInSlot(slot).splitStack(ammount);
+	@Override
+	public ItemStack decrStackSize(int slot, int ammount) {
+		if (this.getStackInSlot(slot) != null) {
+			ItemStack var3;
 
-                if (this.getStackInSlot(slot).getCount() == 0)
-                {
-                    setInventorySlotContents(slot, ItemStack.EMPTY);
-                }
+			if (this.getStackInSlot(slot).getCount() <= ammount) {
+				var3 = this.getStackInSlot(slot);
+				setInventorySlotContents(slot, ItemStack.EMPTY);
+				markDirty();
+				return var3;
+			} else {
+				var3 = this.getStackInSlot(slot).splitStack(ammount);
 
-                markDirty();
-                return var3;
-            }
-        }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
-    }
+				if (this.getStackInSlot(slot).getCount() == 0) {
+					setInventorySlotContents(slot, ItemStack.EMPTY);
+				}
 
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack stack = getStackInSlot(index);
-        if (stack != null)
-        {
-            setInventorySlotContents(0, ItemStack.EMPTY);
-            return stack;
-        }
-        return ItemStack.EMPTY;
-    }
+				markDirty();
+				return var3;
+			}
+		} else {
+			return ItemStack.EMPTY;
+		}
+	}
 
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack insertStack)
-    {
-        if (slot >= 0 && slot < getSizeInventory())
-        {
-            ItemStack pre_stack = getStackInSlot(slot) != null ? getStackInSlot(slot).copy() : null;
-            if (insertStack != ItemStack.EMPTY)
-            {
-                inventoryMap.put(slot, insertStack);
-            }
-            else if (inventoryMap.containsKey(slot))
-            {
-                inventoryMap.remove(slot);
-            }
-            if (!_loading && !InventoryUtility.stacksMatchExact(pre_stack, getStackInSlot(slot)))
-            {
-                recalculateFillStatus = true;
-                onInventoryChanged(slot, pre_stack, getStackInSlot(slot));
-            }
-        }
-        else
-        {
-            ICBMClassic.logger().error("BasicInventory: something tried to set " + insertStack + " into slot " + slot + " which is outside the 0 - " + (getSizeInventory() - 1) + " limit");
-        }
-    }
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		ItemStack stack = getStackInSlot(index);
+		if (stack != null) {
+			setInventorySlotContents(0, ItemStack.EMPTY);
+			return stack;
+		}
+		return ItemStack.EMPTY;
+	}
 
-    /**
-     * Called when the stack in the inventory slot has changed
-     *
-     * @param slot
-     * @param prev
-     * @param item
-     */
-    protected void onInventoryChanged(int slot, ItemStack prev, ItemStack item)
-    {
-        markDirty();
-    }
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack insertStack) {
+		if (slot >= 0 && slot < getSizeInventory()) {
+			ItemStack pre_stack = getStackInSlot(slot) != null ? getStackInSlot(slot).copy() : null;
+			if (insertStack != ItemStack.EMPTY) {
+				inventoryMap.put(slot, insertStack);
+			} else if (inventoryMap.containsKey(slot)) {
+				inventoryMap.remove(slot);
+			}
+			if (!_loading && !InventoryUtility.stacksMatchExact(pre_stack, getStackInSlot(slot))) {
+				recalculateFillStatus = true;
+				onInventoryChanged(slot, pre_stack, getStackInSlot(slot));
+			}
+		} else {
+			ICBMClassic.logger().error("BasicInventory: something tried to set " + insertStack + " into slot " + slot + " which is outside the 0 - " + (getSizeInventory() - 1) + " limit");
+		}
+	}
 
-    @Override
-    public String getName()
-    {
-        return inventoryName;
-    }
+	/**
+	 * Called when the stack in the inventory slot has changed
+	 *
+	 * @param slot
+	 * @param prev
+	 * @param item
+	 */
+	protected void onInventoryChanged(int slot, ItemStack prev, ItemStack item) {
+		markDirty();
+	}
 
-    public BasicInventory setInventoryName(String name)
-    {
-        this.inventoryName = name;
-        return this;
-    }
+	@Override
+	public String getName() {
+		return inventoryName;
+	}
 
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
+	public BasicInventory setInventoryName(String name) {
+		this.inventoryName = name;
+		return this;
+	}
 
-    }
+	@Override
+	public void openInventory(EntityPlayer player) {
 
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
+	}
 
-    }
+	@Override
+	public void closeInventory(EntityPlayer player) {
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+	}
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return new TextComponentString(getName());
-    }
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
 
-    @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack)
-    {
-        return i >= this.getSizeInventory() && i < getSizeInventory();
-    }
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TextComponentString(getName());
+	}
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return i >= this.getSizeInventory() && i < getSizeInventory();
+	}
 
-    @Override
-    public void setField(int id, int value)
-    {
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
 
-    }
+	@Override
+	public void setField(int id, int value) {
 
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+	}
 
-    @Override
-    public void clear()
-    {
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
 
-    }
+	@Override
+	public void clear() {
 
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
+	}
 
-    @Override
-    public void markDirty()
-    {
-    }
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
 
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return true;
-    }
+	@Override
+	public void markDirty() {
+	}
 
-    public void load(NBTTagCompound nbt)
-    {
-        _loading = true;
-        this.inventoryMap.clear();
+	@Override
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+		return true;
+	}
 
-        NBTTagList nbtList = nbt.getTagList(NBTConstants.ITEMS, 10);
+	public void load(NBTTagCompound nbt) {
+		_loading = true;
+		this.inventoryMap.clear();
 
-        for (int i = 0; i < nbtList.tagCount(); ++i)
-        {
-            NBTTagCompound stackTag = nbtList.getCompoundTagAt(i);
-            byte id = stackTag.getByte(NBTConstants.SLOT);
+		NBTTagList nbtList = nbt.getTagList(NBTConstants.ITEMS, 10);
 
-            if (id >= 0 && id < this.getSizeInventory())
-            {
-                this.setInventorySlotContents(id, new ItemStack(stackTag));
-            }
-        }
+		for (int i = 0; i < nbtList.tagCount(); ++i) {
+			NBTTagCompound stackTag = nbtList.getCompoundTagAt(i);
+			byte id = stackTag.getByte(NBTConstants.SLOT);
 
-        nbt.setTag(NBTConstants.ITEMS, nbtList);
-        _loading = false;
-    }
+			if (id >= 0 && id < this.getSizeInventory()) {
+				this.setInventorySlotContents(id, new ItemStack(stackTag));
+			}
+		}
 
-    public NBTTagCompound save(NBTTagCompound nbt)
-    {
-        NBTTagList nbtList = new NBTTagList();
+		nbt.setTag(NBTConstants.ITEMS, nbtList);
+		_loading = false;
+	}
 
-        for (int i = shiftSlotStart; i < this.getSizeInventory() + shiftSlotStart; ++i)
-        {
-            if (!this.getStackInSlot(i + shiftSlotStart).isEmpty())
-            {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte(NBTConstants.SLOT, (byte) i);
-                this.getStackInSlot(i + shiftSlotStart).writeToNBT(var4);
-                nbtList.appendTag(var4);
-            }
-        }
+	public NBTTagCompound save(NBTTagCompound nbt) {
+		NBTTagList nbtList = new NBTTagList();
 
-        nbt.setTag(NBTConstants.ITEMS, nbtList);
-        return nbt;
-    }
+		for (int i = shiftSlotStart; i < this.getSizeInventory() + shiftSlotStart; ++i) {
+			if (!this.getStackInSlot(i + shiftSlotStart).isEmpty()) {
+				NBTTagCompound var4 = new NBTTagCompound();
+				var4.setByte(NBTConstants.SLOT, (byte) i);
+				this.getStackInSlot(i + shiftSlotStart).writeToNBT(var4);
+				nbtList.appendTag(var4);
+			}
+		}
 
-    /**
-     * Called to see if the inventory is empty
-     *
-     * @return true if nothing is contained
-     */
-    public boolean isEmpty()
-    {
-        return inventoryMap.isEmpty();
-    }
+		nbt.setTag(NBTConstants.ITEMS, nbtList);
+		return nbt;
+	}
 
-    public boolean isFull()
-    {
-        if (recalculateFillStatus)
-        {
-            recalculateFillStatus = false;
+	/**
+	 * Called to see if the inventory is empty
+	 *
+	 * @return true if nothing is contained
+	 */
+	public boolean isEmpty() {
+		return inventoryMap.isEmpty();
+	}
 
-            for (int i = 0; i < getSizeInventory(); i++)
-            {
-                if (roomLeftInSlot(i) > 0)
-                {
-                    isFull = false;
-                    return false;
-                }
-            }
-            isFull = true;
-        }
-        return isFull;
-    }
+	public boolean isFull() {
+		if (recalculateFillStatus) {
+			recalculateFillStatus = false;
 
-    public ArrayList<Integer> getFilledSlots()
-    {
-        ArrayList<Integer> slots = new ArrayList();
-        for (int slot = 0; slot < getSizeInventory(); slot++)
-        {
-            if (!getStackInSlot(slot).isEmpty())
-            {
-                slots.add(slot);
-            }
-        }
-        return slots;
-    }
+			for (int i = 0; i < getSizeInventory(); i++) {
+				if (roomLeftInSlot(i) > 0) {
+					isFull = false;
+					return false;
+				}
+			}
+			isFull = true;
+		}
+		return isFull;
+	}
 
-    public ArrayList<Integer> getEmptySlots()
-    {
-        ArrayList<Integer> slots = new ArrayList();
-        for (int slot = 0; slot < getSizeInventory(); slot++)
-        {
-            if (getStackInSlot(slot).isEmpty())
-            {
-                slots.add(slot);
-            }
-        }
-        return slots;
-    }
+	public ArrayList<Integer> getFilledSlots() {
+		ArrayList<Integer> slots = new ArrayList();
+		for (int slot = 0; slot < getSizeInventory(); slot++) {
+			if (!getStackInSlot(slot).isEmpty()) {
+				slots.add(slot);
+			}
+		}
+		return slots;
+	}
 
-    public ArrayList<Integer> getSlotsWithSpace()
-    {
-        ArrayList<Integer> slots = new ArrayList();
-        for (int slot = 0; slot < getSizeInventory(); slot++)
-        {
-            if (roomLeftInSlot(slot) > 0)
-            {
-                slots.add(slot);
-            }
-        }
-        return slots;
-    }
+	public ArrayList<Integer> getEmptySlots() {
+		ArrayList<Integer> slots = new ArrayList();
+		for (int slot = 0; slot < getSizeInventory(); slot++) {
+			if (getStackInSlot(slot).isEmpty()) {
+				slots.add(slot);
+			}
+		}
+		return slots;
+	}
 
-    public int roomLeftInSlot(int slot)
-    {
-        if (!getStackInSlot(slot).isEmpty())
-        {
-            int maxSpace = Math.min(getStackInSlot(slot).getMaxStackSize(), getInventoryStackLimit());
-            return maxSpace - getStackInSlot(slot).getCount();
-        }
-        return getInventoryStackLimit();
-    }
+	public ArrayList<Integer> getSlotsWithSpace() {
+		ArrayList<Integer> slots = new ArrayList();
+		for (int slot = 0; slot < getSizeInventory(); slot++) {
+			if (roomLeftInSlot(slot) > 0) {
+				slots.add(slot);
+			}
+		}
+		return slots;
+	}
 
-    @Override
-    public Iterator<Map.Entry<Integer, ItemStack>> iterator()
-    {
-        return inventoryMap.entrySet().iterator();
-    }
+	public int roomLeftInSlot(int slot) {
+		if (!getStackInSlot(slot).isEmpty()) {
+			int maxSpace = Math.min(getStackInSlot(slot).getMaxStackSize(), getInventoryStackLimit());
+			return maxSpace - getStackInSlot(slot).getCount();
+		}
+		return getInventoryStackLimit();
+	}
 
-    @Override
-    public String toString()
-    {
-        return "BasicInventory[" + getName() + ", " + getSizeInventory() + "]@" + hashCode();
-    }
+	@Override
+	public Iterator<Map.Entry<Integer, ItemStack>> iterator() {
+		return inventoryMap.entrySet().iterator();
+	}
 
-    @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
-            return true;
-        }
-        else if (object instanceof BasicInventory)
-        {
-            return ((BasicInventory) object).slots == slots && ((BasicInventory) object).inventoryMap == inventoryMap;
-        }
-        return false;
-    }
+	@Override
+	public String toString() {
+		return "BasicInventory[" + getName() + ", " + getSizeInventory() + "]@" + hashCode();
+	}
 
-    @Override
-    public int hashCode()
-    {
-        return inventoryMap != null ? inventoryMap.hashCode() : super.hashCode();
-    }
+	@Override
+	public boolean equals(Object object) {
+		if (object == this) {
+			return true;
+		} else if (object instanceof BasicInventory) {
+			return ((BasicInventory) object).slots == slots && ((BasicInventory) object).inventoryMap == inventoryMap;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return inventoryMap != null ? inventoryMap.hashCode() : super.hashCode();
+	}
+
 }

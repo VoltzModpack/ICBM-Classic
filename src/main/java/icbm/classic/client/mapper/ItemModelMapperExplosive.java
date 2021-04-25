@@ -12,29 +12,26 @@ import java.util.Map;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/21/2019.
  */
-public class ItemModelMapperExplosive implements ItemMeshDefinition
-{
-    private final Map<IExplosiveData, ModelResourceLocation> models;
-    private final ModelResourceLocation fallBack;
+public class ItemModelMapperExplosive implements ItemMeshDefinition {
 
-    public ItemModelMapperExplosive(Map<IExplosiveData, ModelResourceLocation> models, ModelResourceLocation fallBack)
-    {
-        this.models = models;
-        this.fallBack = fallBack;
-    }
+	private final Map<IExplosiveData, ModelResourceLocation> models;
+	private final ModelResourceLocation fallBack;
 
-    @Override
-    public ModelResourceLocation getModelLocation(ItemStack stack)
-    {
-        final IExplosive explosive = ICBMClassicHelpers.getExplosive(stack);
-        if (explosive != null && explosive.getExplosiveData() != null)
-        {
-            final ModelResourceLocation modelResourceLocation = models.get(explosive.getExplosiveData());
-            if (modelResourceLocation != null)
-            {
-                return modelResourceLocation;
-            }
-        }
-        return fallBack;
-    }
+	public ItemModelMapperExplosive(Map<IExplosiveData, ModelResourceLocation> models, ModelResourceLocation fallBack) {
+		this.models = models;
+		this.fallBack = fallBack;
+	}
+
+	@Override
+	public ModelResourceLocation getModelLocation(ItemStack stack) {
+		final IExplosive explosive = ICBMClassicHelpers.getExplosive(stack);
+		if (explosive != null && explosive.getExplosiveData() != null) {
+			final ModelResourceLocation modelResourceLocation = models.get(explosive.getExplosiveData());
+			if (modelResourceLocation != null) {
+				return modelResourceLocation;
+			}
+		}
+		return fallBack;
+	}
+
 }

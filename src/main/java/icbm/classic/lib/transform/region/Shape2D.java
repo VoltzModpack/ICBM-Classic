@@ -8,55 +8,66 @@ import net.minecraft.util.math.Vec3d;
 /**
  * Created by robert on 1/12/2015.
  */
-public abstract class Shape2D
-{
-    /** Rotation around the Y */
-    double yaw = 0;
-    Point center;
+public abstract class Shape2D {
 
-    public Shape2D(Point center)
-    {
-        this.center = center;
-    }
+	/**
+	 * Rotation around the Y
+	 */
+	double yaw = 0;
+	Point center;
 
-    /** Distance the shape takes in the X axis */
-    abstract double getSizeX();
+	public Shape2D(Point center) {
+		this.center = center;
+	}
 
-    /** Distance the shape takes in the Y axis */
-    abstract double getSizeY();
+	/**
+	 * Distance the shape takes in the X axis
+	 */
+	abstract double getSizeX();
 
-    /** Gets the area of the shape */
-    abstract double getArea();
+	/**
+	 * Distance the shape takes in the Y axis
+	 */
+	abstract double getSizeY();
 
-    //====================
-    // Collision check methods
-    //====================
+	/**
+	 * Gets the area of the shape
+	 */
+	abstract double getArea();
 
-    public abstract boolean isWithin(IPos2D p);
+	//====================
+	// Collision check methods
+	//====================
 
-    /** Checks if the point is inside the shape */
-    public boolean isWithin(double x, double y)
-    {
-        return isWithin(new Point(x, y));
-    }
+	public abstract boolean isWithin(IPos2D p);
 
-    /** Checks if the point is inside the shape */
-    boolean isWithin(double x, double y, double z)
-    {
-        return isWithin(x, z);
-    }
+	/**
+	 * Checks if the point is inside the shape
+	 */
+	public boolean isWithin(double x, double y) {
+		return isWithin(new Point(x, y));
+	}
 
-    /** Checks if the point is inside the shape */
-    boolean isWithin(IPos3D vec)
-    {
-        return isWithin(vec.x(), vec.y(), vec.z());
-    }
+	/**
+	 * Checks if the point is inside the shape
+	 */
+	boolean isWithin(double x, double y, double z) {
+		return isWithin(x, z);
+	}
 
-    /** Checks if the point is inside the shape */
-    boolean isWithin(Vec3d vec)
-    {
-        return isWithin(vec.x, vec.y, vec.z);
-    }
+	/**
+	 * Checks if the point is inside the shape
+	 */
+	boolean isWithin(IPos3D vec) {
+		return isWithin(vec.x(), vec.y(), vec.z());
+	}
+
+	/**
+	 * Checks if the point is inside the shape
+	 */
+	boolean isWithin(Vec3d vec) {
+		return isWithin(vec.x, vec.y, vec.z);
+	}
 
 
 }

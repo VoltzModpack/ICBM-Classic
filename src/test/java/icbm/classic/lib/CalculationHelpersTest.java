@@ -11,92 +11,85 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 3/1/2020.
  */
-public class CalculationHelpersTest
-{
-    //Mock random so we can control output
-    final Random random = Mockito.mock(Random.class);
+public class CalculationHelpersTest {
 
-    @Test
-    void randFloatRange_max()
-    {
-        //Force to max
-        when(random.nextFloat()).thenReturn(1f);
+	//Mock random so we can control output
+	final Random random = Mockito.mock(Random.class);
 
-        //Run calc
-        final float result = CalculationHelpers.randFloatRange(random, -10, 10);
+	@Test
+	void randFloatRange_max() {
+		//Force to max
+		when(random.nextFloat()).thenReturn(1f);
 
-        //output should be 10
-        Assertions.assertEquals(10f, result);
-    }
+		//Run calc
+		final float result = CalculationHelpers.randFloatRange(random, -10, 10);
 
-    @Test
-    void randFloatRange_min()
-    {
-        //Force to max
-        when(random.nextFloat()).thenReturn(0f);
+		//output should be 10
+		Assertions.assertEquals(10f, result);
+	}
 
-        //Run calc
-        final float result = CalculationHelpers.randFloatRange(random, -10, 10);
+	@Test
+	void randFloatRange_min() {
+		//Force to max
+		when(random.nextFloat()).thenReturn(0f);
 
-        //output should be -10
-        Assertions.assertEquals(-10f, result);
-    }
+		//Run calc
+		final float result = CalculationHelpers.randFloatRange(random, -10, 10);
 
-    @Test
-    void randFloatRange_staysInRange()
-    {
-        final Random normalRandom = new Random();
+		//output should be -10
+		Assertions.assertEquals(-10f, result);
+	}
 
-        for(int i = 0; i < 100; i++)
-        {
-            //Run calc
-            final float result = CalculationHelpers.randFloatRange(normalRandom, 3.3f);
+	@Test
+	void randFloatRange_staysInRange() {
+		final Random normalRandom = new Random();
 
-            //output should be in range
-            Assertions.assertTrue(result <= 3.3f, result + " is not less than or equal to 3.3f");
-            Assertions.assertTrue(result >= -3.3f, result + " is not great than or equal to -3.3f");
-        }
-    }
+		for (int i = 0; i < 100; i++) {
+			//Run calc
+			final float result = CalculationHelpers.randFloatRange(normalRandom, 3.3f);
 
-    @Test
-    void randDoubleRange_max()
-    {
-        //Force to max
-        when(random.nextDouble()).thenReturn(1d);
+			//output should be in range
+			Assertions.assertTrue(result <= 3.3f, result + " is not less than or equal to 3.3f");
+			Assertions.assertTrue(result >= -3.3f, result + " is not great than or equal to -3.3f");
+		}
+	}
 
-        //Run calc
-        final double result = CalculationHelpers.randDoubleRange(random, -10, 10);
+	@Test
+	void randDoubleRange_max() {
+		//Force to max
+		when(random.nextDouble()).thenReturn(1d);
 
-        //output should be 10
-        Assertions.assertEquals(10d, result);
-    }
+		//Run calc
+		final double result = CalculationHelpers.randDoubleRange(random, -10, 10);
 
-    @Test
-    void randDoubleRange_min()
-    {
-        //Force to max
-        when(random.nextDouble()).thenReturn(0d);
+		//output should be 10
+		Assertions.assertEquals(10d, result);
+	}
 
-        //Run calc
-        final double result = CalculationHelpers.randDoubleRange(random, -10, 10);
+	@Test
+	void randDoubleRange_min() {
+		//Force to max
+		when(random.nextDouble()).thenReturn(0d);
 
-        //output should be -10
-        Assertions.assertEquals(-10d, result);
-    }
+		//Run calc
+		final double result = CalculationHelpers.randDoubleRange(random, -10, 10);
 
-    @Test
-    void randDoubleRange_staysInRange()
-    {
-        final Random normalRandom = new Random();
+		//output should be -10
+		Assertions.assertEquals(-10d, result);
+	}
 
-        for(int i = 0; i < 100; i++)
-        {
-            //Run calc
-            final double result = CalculationHelpers.randDoubleRange(normalRandom, 3.3d);
+	@Test
+	void randDoubleRange_staysInRange() {
+		final Random normalRandom = new Random();
 
-            //output should be in range
-            Assertions.assertTrue(result <= 3.3d, result + " is not less than or equal to 3.3d");
-            Assertions.assertTrue(result >= -3.3d, result + " is not great than or equal to -3.3d");
-        }
-    }
+		for (int i = 0; i < 100; i++) {
+			//Run calc
+			final double result = CalculationHelpers.randDoubleRange(normalRandom, 3.3d);
+
+			//output should be in range
+			Assertions.assertTrue(result <= 3.3d, result + " is not less than or equal to 3.3d");
+			Assertions.assertTrue(result >= -3.3d, result + " is not great than or equal to -3.3d");
+		}
+	}
+
 }

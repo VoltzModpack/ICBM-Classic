@@ -1,18 +1,18 @@
 {
   "result": {
-    "item": "icbmclassic:plate",
-    "data": 0,
-    "count": 4
+	"item": "icbmclassic:plate",
+	"data": 0,
+	"count": 4
   },
   "pattern": [
-    "ii",
-    "ii"
+	"ii",
+	"ii"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
-    "i": {
-      "type": "forge:ore_dict",
-      "ore": "ingotSteel"
-    }
+	"i": {
+	  "type": "forge:ore_dict",
+	  "ore": "ingotSteel"
+	}
   }
 }

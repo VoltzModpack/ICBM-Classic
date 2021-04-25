@@ -9,32 +9,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class GrenadeDispenseBehavior implements IBehaviorDispenseItem
-{
-    @Override
-    public ItemStack dispense(IBlockSource blockSource, ItemStack itemStack)
-    {
-        if (itemStack.getCount() > 0)
-        {
-            final World world = blockSource.getWorld();
-            if (!world.isRemote)
-            {
-                world.spawnEntity(create(world, blockSource, itemStack));
-            }
+public class GrenadeDispenseBehavior implements IBehaviorDispenseItem {
 
-            return itemStack.splitStack(itemStack.getCount() - 1);
-        }
-        return ItemStack.EMPTY;
-    }
+	@Override
+	public ItemStack dispense(IBlockSource blockSource, ItemStack itemStack) {
+		if (itemStack.getCount() > 0) {
+			final World world = blockSource.getWorld();
+			if (!world.isRemote) {
+				world.spawnEntity(create(world, blockSource, itemStack));
+			}
 
-    private Entity create(World world, IBlockSource blockSource, ItemStack itemStack)
-    {
-        final EnumFacing enumFacing = blockSource.getBlockState().getValue(BlockDispenser.FACING);
+			return itemStack.splitStack(itemStack.getCount() - 1);
+		}
+		return ItemStack.EMPTY;
+	}
 
-        final EntityGrenade entity = new EntityGrenade(world);
-        entity.setPosition(blockSource.getX(), blockSource.getY(), blockSource.getZ());
-        entity.setItemStack(itemStack);
-        entity.setThrowableHeading(enumFacing.getXOffset(), 0.10000000149011612D, enumFacing.getZOffset(), 0.5F, 1.0F);
-        return entity;
-    }
+	private Entity create(World world, IBlockSource blockSource, ItemStack itemStack) {
+		final EnumFacing enumFacing = blockSource.getBlockState().getValue(BlockDispenser.FACING);
+
+		final EntityGrenade entity = new EntityGrenade(world);
+		entity.setPosition(blockSource.getX(), blockSource.getY(), blockSource.getZ());
+		entity.setItemStack(itemStack);
+		entity.setThrowableHeading(enumFacing.getXOffset(), 0.10000000149011612D, enumFacing.getZOffset(), 0.5F, 1.0F);
+		return entity;
+	}
+
 }

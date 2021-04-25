@@ -7,31 +7,28 @@ import net.minecraft.world.World;
 
 /**
  * Capability that destroys the host
- *
- *
+ * <p>
+ * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/12/2018.
  */
-public class CapabilityEmpKill<E extends Entity> implements IEMPReceiver
-{
-    public final E entity;
+public class CapabilityEmpKill<E extends Entity> implements IEMPReceiver {
 
-    public CapabilityEmpKill(E entity)
-    {
-        this.entity = entity;
-    }
+	public final E entity;
 
-    @Override
-    public float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction)
-    {
-        if (doAction)
-        {
-            setDeadEmp(emp_blast, power);
-        }
-        return power;
-    }
+	public CapabilityEmpKill(E entity) {
+		this.entity = entity;
+	}
 
-    protected void setDeadEmp(IBlast emp_blast, float power)
-    {
-        entity.setDead();
-    }
+	@Override
+	public float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction) {
+		if (doAction) {
+			setDeadEmp(emp_blast, power);
+		}
+		return power;
+	}
+
+	protected void setDeadEmp(IBlast emp_blast, float power) {
+		entity.setDead();
+	}
+
 }

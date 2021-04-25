@@ -17,154 +17,127 @@ import javax.annotation.Nullable;
 
 /**
  * Used a placeholder to move riding entities around
- *
- *
+ * <p>
+ * <p>
  * Created by Dark(DarkGuardsman, Robert) on 10/31/2017.
  */
-public class EntityPlayerSeat extends Entity implements IEntityAdditionalSpawnData
-{
-    public TileEntity host;
-    public Pos rideOffset;
+public class EntityPlayerSeat extends Entity implements IEntityAdditionalSpawnData {
 
-    public EntityPlayerSeat(World world)
-    {
-        super(world);
-    }
+	public TileEntity host;
+	public Pos rideOffset;
 
-    @Override
-    protected void entityInit()
-    {
+	public EntityPlayerSeat(World world) {
+		super(world);
+	}
 
-    }
+	@Override
+	protected void entityInit() {
 
-    @Override
-    public void onEntityUpdate()
-    {
-        if (!world.isRemote && (host == null || host.isInvalid()) || this.posY < -64.0D)
-        {
-            this.setDead();
-        }
-    }
+	}
 
-    @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
-    {
-        if (player.isSneaking())
-        {
-            return false;
-        }
-        else if (this.isBeingRidden())
-        {
-            return true;
-        }
-        else
-        {
-            if (!this.world.isRemote)
-            {
-                player.startRiding(this);
-            }
+	@Override
+	public void onEntityUpdate() {
+		if (!world.isRemote && (host == null || host.isInvalid()) || this.posY < -64.0D) {
+			this.setDead();
+		}
+	}
 
-            return true;
-        }
-    }
+	@Override
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+		if (player.isSneaking()) {
+			return false;
+		} else if (this.isBeingRidden()) {
+			return true;
+		} else {
+			if (!this.world.isRemote) {
+				player.startRiding(this);
+			}
 
-    @Override
-    public boolean canBeCollidedWith()
-    {
-        return !this.isDead;
-    }
+			return true;
+		}
+	}
 
-    @Override //make method public
-    public void setSize(float width, float height)
-    {
-        super.setSize(width, height);
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return !this.isDead;
+	}
 
-    @Override
-    public double getMountedYOffset()
-    {
-        if (rideOffset != null)
-        {
-            return rideOffset.y();
-        }
-        return super.getMountedYOffset();
-    }
+	@Override //make method public
+	public void setSize(float width, float height) {
+		super.setSize(width, height);
+	}
 
-    @Override
-    @Nullable
-    public AxisAlignedBB getCollisionBox(Entity entityIn)
-    {
-        return null; //TODO might be needed for interaction
-    }
+	@Override
+	public double getMountedYOffset() {
+		if (rideOffset != null) {
+			return rideOffset.y();
+		}
+		return super.getMountedYOffset();
+	}
 
-    @Override
-    public void updatePassenger(Entity passenger)
-    {
-        if (this.isPassenger(passenger))
-        {
-            passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ); //TODO add rotation and position math
-        }
-    }
+	@Override
+	@Nullable
+	public AxisAlignedBB getCollisionBox(Entity entityIn) {
+		return null; //TODO might be needed for interaction
+	}
 
-    @Override
-    public void applyEntityCollision(Entity p_70108_1_)
-    {
-        //disable collision
-    }
+	@Override
+	public void updatePassenger(Entity passenger) {
+		if (this.isPassenger(passenger)) {
+			passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ); //TODO add rotation and position math
+		}
+	}
 
-    @Override
-    public void addVelocity(double p_70024_1_, double p_70024_3_, double p_70024_5_)
-    {
-        //disable velocity
-    }
+	@Override
+	public void applyEntityCollision(Entity p_70108_1_) {
+		//disable collision
+	}
 
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound p_70037_1_)
-    {
+	@Override
+	public void addVelocity(double p_70024_1_, double p_70024_3_, double p_70024_5_) {
+		//disable velocity
+	}
 
-    }
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
 
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound p_70014_1_)
-    {
+	}
 
-    }
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
 
-    @Override
-    public void writeSpawnData(ByteBuf buffer)
-    {
-        buffer.writeFloat(height);
-        buffer.writeFloat(width);
-        buffer.writeBoolean(rideOffset != null);
-        if (rideOffset != null)
-        {
-            rideOffset.writeByteBuf(buffer);
-        }
-    }
+	}
 
-    @Override
-    public void readSpawnData(ByteBuf additionalData)
-    {
-        height = additionalData.readFloat();
-        width = additionalData.readFloat();
-        setSize(width, height);
-        if (additionalData.readBoolean())
-        {
-            rideOffset = new Pos(additionalData);
-        }
-    }
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		buffer.writeFloat(height);
+		buffer.writeFloat(width);
+		buffer.writeBoolean(rideOffset != null);
+		if (rideOffset != null) {
+			rideOffset.writeByteBuf(buffer);
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRender3d(double x, double y, double z)
-    {
-        return false;
-    }
+	@Override
+	public void readSpawnData(ByteBuf additionalData) {
+		height = additionalData.readFloat();
+		width = additionalData.readFloat();
+		setSize(width, height);
+		if (additionalData.readBoolean()) {
+			rideOffset = new Pos(additionalData);
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
-    {
-        return false;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean isInRangeToRender3d(double x, double y, double z) {
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean isInRangeToRenderDist(double distance) {
+		return false;
+	}
+
 }

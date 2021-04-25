@@ -10,31 +10,29 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockGlassPressurePlate extends BlockPressurePlate
-{
-    public BlockGlassPressurePlate()
-    {
-        super(Material.GLASS, Sensitivity.EVERYTHING);
-        this.setTickRandomly(true);
-        this.setResistance(1F);
-        this.setHardness(0.3F);
-        this.setSoundType(SoundType.GLASS);
-        this.setRegistryName(ICBMConstants.PREFIX + "glassPressurePlate");
-        this.setTranslationKey(ICBMConstants.PREFIX + "glassPressurePlate");
-        this.setCreativeTab(CreativeTabs.REDSTONE);
-        this.setDefaultState(getDefaultState().withProperty(POWERED, false));
-    }
+public class BlockGlassPressurePlate extends BlockPressurePlate {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+	public BlockGlassPressurePlate() {
+		super(Material.GLASS, Sensitivity.EVERYTHING);
+		this.setTickRandomly(true);
+		this.setResistance(1F);
+		this.setHardness(0.3F);
+		this.setSoundType(SoundType.GLASS);
+		this.setRegistryName(ICBMConstants.PREFIX + "glassPressurePlate");
+		this.setTranslationKey(ICBMConstants.PREFIX + "glassPressurePlate");
+		this.setCreativeTab(CreativeTabs.REDSTONE);
+		this.setDefaultState(getDefaultState().withProperty(POWERED, false));
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
 }

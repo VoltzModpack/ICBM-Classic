@@ -16,56 +16,54 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketRedmatterSizeSync implements IPacket<PacketRedmatterSizeSync> //TODO replace with entity data manager
 {
-    /** Size of the blast */
-    public float size;
-    /** ID of the entity controller of the blast */
-    public int entityID;
 
-    public PacketRedmatterSizeSync()
-    {
-        //Needed for forge to construct the packet
-    }
+	/**
+	 * Size of the blast
+	 */
+	public float size;
+	/**
+	 * ID of the entity controller of the blast
+	 */
+	public int entityID;
 
-    public PacketRedmatterSizeSync(float size, int entityID)
-    {
-        this.size = size;
-        this.entityID = entityID;
-    }
+	public PacketRedmatterSizeSync() {
+		//Needed for forge to construct the packet
+	}
 
-    @Override
-    public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
-    {
-        buffer.writeFloat(size);
-        ByteBufUtils.writeVarInt(buffer, entityID, 5);
-    }
+	public PacketRedmatterSizeSync(float size, int entityID) {
+		this.size = size;
+		this.entityID = entityID;
+	}
 
-    @Override
-    public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
-    {
-        size = buffer.readFloat();
-        entityID = ByteBufUtils.readVarInt(buffer, 5);
-    }
+	@Override
+	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
+		buffer.writeFloat(size);
+		ByteBufUtils.writeVarInt(buffer, entityID, 5);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void handleClientSide(EntityPlayer player)
-    {
-        if (Minecraft.getMinecraft().world != null)
-        {
-            final Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);
-            if (entity instanceof EntityExplosion && ((EntityExplosion) entity).getBlast() instanceof BlastRedmatter)
-            {
-                ((BlastRedmatter) ((EntityExplosion) entity).getBlast()).size = size;
-            }
-        }
-    }
+	@Override
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
+		size = buffer.readFloat();
+		entityID = ByteBufUtils.readVarInt(buffer, 5);
+	}
 
-    public static void sync(BlastRedmatter redmatter)
-    {
-        final PacketRedmatterSizeSync packet = new PacketRedmatterSizeSync(redmatter.size, redmatter.controller.getEntityId());
-        final NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(redmatter.world.provider.getDimension(),
-                redmatter.x, redmatter.y, redmatter.z,
-                256);
-        ICBMClassic.packetHandler.sendToAllAround(packet, point);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void handleClientSide(EntityPlayer player) {
+		if (Minecraft.getMinecraft().world != null) {
+			final Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);
+			if (entity instanceof EntityExplosion && ((EntityExplosion) entity).getBlast() instanceof BlastRedmatter) {
+				((BlastRedmatter) ((EntityExplosion) entity).getBlast()).size = size;
+			}
+		}
+	}
+
+	public static void sync(BlastRedmatter redmatter) {
+		final PacketRedmatterSizeSync packet = new PacketRedmatterSizeSync(redmatter.size, redmatter.controller.getEntityId());
+		final NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(redmatter.world.provider.getDimension(),
+			redmatter.x, redmatter.y, redmatter.z,
+			256);
+		ICBMClassic.packetHandler.sendToAllAround(packet, point);
+	}
+
 }

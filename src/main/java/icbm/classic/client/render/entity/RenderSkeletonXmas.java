@@ -11,25 +11,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderSkeletonXmas extends RenderLiving<EntityXmasSkeleton>
-{
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/entity/skeleton/skeleton.hat.green.png");
+public class RenderSkeletonXmas extends RenderLiving<EntityXmasSkeleton> {
 
-    public RenderSkeletonXmas(RenderManager renderManagerIn)
-    {
-        super(renderManagerIn, new ModelSkeletonXmas(), 0.5F);
-        //this.addLayer(new LayerHeldItemSkeletonXmas(this));
-    }
+	private static final ResourceLocation TEXTURE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/entity/skeleton/skeleton.hat.green.png");
 
-    @Override
-    public void transformHeldFull3DItemLayer()
-    {
-        GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
-    }
+	public RenderSkeletonXmas(RenderManager renderManagerIn) {
+		super(renderManagerIn, new ModelSkeletonXmas(), 0.5F);
+		//this.addLayer(new LayerHeldItemSkeletonXmas(this));
+	}
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityXmasSkeleton entity)
-    {
-        return TEXTURE;
-    }
+	@Override
+	public void transformHeldFull3DItemLayer() {
+		GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityXmasSkeleton entity) {
+		return TEXTURE;
+	}
+
 }

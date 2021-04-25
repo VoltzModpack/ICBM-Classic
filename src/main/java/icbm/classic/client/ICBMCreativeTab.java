@@ -19,124 +19,110 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Prefab creative tab to either create a fast creative tab or reduce code
- * need to make a more complex tab
- * Created by robert on 11/25/2014.
+ * Prefab creative tab to either create a fast creative tab or reduce code need to make a more complex tab Created by
+ * robert on 11/25/2014.
  */
-public class ICBMCreativeTab extends CreativeTabs
-{
-    private final List<Item> definedTabItemsInOrder = new ArrayList();
+public class ICBMCreativeTab extends CreativeTabs {
 
-    public ICBMCreativeTab(String name)
-    {
-        super(name);
-    }
+	private final List<Item> definedTabItemsInOrder = new ArrayList();
 
-    //call during FMLInitializationEvent as registries need to be frozen for this
-    public void init()
-    {
-        definedTabItemsInOrder.clear();
-        //define items in order
-        orderItem(BlockReg.blockLaunchBase);
-        orderItem(BlockReg.blockLaunchScreen);
-        orderItem(BlockReg.blockLaunchSupport);
-        orderItem(BlockReg.blockEmpTower);
-        orderItem(BlockReg.blockRadarStation);
+	public ICBMCreativeTab(String name) {
+		super(name);
+	}
 
-        orderItem(BlockReg.blockConcrete);
-        orderItem(BlockReg.blockReinforcedGlass);
-        orderItem(BlockReg.blockSpikes);
+	//call during FMLInitializationEvent as registries need to be frozen for this
+	public void init() {
+		definedTabItemsInOrder.clear();
+		//define items in order
+		orderItem(BlockReg.blockLaunchBase);
+		orderItem(BlockReg.blockLaunchScreen);
+		orderItem(BlockReg.blockLaunchSupport);
+		orderItem(BlockReg.blockEmpTower);
+		orderItem(BlockReg.blockRadarStation);
 
-        orderItem(ItemReg.itemRocketLauncher);
-        orderItem(ItemReg.itemRadarGun);
-        orderItem(ItemReg.itemRemoteDetonator);
-        orderItem(ItemReg.itemLaserDetonator);
-        orderItem(ItemReg.itemTracker);
-        orderItem(ItemReg.itemSignalDisrupter);
-        orderItem(ItemReg.itemDefuser);
-        orderItem(ItemReg.itemBattery);
+		orderItem(BlockReg.blockConcrete);
+		orderItem(BlockReg.blockReinforcedGlass);
+		orderItem(BlockReg.blockSpikes);
 
-        orderItem(BlockReg.blockExplosive);
-        orderItem(ItemReg.itemMissile);
-        orderItem(ItemReg.itemGrenade);
-        orderItem(ItemReg.itemBombCart);
+		orderItem(ItemReg.itemRocketLauncher);
+		orderItem(ItemReg.itemRadarGun);
+		orderItem(ItemReg.itemRemoteDetonator);
+		orderItem(ItemReg.itemLaserDetonator);
+		orderItem(ItemReg.itemTracker);
+		orderItem(ItemReg.itemSignalDisrupter);
+		orderItem(ItemReg.itemDefuser);
+		orderItem(ItemReg.itemBattery);
 
-        //Collect any non-defined items
-        for (Item item : Item.REGISTRY) //registries are frozen during FMLInitializationEvent, can safely iterate
-        {
-            if (item != null)
-            {
-                for (CreativeTabs tab : item.getCreativeTabs())
-                {
-                    if (tab == this && !definedTabItemsInOrder.contains(item))
-                    {
-                        orderItem(item);
-                    }
-                }
-            }
-        }
-    }
+		orderItem(BlockReg.blockExplosive);
+		orderItem(ItemReg.itemMissile);
+		orderItem(ItemReg.itemGrenade);
+		orderItem(ItemReg.itemBombCart);
 
-    private void orderItem(Block item)
-    {
-        orderItem(Item.getItemFromBlock(item));
-    }
+		//Collect any non-defined items
+		for (Item item : Item.REGISTRY) //registries are frozen during FMLInitializationEvent, can safely iterate
+		{
+			if (item != null) {
+				for (CreativeTabs tab : item.getCreativeTabs()) {
+					if (tab == this && !definedTabItemsInOrder.contains(item)) {
+						orderItem(item);
+					}
+				}
+			}
+		}
+	}
 
-    private void orderItem(Item item)
-    {
-        definedTabItemsInOrder.add(item);
-    }
+	private void orderItem(Block item) {
+		orderItem(Item.getItemFromBlock(item));
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void displayAllRelevantItems(final NonNullList<ItemStack> list)
-    {
-        //Insert items in order
-        definedTabItemsInOrder.forEach(item -> collectSubItems(item, list));
-    }
+	private void orderItem(Item item) {
+		definedTabItemsInOrder.add(item);
+	}
 
-    protected void collectSubItems(final Item item, final NonNullList<ItemStack> masterList)
-    {
-        //Collect stacks
-        final NonNullList<ItemStack> collectedItemStacks = NonNullList.create();
-        item.getSubItems(this, collectedItemStacks);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
+		//Insert items in order
+		definedTabItemsInOrder.forEach(item -> collectSubItems(item, list));
+	}
 
-        //Sort explosive types, if not explosive it will leave it alone
-        collectedItemStacks.sort(this::compareExplosives);
+	protected void collectSubItems(final Item item, final NonNullList<ItemStack> masterList) {
+		//Collect stacks
+		final NonNullList<ItemStack> collectedItemStacks = NonNullList.create();
+		item.getSubItems(this, collectedItemStacks);
 
-        //Merge into list with null check
-        masterList.addAll(collectedItemStacks);
-    }
+		//Sort explosive types, if not explosive it will leave it alone
+		collectedItemStacks.sort(this::compareExplosives);
 
-    private int compareExplosives(ItemStack itemA, ItemStack itemB)
-    {
-        final IExplosive explosiveA = ICBMClassicHelpers.getExplosive(itemA);
-        final IExplosive explosiveB = ICBMClassicHelpers.getExplosive(itemB);
-        if (explosiveA != null && explosiveB != null)
-        {
-            return compareExplosives(explosiveA, explosiveB);
-        }
-        return 0;
-    }
+		//Merge into list with null check
+		masterList.addAll(collectedItemStacks);
+	}
 
-    private int compareExplosives(IExplosive explosiveA, IExplosive explosiveB)
-    {
-        final IExplosiveData dataA = Optional.ofNullable(explosiveA.getExplosiveData()).orElse(ICBMExplosives.CONDENSED);
-        final IExplosiveData dataB = Optional.ofNullable(explosiveB.getExplosiveData()).orElse(ICBMExplosives.CONDENSED);
-        final int tierA = dataA.getTier().ordinal();
-        final int tierB = dataB.getTier().ordinal();
+	private int compareExplosives(ItemStack itemA, ItemStack itemB) {
+		final IExplosive explosiveA = ICBMClassicHelpers.getExplosive(itemA);
+		final IExplosive explosiveB = ICBMClassicHelpers.getExplosive(itemB);
+		if (explosiveA != null && explosiveB != null) {
+			return compareExplosives(explosiveA, explosiveB);
+		}
+		return 0;
+	}
 
-        //If tiers are the same move to sorting by explosive registry index
-        if (tierA == tierB)
-        {
-            return dataA.getRegistryID() - dataB.getRegistryID();
-        }
-        return tierA - tierB;
-    }
+	private int compareExplosives(IExplosive explosiveA, IExplosive explosiveB) {
+		final IExplosiveData dataA = Optional.ofNullable(explosiveA.getExplosiveData()).orElse(ICBMExplosives.CONDENSED);
+		final IExplosiveData dataB = Optional.ofNullable(explosiveB.getExplosiveData()).orElse(ICBMExplosives.CONDENSED);
+		final int tierA = dataA.getTier().ordinal();
+		final int tierB = dataB.getTier().ordinal();
 
-    @Override
-    public ItemStack createIcon()
-    {
-        return new ItemStack(ItemReg.itemMissile);
-    }
+		//If tiers are the same move to sorting by explosive registry index
+		if (tierA == tierB) {
+			return dataA.getRegistryID() - dataB.getRegistryID();
+		}
+		return tierA - tierB;
+	}
+
+	@Override
+	public ItemStack createIcon() {
+		return new ItemStack(ItemReg.itemMissile);
+	}
+
 }

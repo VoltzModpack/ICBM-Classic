@@ -1,21 +1,21 @@
 {
   "result": {
-    "item": "icbmclassic:missile",
-    "data": 20,
-    "count": 1
+	"item": "icbmclassic:missile",
+	"data": 20,
+	"count": 1
   },
   "pattern": [
-    "mc"
+	"mc"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
-    "m": {
-      "item": "icbmclassic:missile",
-      "data": 24
-    },
-    "c": {
-      "item": "icbmclassic:explosives",
-      "data": 20
-    }
+	"m": {
+	  "item": "icbmclassic:missile",
+	  "data": 24
+	},
+	"c": {
+	  "item": "icbmclassic:explosives",
+	  "data": 20
+	}
   }
 }

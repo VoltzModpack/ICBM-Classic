@@ -9,27 +9,24 @@ import net.minecraft.world.World;
  *
  * @author DarkGuardsman
  */
-public interface IWorldPosition extends IPos3D
-{
-    World world();
+public interface IWorldPosition extends IPos3D {
 
-    default boolean isClient()
-    {
-        return hasWorld() && world().isRemote;
-    }
+	World world();
 
-    default boolean isServer()
-    {
-        return hasWorld() && !world().isRemote;
-    }
+	default boolean isClient() {
+		return hasWorld() && world().isRemote;
+	}
 
-    default boolean hasWorld()
-    {
-        return world() != null;
-    }
+	default boolean isServer() {
+		return hasWorld() && !world().isRemote;
+	}
 
-    default BlockPos getPos()
-    {
-        return new BlockPos(xi(), yi(), zi());
-    }
+	default boolean hasWorld() {
+		return world() != null;
+	}
+
+	default BlockPos getPos() {
+		return new BlockPos(xi(), yi(), zi());
+	}
+
 }

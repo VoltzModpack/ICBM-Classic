@@ -16,53 +16,47 @@ import javax.annotation.Nullable;
 
 /**
  * Wrapper to trigger EMP calls on ItemStack contained inside of {@link EntityItem}
- *
- *
+ * <p>
+ * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/12/2018.
  */
-public class CapabilityEmpEntityItem implements IEMPReceiver, ICapabilityProvider
-{
-    public final EntityItem entityItem;
+public class CapabilityEmpEntityItem implements IEMPReceiver, ICapabilityProvider {
 
-    public CapabilityEmpEntityItem(EntityItem entityItem)
-    {
-        this.entityItem = entityItem;
-    }
+	public final EntityItem entityItem;
 
-    @Override
-    public float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction)
-    {
-        if (ConfigEMP.ALLOW_GROUND_ITEMS)
-        {
-            ItemStack stack = entityItem.getItem();
-            if (!stack.isEmpty())
-            {
-                //Copy to prevent changes on real item
-                stack = stack.copy();
+	public CapabilityEmpEntityItem(EntityItem entityItem) {
+		this.entityItem = entityItem;
+	}
 
-                //Run call
-                power = CapabilityEmpInventory.empItemStack(stack, world, x, y, z, entityItem, emp_blast, power, doAction);
+	@Override
+	public float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction) {
+		if (ConfigEMP.ALLOW_GROUND_ITEMS) {
+			ItemStack stack = entityItem.getItem();
+			if (!stack.isEmpty()) {
+				//Copy to prevent changes on real item
+				stack = stack.copy();
 
-                //Check for delta
-                if (doAction && !InventoryUtility.stacksMatchExact(stack, entityItem.getItem()))
-                {
-                    entityItem.setItem(stack);
-                }
-            }
-        }
-        return power;
-    }
+				//Run call
+				power = CapabilityEmpInventory.empItemStack(stack, world, x, y, z, entityItem, emp_blast, power, doAction);
 
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityEMP.EMP;
-    }
+				//Check for delta
+				if (doAction && !InventoryUtility.stacksMatchExact(stack, entityItem.getItem())) {
+					entityItem.setItem(stack);
+				}
+			}
+		}
+		return power;
+	}
 
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityEMP.EMP ? (T) this : null;
-    }
+	@Override
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityEMP.EMP;
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityEMP.EMP ? (T) this : null;
+	}
+
 }

@@ -22,142 +22,128 @@ import java.util.stream.Collectors;
 /**
  * Created by Robert Seifert on 1/2/20.
  */
-public class CommandEntryPointTest
-{
-    //Entire class
-    private static TestManager testManager = new TestManager("CommandUtils", Assertions::fail);
+public class CommandEntryPointTest {
 
-    //Per Test
-    private final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
-    private final CommandGroup commandGroup = new CommandGroup("icbm");
-    private final CommandEntryPoint commandHandler = new CommandEntryPoint("icbm", commandGroup);
+	//Entire class
+	private static TestManager testManager = new TestManager("CommandUtils", Assertions::fail);
 
-    @AfterEach
-    public void cleanupBetweenTests()
-    {
-        testManager.cleanupBetweenTests();
-    }
+	//Per Test
+	private final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+	private final CommandGroup commandGroup = new CommandGroup("icbm");
+	private final CommandEntryPoint commandHandler = new CommandEntryPoint("icbm", commandGroup);
 
-    @AfterAll
-    public static void tearDown()
-    {
-        testManager.tearDownTest();
-    }
+	@AfterEach
+	public void cleanupBetweenTests() {
+		testManager.cleanupBetweenTests();
+	}
 
-    @Test
-    void getName()
-    {
-        Assertions.assertEquals("icbm", commandHandler.getName());
-    }
+	@AfterAll
+	public static void tearDown() {
+		testManager.tearDownTest();
+	}
 
-    @Test
-    void getUsage()
-    {
-        Assertions.assertEquals("/icbm", commandHandler.getUsage(null));
-    }
+	@Test
+	void getName() {
+		Assertions.assertEquals("icbm", commandHandler.getName());
+	}
 
-    @Test
-    void getRequiredPermissionLevel()
-    {
-        Assertions.assertEquals(2, commandHandler.getRequiredPermissionLevel());
-    }
+	@Test
+	void getUsage() {
+		Assertions.assertEquals("/icbm", commandHandler.getUsage(null));
+	}
 
-    @Test
-    void getTabCompletions_help()
-    {
-        final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+	@Test
+	void getRequiredPermissionLevel() {
+		Assertions.assertEquals(2, commandHandler.getRequiredPermissionLevel());
+	}
 
-        List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[]{"h"}, null);
-        Assertions.assertEquals(1, output.size());
-        Assertions.assertEquals(output.get(0), "help");
-    }
+	@Test
+	void getTabCompletions_help() {
+		final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
 
-    @Test
-    void getTabCompletions_nothing()
-    {
-        final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+		List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[] {"h"}, null);
+		Assertions.assertEquals(1, output.size());
+		Assertions.assertEquals(output.get(0), "help");
+	}
 
-        List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[]{"a"}, null);
-        Assertions.assertEquals(0, output.size());
-    }
+	@Test
+	void getTabCompletions_nothing() {
+		final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
 
-    @Test
-    void getTabCompletions_zero()
-    {
-        final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+		List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[] {"a"}, null);
+		Assertions.assertEquals(0, output.size());
+	}
 
-        List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[0], null);
-        Assertions.assertEquals(0, output.size());
-    }
+	@Test
+	void getTabCompletions_zero() {
+		final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
 
-    @Test
-    void getTabCompletions_something()
-    {
-        commandGroup.registerCommand(new CommandSomething());
+		List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[0], null);
+		Assertions.assertEquals(0, output.size());
+	}
 
-        List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[]{"something", "t"}, null);
-        Assertions.assertEquals(1, output.size());
-        Assertions.assertEquals(output.get(0), "tree");
-    }
+	@Test
+	void getTabCompletions_something() {
+		commandGroup.registerCommand(new CommandSomething());
 
-    @Test
-    void execute_nothing() throws CommandException
-    {
-        final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+		List<String> output = commandHandler.getTabCompletions(testManager.getServer(), dummyCommandSender, new String[] {"something", "t"}, null);
+		Assertions.assertEquals(1, output.size());
+		Assertions.assertEquals(output.get(0), "tree");
+	}
 
-        //Run command
-        commandHandler.execute(testManager.getServer(), dummyCommandSender, new String[0]);
+	@Test
+	void execute_nothing() throws CommandException {
+		final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
 
-        Assertions.assertEquals(1, dummyCommandSender.messages.size());
-        Assertions.assertEquals("/icbm help", dummyCommandSender.messages.poll().getUnformattedText());
-    }
+		//Run command
+		commandHandler.execute(testManager.getServer(), dummyCommandSender, new String[0]);
 
-    @Test
-    void execute_something_noArgs() throws CommandException
-    {
-        commandGroup.registerCommand(new CommandSomething());
+		Assertions.assertEquals(1, dummyCommandSender.messages.size());
+		Assertions.assertEquals("/icbm help", dummyCommandSender.messages.poll().getUnformattedText());
+	}
 
-        //Run command
-        commandHandler.execute(testManager.getServer(), dummyCommandSender, new String[]{"something"});
+	@Test
+	void execute_something_noArgs() throws CommandException {
+		commandGroup.registerCommand(new CommandSomething());
 
-        Assertions.assertEquals(1, dummyCommandSender.messages.size());
-        Assertions.assertEquals("something>", dummyCommandSender.messages.poll().getUnformattedText());
-    }
+		//Run command
+		commandHandler.execute(testManager.getServer(), dummyCommandSender, new String[] {"something"});
 
-    @Test
-    void execute_something_args() throws CommandException
-    {
-        commandGroup.registerCommand(new CommandSomething());
+		Assertions.assertEquals(1, dummyCommandSender.messages.size());
+		Assertions.assertEquals("something>", dummyCommandSender.messages.poll().getUnformattedText());
+	}
 
-        //Run command
-        commandHandler.execute(testManager.getServer(), dummyCommandSender, new String[]{"something", "tree", "bat"});
+	@Test
+	void execute_something_args() throws CommandException {
+		commandGroup.registerCommand(new CommandSomething());
 
-        Assertions.assertEquals(1, dummyCommandSender.messages.size());
-        Assertions.assertEquals("something>tree,bat", dummyCommandSender.messages.poll().getUnformattedText());
-    }
+		//Run command
+		commandHandler.execute(testManager.getServer(), dummyCommandSender, new String[] {"something", "tree", "bat"});
 
-    private static class CommandSomething extends SubCommand
-    {
-        public CommandSomething()
-        {
-            super("something");
-        }
+		Assertions.assertEquals(1, dummyCommandSender.messages.size());
+		Assertions.assertEquals("something>tree,bat", dummyCommandSender.messages.poll().getUnformattedText());
+	}
 
-        @Override
-        public void handleCommand(MinecraftServer server, ICommandSender sender, String[] args)
-        {
-            String reply = "something>" + Arrays.stream(args).collect(Collectors.joining(","));
-            sender.sendMessage(new TextComponentString(reply.trim()));
-        }
+	private static class CommandSomething extends SubCommand {
 
-        @Override
-        public List<String> getTabSuggestions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
-        {
-            if (args.length == 1)
-            {
-                return CommandBase.getListOfStringsMatchingLastWord(args, "tree", "bat", "cat");
-            }
-            return Collections.<String>emptyList();
-        }
-    }
+		public CommandSomething() {
+			super("something");
+		}
+
+		@Override
+		public void handleCommand(MinecraftServer server, ICommandSender sender, String[] args) {
+			String reply = "something>" + Arrays.stream(args).collect(Collectors.joining(","));
+			sender.sendMessage(new TextComponentString(reply.trim()));
+		}
+
+		@Override
+		public List<String> getTabSuggestions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+			if (args.length == 1) {
+				return CommandBase.getListOfStringsMatchingLastWord(args, "tree", "bat", "cat");
+			}
+			return Collections.<String>emptyList();
+		}
+
+	}
+
 }

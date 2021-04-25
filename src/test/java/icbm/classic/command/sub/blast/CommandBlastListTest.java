@@ -15,53 +15,50 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by Robert Seifert on 1/6/20.
  */
-public class CommandBlastListTest
-{
-    private static TestManager testManager = new TestManager("CommandBlastListTest", Assertions::fail);
-    private final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+public class CommandBlastListTest {
 
-    private final CommandBlastList commandBlastList = new CommandBlastList();
+	private static TestManager testManager = new TestManager("CommandBlastListTest", Assertions::fail);
+	private final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
 
-    @AfterEach
-    public void cleanupBetweenTests()
-    {
-        testManager.cleanupBetweenTests();
-    }
+	private final CommandBlastList commandBlastList = new CommandBlastList();
 
-    @AfterAll
-    public static void tearDown()
-    {
-        testManager.tearDownTest();
-    }
+	@AfterEach
+	public void cleanupBetweenTests() {
+		testManager.cleanupBetweenTests();
+	}
 
-    @Test
-    void help()
-    {
-       commandBlastList.displayHelp(dummyCommandSender);
-       Assertions.assertEquals(1, dummyCommandSender.messages.size());
-       Assertions.assertEquals("/list", dummyCommandSender.messages.poll().getUnformattedText());
-    }
+	@AfterAll
+	public static void tearDown() {
+		testManager.tearDownTest();
+	}
 
-    @Test
-    void listBlasts() throws CommandException
-    {
-        //Setup blast registry
-        ICBMClassicAPI.EXPLOSIVE_REGISTRY = new ExplosiveRegistry();
-        ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation("tree", "bat"), EnumTier.FOUR, () -> null);
-        ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation("tree", "cat"), EnumTier.FOUR, () -> null);
-        ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation("bo", "fat"), EnumTier.FOUR, () -> null);
-        ((ExplosiveRegistry)ICBMClassicAPI.EXPLOSIVE_REGISTRY).lockNewExplosives();
+	@Test
+	void help() {
+		commandBlastList.displayHelp(dummyCommandSender);
+		Assertions.assertEquals(1, dummyCommandSender.messages.size());
+		Assertions.assertEquals("/list", dummyCommandSender.messages.poll().getUnformattedText());
+	}
 
-        final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
+	@Test
+	void listBlasts() throws CommandException {
+		//Setup blast registry
+		ICBMClassicAPI.EXPLOSIVE_REGISTRY = new ExplosiveRegistry();
+		ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation("tree", "bat"), EnumTier.FOUR, () -> null);
+		ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation("tree", "cat"), EnumTier.FOUR, () -> null);
+		ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation("bo", "fat"), EnumTier.FOUR, () -> null);
+		((ExplosiveRegistry) ICBMClassicAPI.EXPLOSIVE_REGISTRY).lockNewExplosives();
 
-        //Trigger
-        commandBlastList.handleCommand(testManager.getServer(), dummyCommandSender, new String[0]);
+		final DummyCommandSender dummyCommandSender = new DummyCommandSender(testManager);
 
-        //Should only have 1 message to sender
-        Assertions.assertEquals(1, dummyCommandSender.messages.size());
-        Assertions.assertEquals("Explosive Types: bo:fat, tree:bat, tree:cat", dummyCommandSender.messages.poll().getUnformattedText());
+		//Trigger
+		commandBlastList.handleCommand(testManager.getServer(), dummyCommandSender, new String[0]);
 
-        //Cleanup
-        ICBMClassicAPI.EXPLOSIVE_REGISTRY = null;
-    }
+		//Should only have 1 message to sender
+		Assertions.assertEquals(1, dummyCommandSender.messages.size());
+		Assertions.assertEquals("Explosive Types: bo:fat, tree:bat, tree:cat", dummyCommandSender.messages.poll().getUnformattedText());
+
+		//Cleanup
+		ICBMClassicAPI.EXPLOSIVE_REGISTRY = null;
+	}
+
 }

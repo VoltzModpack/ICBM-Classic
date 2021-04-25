@@ -8,23 +8,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderSeat extends Render<EntityPlayerSeat>
-{
-    public RenderSeat(RenderManager renderManager)
-    {
-        super(renderManager);
-        this.shadowSize = 0.0F;
-    }
+public class RenderSeat extends Render<EntityPlayerSeat> {
 
-    @Override
-    public void doRender(EntityPlayerSeat seat, double x, double y, double z, float entityYaw, float partialTicks)
-    {
-        super.doRender(seat, x, y, z, entityYaw, partialTicks);
-    }
+	public RenderSeat(RenderManager renderManager) {
+		super(renderManager);
+		this.shadowSize = 0.0F;
+	}
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityPlayerSeat entity)
-    {
-        return null;
-    }
+	@Override
+	public void doRender(EntityPlayerSeat seat, double x, double y, double z, float entityYaw, float partialTicks) {
+		super.doRender(seat, x, y, z, entityYaw, partialTicks);
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityPlayerSeat entity) {
+		return null;
+	}
+
 }

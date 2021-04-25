@@ -18,53 +18,45 @@ import java.util.List;
 /**
  * Created by Robert Seifert on 1/6/20.
  */
-public class CommandGroup extends SubCommand implements ICommandGroup
-{
+public class CommandGroup extends SubCommand implements ICommandGroup {
 
-    private final MapWithDefault<String, ISubCommand> subCommandMap = new MapWithDefault();
+	private final MapWithDefault<String, ISubCommand> subCommandMap = new MapWithDefault();
 
-    public CommandGroup(String id)
-    {
-        super(id);
+	public CommandGroup(String id) {
+		super(id);
 
-        //Help command
-        final SubCommand helpCommand = new CommandHelp();
-        registerCommand(helpCommand);
-        subCommandMap.setDefaultValue(helpCommand);
-    }
+		//Help command
+		final SubCommand helpCommand = new CommandHelp();
+		registerCommand(helpCommand);
+		subCommandMap.setDefaultValue(helpCommand);
+	}
 
-    @Override
-    public Collection<ISubCommand> getSubCommands()
-    {
-        return subCommandMap.values();
-    }
+	@Override
+	public Collection<ISubCommand> getSubCommands() {
+		return subCommandMap.values();
+	}
 
-    @Override
-    public void registerCommand(ISubCommand command)
-    {
-        command.setParent(this);
-        subCommandMap.put(command.getName().toLowerCase(), command);
-    }
+	@Override
+	public void registerCommand(ISubCommand command) {
+		command.setParent(this);
+		subCommandMap.put(command.getName().toLowerCase(), command);
+	}
 
-    @Override
-    public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException
-    {
-        final String subCommand = args.length == 0 ? "help" : args[0].toLowerCase();
-        subCommandMap.get(subCommand).handleCommand(server, sender, CommandUtils.removeFront(args));
-    }
+	@Override
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+		final String subCommand = args.length == 0 ? "help" : args[0].toLowerCase();
+		subCommandMap.get(subCommand).handleCommand(server, sender, CommandUtils.removeFront(args));
+	}
 
-    @Override
-    public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos)
-    {
-        if (args.length == 1)
-        {
-            return CommandBase.getListOfStringsMatchingLastWord(args, subCommandMap.keySet());
-        }
-        else if (args.length >= 2)
-        {
-            final String subCommand = args[0].toLowerCase();
-            return subCommandMap.get(subCommand).getTabSuggestions(server, sender, CommandUtils.removeFront(args), targetPos);
-        }
-        return Collections.<String>emptyList();
-    }
+	@Override
+	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
+		if (args.length == 1) {
+			return CommandBase.getListOfStringsMatchingLastWord(args, subCommandMap.keySet());
+		} else if (args.length >= 2) {
+			final String subCommand = args[0].toLowerCase();
+			return subCommandMap.get(subCommand).getTabSuggestions(server, sender, CommandUtils.removeFront(args), targetPos);
+		}
+		return Collections.<String>emptyList();
+	}
+
 }

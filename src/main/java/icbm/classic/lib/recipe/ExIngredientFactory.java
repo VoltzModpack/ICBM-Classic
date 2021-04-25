@@ -16,43 +16,35 @@ import javax.annotation.Nonnull;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 7/28/2019.
  */
-public class ExIngredientFactory implements IIngredientFactory
-{
-    @Nonnull
-    @Override
-    public Ingredient parse(JsonContext context, JsonObject json)
-    {
-        return parse(json);
-    }
+public class ExIngredientFactory implements IIngredientFactory {
 
-    @Nonnull
-    public static ItemStack getStack(JsonObject json)
-    {
-        final String device = JsonUtils.getString(json, "device", ICBMClassicAPI.EX_BLOCK.toString());
-        final String explosive = JsonUtils.getString(json, "explosive");
+	@Nonnull
+	@Override
+	public Ingredient parse(JsonContext context, JsonObject json) {
+		return parse(json);
+	}
 
-        final IExplosiveContentRegistry reg = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getContentRegistry(new ResourceLocation(device));
-        if (reg != null)
-        {
-            ItemStack exStack = reg.getDeviceStack(new ResourceLocation(explosive));
-            if (exStack != null)
-            {
-                return exStack;
-            }
-            else
-            {
-                throw new JsonSyntaxException("ExIngredientFactory: Failed to locate explosive type of [" + explosive + "]");
-            }
-        }
-        else
-        {
-            throw new JsonSyntaxException("ExIngredientFactory: Failed to locate device type of [" + device + "]");
-        }
-    }
+	@Nonnull
+	public static ItemStack getStack(JsonObject json) {
+		final String device = JsonUtils.getString(json, "device", ICBMClassicAPI.EX_BLOCK.toString());
+		final String explosive = JsonUtils.getString(json, "explosive");
 
-    @Nonnull
-    public static Ingredient parse(JsonObject json)
-    {
-        return Ingredient.fromStacks(getStack(json));
-    }
+		final IExplosiveContentRegistry reg = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getContentRegistry(new ResourceLocation(device));
+		if (reg != null) {
+			ItemStack exStack = reg.getDeviceStack(new ResourceLocation(explosive));
+			if (exStack != null) {
+				return exStack;
+			} else {
+				throw new JsonSyntaxException("ExIngredientFactory: Failed to locate explosive type of [" + explosive + "]");
+			}
+		} else {
+			throw new JsonSyntaxException("ExIngredientFactory: Failed to locate device type of [" + device + "]");
+		}
+	}
+
+	@Nonnull
+	public static Ingredient parse(JsonObject json) {
+		return Ingredient.fromStacks(getStack(json));
+	}
+
 }

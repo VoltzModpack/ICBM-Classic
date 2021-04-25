@@ -8,7 +8,8 @@ import net.minecraft.util.EnumHand;
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
 @FunctionalInterface
-public interface EntityInteractionFunction
-{
-    boolean onInteraction(Entity entity, EntityPlayer player, EnumHand hand);
+public interface EntityInteractionFunction {
+
+	boolean onInteraction(Entity entity, EntityPlayer player, EnumHand hand);
+
 }

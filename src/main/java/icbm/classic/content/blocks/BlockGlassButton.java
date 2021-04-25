@@ -15,40 +15,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockGlassButton extends BlockButton
-{
-    public BlockGlassButton()
-    {
-        super(false);
-        this.setTickRandomly(true);
-        this.setTranslationKey(ICBMConstants.PREFIX + "glassButton");
-        this.setRegistryName(ICBMConstants.PREFIX + "glassButton");
-        this.setSoundType(SoundType.GLASS);
-        this.setHardness(0.5F);
-    }
+public class BlockGlassButton extends BlockButton {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+	public BlockGlassButton() {
+		super(false);
+		this.setTickRandomly(true);
+		this.setTranslationKey(ICBMConstants.PREFIX + "glassButton");
+		this.setRegistryName(ICBMConstants.PREFIX + "glassButton");
+		this.setSoundType(SoundType.GLASS);
+		this.setHardness(0.5F);
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @Override
-    protected void playClickSound(@Nullable EntityPlayer player, World worldIn, BlockPos pos)
-    {
-        worldIn.playSound(player, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    protected void playReleaseSound(World worldIn, BlockPos pos)
-    {
-        worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
-    }
+	@Override
+	protected void playClickSound(@Nullable EntityPlayer player, World worldIn, BlockPos pos) {
+		worldIn.playSound(player, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+	}
+
+	@Override
+	protected void playReleaseSound(World worldIn, BlockPos pos) {
+		worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+	}
+
 }

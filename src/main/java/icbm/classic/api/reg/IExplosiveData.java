@@ -16,76 +16,71 @@ import java.util.Optional;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 1/4/19.
  */
-public interface IExplosiveData extends Comparable<IExplosiveData>
-{
-    static IBlastFactory EMPTY = () -> null;
+public interface IExplosiveData extends Comparable<IExplosiveData> {
 
-    /**
-     * Unique registry name of the explosive
-     *
-     * @return
-     */
-    ResourceLocation getRegistryName();
+	static IBlastFactory EMPTY = () -> null;
 
-    /**
-     * Assigned ID of the explosive. Is
-     * saved to config file and automatically
-     * assigned for new explosives.
-     *
-     * @return ID
-     */
-    int getRegistryID();
+	/**
+	 * Unique registry name of the explosive
+	 *
+	 * @return
+	 */
+	ResourceLocation getRegistryName();
 
-    /**
-     * Blast factory used to create new blast instances
-     *
-     * @return
-     */
-    @Nullable
-    IBlastFactory getBlastFactory();
+	/**
+	 * Assigned ID of the explosive. Is saved to config file and automatically assigned for new explosives.
+	 *
+	 * @return ID
+	 */
+	int getRegistryID();
 
-    /**
-     * Creates a new blast factory
-     *
-     * @return
-     */
-    default IBlastInit create()
-    {
-        return Optional.ofNullable(getBlastFactory()).orElseGet(() -> EMPTY).create();
-    }
+	/**
+	 * Blast factory used to create new blast instances
+	 *
+	 * @return
+	 */
+	@Nullable
+	IBlastFactory getBlastFactory();
 
-    /**
-     * Tier of the explosive.
-     *
-     * @return tier of the explosive
-     */
-    @Nonnull
-    EnumTier getTier();
+	/**
+	 * Creates a new blast factory
+	 *
+	 * @return
+	 */
+	default IBlastInit create() {
+		return Optional.ofNullable(getBlastFactory()).orElseGet(() -> EMPTY).create();
+	}
 
-    /**
-     * Checks if the explosive is enabled. Users
-     * can disable explosives in the configs. As
-     * well other mods can disable explosives
-     * to allow items to still exist but functionality
-     * to be switched to a new version.
-     *
-     * @return true if enabled
-     */
-    boolean isEnabled();
+	/**
+	 * Tier of the explosive.
+	 *
+	 * @return tier of the explosive
+	 */
+	@Nonnull
+	EnumTier getTier();
 
-    /**
-     * Sets the enable status of
-     *
-     * @param b
-     */
-    void setEnabled(boolean b);
+	/**
+	 * Checks if the explosive is enabled. Users can disable explosives in the configs. As well other mods can disable
+	 * explosives to allow items to still exist but functionality to be switched to a new version.
+	 *
+	 * @return true if enabled
+	 */
+	boolean isEnabled();
 
-    /**
-     * Called when this explosive is register to a content handler
-     *
-     * @param contentID - id of the registry
-     * @param registry  - the registry itself
-     * @return true to allow, false to block
-     */
-    boolean onEnableContent(ResourceLocation contentID, IExplosiveContentRegistry registry);
+	/**
+	 * Sets the enable status of
+	 *
+	 * @param b
+	 */
+	void setEnabled(boolean b);
+
+	/**
+	 * Called when this explosive is register to a content handler
+	 *
+	 * @param contentID - id of the registry
+	 * @param registry  - the registry itself
+	 * @return true to allow, false to block
+	 */
+	boolean onEnableContent(ResourceLocation contentID, IExplosiveContentRegistry registry);
+
 }

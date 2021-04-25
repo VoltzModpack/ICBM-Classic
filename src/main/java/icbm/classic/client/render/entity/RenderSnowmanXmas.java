@@ -8,27 +8,24 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 12/31/2018.
  */
-public class RenderSnowmanXmas extends RenderLiving<EntityXmasSnowman>
-{
-    private static final ResourceLocation SNOW_MAN_TEXTURES = new ResourceLocation(ICBMConstants.DOMAIN, "textures/entity/snowman/snowman.hat.green.png");
+public class RenderSnowmanXmas extends RenderLiving<EntityXmasSnowman> {
 
-    public RenderSnowmanXmas(RenderManager renderManagerIn)
-    {
-        super(renderManagerIn, new ModelSnowmanXmas(), 0.5F);
-    }
+	private static final ResourceLocation SNOW_MAN_TEXTURES = new ResourceLocation(ICBMConstants.DOMAIN, "textures/entity/snowman/snowman.hat.green.png");
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityXmasSnowman entity)
-    {
-        return SNOW_MAN_TEXTURES;
-    }
+	public RenderSnowmanXmas(RenderManager renderManagerIn) {
+		super(renderManagerIn, new ModelSnowmanXmas(), 0.5F);
+	}
 
-    @Override
-    public ModelSnowmanXmas getMainModel()
-    {
-        return (ModelSnowmanXmas) super.getMainModel();
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityXmasSnowman entity) {
+		return SNOW_MAN_TEXTURES;
+	}
+
+	@Override
+	public ModelSnowmanXmas getMainModel() {
+		return (ModelSnowmanXmas) super.getMainModel();
+	}
+
 }

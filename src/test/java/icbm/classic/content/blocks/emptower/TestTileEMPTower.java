@@ -2,10 +2,10 @@ package icbm.classic.content.blocks.emptower;
 
 import icbm.classic.DummyMultiTile;
 import icbm.classic.api.EnumTier;
-import icbm.classic.api.refs.ICBMExplosives;
 import icbm.classic.api.explosion.BlastState;
 import icbm.classic.api.explosion.IBlast;
 import icbm.classic.api.explosion.IBlastFactory;
+import icbm.classic.api.refs.ICBMExplosives;
 import icbm.classic.content.blast.Blast;
 import icbm.classic.content.blast.BlastEMP;
 import icbm.classic.lib.explosive.reg.ExplosiveData;
@@ -30,218 +30,205 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 12/15/2019.
  */
-public class TestTileEMPTower
-{
-    final World world = Mockito.mock(World.class);
+public class TestTileEMPTower {
 
-    //Helper to create the tower tile
-    private TileEMPTower create() {
-        TileEMPTower tileEntity = new TileEMPTower();
-        tileEntity.setWorld(world);
-        return tileEntity;
-    }
+	final World world = Mockito.mock(World.class);
 
-    @BeforeAll
-    public static void setupForAllTests() {
-        final ResourceLocation name = new ResourceLocation("ICBM:EMP");
-        final IBlastFactory factory = () -> new BlastEMP().setEffectBlocks().setEffectEntities().setBlastSize(50);
-        ICBMExplosives.EMP = new ExplosiveData(name,16,EnumTier.THREE).blastFactory(factory);
-    }
+	//Helper to create the tower tile
+	private TileEMPTower create() {
+		TileEMPTower tileEntity = new TileEMPTower();
+		tileEntity.setWorld(world);
+		return tileEntity;
+	}
 
-    @AfterAll
-    public static void tearDownForAllTests() {
-        ICBMExplosives.EMP = null;
-    }
+	@BeforeAll
+	public static void setupForAllTests() {
+		final ResourceLocation name = new ResourceLocation("ICBM:EMP");
+		final IBlastFactory factory = () -> new BlastEMP().setEffectBlocks().setEffectEntities().setBlastSize(50);
+		ICBMExplosives.EMP = new ExplosiveData(name, 16, EnumTier.THREE).blastFactory(factory);
+	}
 
-    @Test
-    void testGetLayoutOfMultiBlock_containsLayout()
-    {
-        final TileEMPTower tileEMPTower = create();
-        final List<BlockPos> list = tileEMPTower.getLayoutOfMultiBlock();
+	@AfterAll
+	public static void tearDownForAllTests() {
+		ICBMExplosives.EMP = null;
+	}
 
-        //Should only provide 1 block
-        Assertions.assertEquals(list.size(), 1);
+	@Test
+	void testGetLayoutOfMultiBlock_containsLayout() {
+		final TileEMPTower tileEMPTower = create();
+		final List<BlockPos> list = tileEMPTower.getLayoutOfMultiBlock();
 
-        //Should only provide a block above
-        Assertions.assertTrue(list.contains(new BlockPos(0, 1, 0)));
-    }
+		//Should only provide 1 block
+		Assertions.assertEquals(list.size(), 1);
 
-    private static Stream<Arguments> provideMultiBlockContainCases()
-    {
-        return Stream.of(
-                Arguments.of(new BlockPos(0, 1, 0), true),
-                Arguments.of(new BlockPos(0, -1, 0), false),
-                Arguments.of(new BlockPos(1, 0, 0), false),
-                Arguments.of(new BlockPos(-1, 0, 0), false),
-                Arguments.of(new BlockPos(0, 0, 1), false),
-                Arguments.of(new BlockPos(1, 0, -1), false),
-                Arguments.of(new BlockPos(1, 1, 1), false),
-                Arguments.of(new BlockPos(-1, -1, -1), false)
-        );
-    }
+		//Should only provide a block above
+		Assertions.assertTrue(list.contains(new BlockPos(0, 1, 0)));
+	}
 
-    @ParameterizedTest
-    @MethodSource("provideMultiBlockContainCases")
-    void testMultiBlockContains(BlockPos pos, boolean expected)
-    {
-        final BlockPos center = new BlockPos(20, 30, 40);
-        //Create tower
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(center);
+	private static Stream<Arguments> provideMultiBlockContainCases() {
+		return Stream.of(
+			Arguments.of(new BlockPos(0, 1, 0), true),
+			Arguments.of(new BlockPos(0, -1, 0), false),
+			Arguments.of(new BlockPos(1, 0, 0), false),
+			Arguments.of(new BlockPos(-1, 0, 0), false),
+			Arguments.of(new BlockPos(0, 0, 1), false),
+			Arguments.of(new BlockPos(1, 0, -1), false),
+			Arguments.of(new BlockPos(1, 1, 1), false),
+			Arguments.of(new BlockPos(-1, -1, -1), false)
+		);
+	}
 
-        //Create mutli-block
-        final DummyMultiTile tileMulti = new DummyMultiTile();
-        tileMulti.setPos(center.add(pos));
+	@ParameterizedTest
+	@MethodSource("provideMultiBlockContainCases")
+	void testMultiBlockContains(BlockPos pos, boolean expected) {
+		final BlockPos center = new BlockPos(20, 30, 40);
+		//Create tower
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(center);
 
-        //Run test
-        Assertions.assertEquals(tileEMPTower.multiBlockContains(tileMulti), expected);
-    }
+		//Create mutli-block
+		final DummyMultiTile tileMulti = new DummyMultiTile();
+		tileMulti.setPos(center.add(pos));
 
-    @Test
-    void testMultiTileAdded_addsBlock()
-    {
-        //Create tower
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		//Run test
+		Assertions.assertEquals(tileEMPTower.multiBlockContains(tileMulti), expected);
+	}
 
-        //Create mutli-block 1 above
-        final DummyMultiTile tileMulti = new DummyMultiTile();
-        tileMulti.setPos(new BlockPos(20, 31, 40));
+	@Test
+	void testMultiTileAdded_addsBlock() {
+		//Create tower
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
 
-        //Invoke method
-        tileEMPTower.onMultiTileAdded(tileMulti);
+		//Create mutli-block 1 above
+		final DummyMultiTile tileMulti = new DummyMultiTile();
+		tileMulti.setPos(new BlockPos(20, 31, 40));
 
-        //Check that we set host
-        Assertions.assertEquals(tileEMPTower, tileMulti.getHost());
-    }
+		//Invoke method
+		tileEMPTower.onMultiTileAdded(tileMulti);
 
-    @Test
-    void testMultiTileAdded_ignoresBlock()
-    {
-        //Create tower
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		//Check that we set host
+		Assertions.assertEquals(tileEMPTower, tileMulti.getHost());
+	}
 
-        //Create mutli-block 1 below
-        final DummyMultiTile tileMulti = new DummyMultiTile();
-        tileMulti.setPos(new BlockPos(20, 29, 40));
+	@Test
+	void testMultiTileAdded_ignoresBlock() {
+		//Create tower
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
 
-        //Invoke method
-        tileEMPTower.onMultiTileAdded(tileMulti);
+		//Create mutli-block 1 below
+		final DummyMultiTile tileMulti = new DummyMultiTile();
+		tileMulti.setPos(new BlockPos(20, 29, 40));
 
-        //Check that we set host
-        Assertions.assertNull(tileMulti.getHost());
-    }
+		//Invoke method
+		tileEMPTower.onMultiTileAdded(tileMulti);
 
-    @Test
-    void testMultiTileBroken_containsBlock()
-    {
-        //Create tower
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		//Check that we set host
+		Assertions.assertNull(tileMulti.getHost());
+	}
 
-        //Create mutli-block 1 above
-        final DummyMultiTile tileMulti = new DummyMultiTile();
-        tileMulti.setPos(new BlockPos(20, 31, 40));
+	@Test
+	void testMultiTileBroken_containsBlock() {
+		//Create tower
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
 
-        //Invoke method
-        Assertions.assertTrue(tileEMPTower.onMultiTileBroken(tileMulti, null, true));
-    }
+		//Create mutli-block 1 above
+		final DummyMultiTile tileMulti = new DummyMultiTile();
+		tileMulti.setPos(new BlockPos(20, 31, 40));
 
-    @Test
-    void testMultiTileBroken_ignoresBlock()
-    {
-        //Create tower
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		//Invoke method
+		Assertions.assertTrue(tileEMPTower.onMultiTileBroken(tileMulti, null, true));
+	}
 
-        //Create mutli-block 1 above
-        final DummyMultiTile tileMulti = new DummyMultiTile();
-        tileMulti.setPos(new BlockPos(20, 29, 40));
+	@Test
+	void testMultiTileBroken_ignoresBlock() {
+		//Create tower
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
 
-        //Invoke method
-        Assertions.assertFalse(tileEMPTower.onMultiTileBroken(tileMulti, null, true));
-    }
+		//Create mutli-block 1 above
+		final DummyMultiTile tileMulti = new DummyMultiTile();
+		tileMulti.setPos(new BlockPos(20, 29, 40));
 
-    @Test
-    void testGenerateEmp_all()
-    {
-        //Create tower
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		//Invoke method
+		Assertions.assertFalse(tileEMPTower.onMultiTileBroken(tileMulti, null, true));
+	}
 
-        //Create EMP
-        final IBlast emp = tileEMPTower.buildBlast();
+	@Test
+	void testGenerateEmp_all() {
+		//Create tower
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
 
-        //Validate position
-        Assertions.assertEquals(20.5, emp.x());
-        Assertions.assertEquals(31.2, emp.y());
-        Assertions.assertEquals(40.5, emp.z());
+		//Create EMP
+		final IBlast emp = tileEMPTower.buildBlast();
 
-        //Validate world
-        Assertions.assertEquals(world, emp.world());
+		//Validate position
+		Assertions.assertEquals(20.5, emp.x());
+		Assertions.assertEquals(31.2, emp.y());
+		Assertions.assertEquals(40.5, emp.z());
 
-        //Validate size
-        Assertions.assertEquals(tileEMPTower.empRadius, emp.getBlastRadius());
-    }
+		//Validate world
+		Assertions.assertEquals(world, emp.world());
 
-    @Test
-    void testFire_isReady_hasEnergy()
-    {
-        //Create tower, create mock around tile so we can fake some methods
-        final TileEMPTower tileEMPTower = spy(create());
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
-        tileEMPTower.setEnergy(Integer.MAX_VALUE);
+		//Validate size
+		Assertions.assertEquals(tileEMPTower.empRadius, emp.getBlastRadius());
+	}
 
-        //Mock blast so we don't invoke world calls
-        when(tileEMPTower.buildBlast()).thenReturn(new Blast()
-        {
-            @Override
-            public BlastState runBlast()
-            {
-                return BlastState.TRIGGERED;
-            }
-        });
+	@Test
+	void testFire_isReady_hasEnergy() {
+		//Create tower, create mock around tile so we can fake some methods
+		final TileEMPTower tileEMPTower = spy(create());
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		tileEMPTower.setEnergy(Integer.MAX_VALUE);
 
-        //Should have fired
-        Assertions.assertTrue(tileEMPTower.fire());
-    }
+		//Mock blast so we don't invoke world calls
+		when(tileEMPTower.buildBlast()).thenReturn(new Blast() {
+			@Override
+			public BlastState runBlast() {
+				return BlastState.TRIGGERED;
+			}
+		});
 
-    @Test
-    void testFire_isReady_lacksEnergy()
-    {
-        //Create tower, create mock around tile so we can fake some methods
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
-        tileEMPTower.setEnergy(0);
+		//Should have fired
+		Assertions.assertTrue(tileEMPTower.fire());
+	}
 
-        //Should have fired
-        Assertions.assertFalse(tileEMPTower.fire());
-    }
+	@Test
+	void testFire_isReady_lacksEnergy() {
+		//Create tower, create mock around tile so we can fake some methods
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		tileEMPTower.setEnergy(0);
 
-    @Test
-    void testFire_notReady_lacksEnergy()
-    {
-        //Create tower, create mock around tile so we can fake some methods
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
-        tileEMPTower.setEnergy(0);
-        tileEMPTower.firingCoolDown = 1;
+		//Should have fired
+		Assertions.assertFalse(tileEMPTower.fire());
+	}
 
-        //Should have fired
-        Assertions.assertFalse(tileEMPTower.fire());
-    }
+	@Test
+	void testFire_notReady_lacksEnergy() {
+		//Create tower, create mock around tile so we can fake some methods
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		tileEMPTower.setEnergy(0);
+		tileEMPTower.firingCoolDown = 1;
 
-    @Test
-    void testFire_notReady_hasEnergy()
-    {
-        //Create tower, create mock around tile so we can fake some methods
-        final TileEMPTower tileEMPTower = create();
-        tileEMPTower.setPos(new BlockPos(20, 30, 40));
-        tileEMPTower.setEnergy(Integer.MAX_VALUE);
-        tileEMPTower.firingCoolDown = 1;
+		//Should have fired
+		Assertions.assertFalse(tileEMPTower.fire());
+	}
 
-        //Should have fired
-        Assertions.assertFalse(tileEMPTower.fire());
-    }
+	@Test
+	void testFire_notReady_hasEnergy() {
+		//Create tower, create mock around tile so we can fake some methods
+		final TileEMPTower tileEMPTower = create();
+		tileEMPTower.setPos(new BlockPos(20, 30, 40));
+		tileEMPTower.setEnergy(Integer.MAX_VALUE);
+		tileEMPTower.firingCoolDown = 1;
+
+		//Should have fired
+		Assertions.assertFalse(tileEMPTower.fire());
+	}
+
 }

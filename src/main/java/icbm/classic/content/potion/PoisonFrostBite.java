@@ -7,46 +7,39 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 
-public class PoisonFrostBite extends CustomPotion
-{
-    public static Potion INSTANCE;
+public class PoisonFrostBite extends CustomPotion {
 
-    public PoisonFrostBite(boolean isBadEffect, int color, int id, String name)
-    {
-        super(isBadEffect, color, id, name);
-        this.setIconIndex(6, 0);
-    }
+	public static Potion INSTANCE;
 
-    @Override
-    public void performEffect(EntityLivingBase entity, int amplifier)
-    {
-        if (entity.isBurning())
-        {
-            entity.extinguish();
-        }
+	public PoisonFrostBite(boolean isBadEffect, int color, int id, String name) {
+		super(isBadEffect, color, id, name);
+		this.setIconIndex(6, 0);
+	}
 
-        if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).capabilities.isCreativeMode)
-        {
-            if (entity instanceof EntityPlayer)
-            {
-                ((EntityPlayer) entity).addExhaustion(3F * (amplifier + 1));
-            }
+	@Override
+	public void performEffect(EntityLivingBase entity, int amplifier) {
+		if (entity.isBurning()) {
+			entity.extinguish();
+		}
 
-            // Check to see if it's on ice
-            if (entity.world.getBlockState(new BlockPos(entity)).getBlock() == Blocks.ICE)
-            {
-                entity.attackEntityFrom(DamageSource.MAGIC, 2);
-            }
-        }
-    }
+		if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).capabilities.isCreativeMode) {
+			if (entity instanceof EntityPlayer) {
+				((EntityPlayer) entity).addExhaustion(3F * (amplifier + 1));
+			}
 
-    @Override
-    public boolean isReady(int duration, int amplifier)
-    {
-        if (duration % 20 == 0)
-        {
-            return true;
-        }
-        return false;
-    }
+			// Check to see if it's on ice
+			if (entity.world.getBlockState(new BlockPos(entity)).getBlock() == Blocks.ICE) {
+				entity.attackEntityFrom(DamageSource.MAGIC, 2);
+			}
+		}
+	}
+
+	@Override
+	public boolean isReady(int duration, int amplifier) {
+		if (duration % 20 == 0) {
+			return true;
+		}
+		return false;
+	}
+
 }

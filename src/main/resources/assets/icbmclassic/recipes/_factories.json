@@ -1,11 +1,11 @@
 {
   "conditions": {
-    "ore_value": "icbm.classic.lib.recipe.ConditionOreValue"
+	"ore_value": "icbm.classic.lib.recipe.ConditionOreValue"
   },
   "ingredients": {
-    "explosive": "icbm.classic.lib.recipe.ExIngredientFactory"
+	"explosive": "icbm.classic.lib.recipe.ExIngredientFactory"
   },
-  "recipes" : {
-    "explosive" : "icbm.classic.lib.recipe.ExRecipeFactory"
+  "recipes": {
+	"explosive": "icbm.classic.lib.recipe.ExRecipeFactory"
   }
 }

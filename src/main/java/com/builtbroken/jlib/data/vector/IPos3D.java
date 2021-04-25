@@ -5,17 +5,16 @@ package com.builtbroken.jlib.data.vector;
  *
  * @author DarkGuardsman
  */
-public interface IPos3D extends IPos2D
-{
-    double z();
+public interface IPos3D extends IPos2D {
 
-    default float zf()
-    {
-        return (float) z();
-    }
+	double z();
 
-    default int zi()
-    {
-        return (int) Math.floor(z());
-    }
+	default float zf() {
+		return (float) z();
+	}
+
+	default int zi() {
+		return (int) Math.floor(z());
+	}
+
 }

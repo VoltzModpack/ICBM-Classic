@@ -22,101 +22,88 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockConcrete extends Block
-{
-    public static final PropertyType TYPE_PROP = new PropertyType();
+public class BlockConcrete extends Block {
 
-    public BlockConcrete()
-    {
-        super(Material.ROCK);
-        this.setRegistryName(ICBMConstants.PREFIX + "concrete");
-        this.setTranslationKey(ICBMConstants.PREFIX + "concrete");
-        this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
-        this.setHardness(10);
-    }
+	public static final PropertyType TYPE_PROP = new PropertyType();
 
-    @Override
-    public int damageDropped(IBlockState state)
-    {
-        return getMetaFromState(state);
-    }
+	public BlockConcrete() {
+		super(Material.ROCK);
+		this.setRegistryName(ICBMConstants.PREFIX + "concrete");
+		this.setTranslationKey(ICBMConstants.PREFIX + "concrete");
+		this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
+		this.setHardness(10);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, TYPE_PROP);
-    }
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
 
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-    {
-        return getDefaultState().withProperty(TYPE_PROP, EnumType.get(meta));
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, TYPE_PROP);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(TYPE_PROP).ordinal();
-    }
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getDefaultState().withProperty(TYPE_PROP, EnumType.get(meta));
+	}
 
-    @Deprecated
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(TYPE_PROP, EnumType.get(meta));
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(TYPE_PROP).ordinal();
+	}
 
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion)
-    {
-        IBlockState blockState = world.getBlockState(pos);
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(TYPE_PROP, EnumType.get(meta));
+	}
 
-        switch (blockState.getValue(TYPE_PROP))
-        {
-            case COMPACT:
-                return 280;
-            case REINFORCED:
-                return 2800; //obsidian is 2000
-            default:
-            case NORMAL:
-                return 28;
-        }
-    }
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+		IBlockState blockState = world.getBlockState(pos);
 
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items)
-    {
-        if (tab == getCreativeTab())
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                items.add(new ItemStack(this, 1, i));
-            }
-        }
-    }
+		switch (blockState.getValue(TYPE_PROP)) {
+			case COMPACT:
+				return 280;
+			case REINFORCED:
+				return 2800; //obsidian is 2000
+			default:
+			case NORMAL:
+				return 28;
+		}
+	}
 
-    public static class PropertyType extends PropertyEnum<EnumType>
-    {
-        public PropertyType()
-        {
-            super("type", EnumType.class, Lists.newArrayList(EnumType.values()));
-        }
-    }
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (tab == getCreativeTab()) {
+			for (int i = 0; i < 3; i++) {
+				items.add(new ItemStack(this, 1, i));
+			}
+		}
+	}
 
-    public static enum EnumType implements IStringSerializable
-    {
-        NORMAL,
-        COMPACT,
-        REINFORCED;
+	public static class PropertyType extends PropertyEnum<EnumType> {
 
-        @Override
-        public String getName()
-        {
-            return name().toLowerCase();
-        }
+		public PropertyType() {
+			super("type", EnumType.class, Lists.newArrayList(EnumType.values()));
+		}
 
-        public static EnumType get(int meta)
-        {
-            return meta >= 0 && meta < values().length ? values()[meta] : NORMAL;
-        }
-    }
+	}
+
+	public static enum EnumType implements IStringSerializable {
+		NORMAL,
+		COMPACT,
+		REINFORCED;
+
+		@Override
+		public String getName() {
+			return name().toLowerCase();
+		}
+
+		public static EnumType get(int meta) {
+			return meta >= 0 && meta < values().length ? values()[meta] : NORMAL;
+		}
+	}
+
 }

@@ -20,125 +20,109 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class BlastAntimatter extends BlastThreaded
-{
-    private final IBlockState replaceState = Blocks.AIR.getDefaultState();
+public class BlastAntimatter extends BlastThreaded {
 
-    @Override
-    public boolean setupBlast()
-    {
-        super.setupBlast();
-        ICBMSounds.ANTIMATTER.play(world, this.location.x(), this.location.y(), this.location.z(), 7F, (float) (this.world().rand.nextFloat() * 0.1 + 0.9F), true);
-        return this.doDamageEntities(this.getBlastRadius() * 2, Integer.MAX_VALUE);
-    }
+	private final IBlockState replaceState = Blocks.AIR.getDefaultState();
 
-    @Override
-    public void destroyBlock(BlockPos blockPos)
-    {
-        final IBlockState blockState = world.getBlockState(blockPos);
-        if (!blockState.getBlock().isAir(blockState, world, blockPos))
-        {
-            if (blockState.getBlockHardness(world, blockPos) >= 0 || ConfigBlast.ANTIMATTER_DESTROY_UNBREAKABLE_BLOCKS)
-            {
-                world.setBlockState(blockPos, replaceState, ConfigBlast.BLAST_DO_BLOCKUPDATES ? 3 : 2);
-            }
-        }
-    }
+	@Override
+	public boolean setupBlast() {
+		super.setupBlast();
+		ICBMSounds.ANTIMATTER.play(world, this.location.x(), this.location.y(), this.location.z(), 7F, (float) (this.world().rand.nextFloat() * 0.1 + 0.9F), true);
+		return this.doDamageEntities(this.getBlastRadius() * 2, Integer.MAX_VALUE);
+	}
 
-    @Override
-    public boolean doRun(int loops, Consumer<BlockPos> edits)
-    {
-        BlastHelpers.forEachPosInRadius(this.getBlastRadius(), (x, y, z) -> {
-            if (isInsideMap(y + yi()) && shouldEditPos(x, y, z))
-            {
-                edits.accept(new BlockPos(xi() + x, yi() + y, zi() + z));
-            }
-        });
-        return false;
-    }
+	@Override
+	public void destroyBlock(BlockPos blockPos) {
+		final IBlockState blockState = world.getBlockState(blockPos);
+		if (!blockState.getBlock().isAir(blockState, world, blockPos)) {
+			if (blockState.getBlockHardness(world, blockPos) >= 0 || ConfigBlast.ANTIMATTER_DESTROY_UNBREAKABLE_BLOCKS) {
+				world.setBlockState(blockPos, replaceState, ConfigBlast.BLAST_DO_BLOCKUPDATES ? 3 : 2);
+			}
+		}
+	}
 
-    @Override
-    protected void onWorkerThreadComplete(List<BlockPos> edits)
-    {
-        //TODO have threads take a copy of chunks for use before running
-        //      OR replace thread system with an entity that ticks over time to collect data
-        if (world instanceof WorldServer)
-        {
-            //Sort distance
-            edits.sort(buildSorter());
+	@Override
+	public boolean doRun(int loops, Consumer<BlockPos> edits) {
+		BlastHelpers.forEachPosInRadius(this.getBlastRadius(), (x, y, z) -> {
+			if (isInsideMap(y + yi()) && shouldEditPos(x, y, z)) {
+				edits.accept(new BlockPos(xi() + x, yi() + y, zi() + z));
+			}
+		});
+		return false;
+	}
 
-            //Pull out fluids and falling blocks to prevent lag issues
-            final List<BlockPos> removeFirst = edits.stream()
-                    .filter(blockPos -> world.isBlockLoaded(blockPos))
-                    .filter(this::isFluid)
-                    .collect(Collectors.toList());
+	@Override
+	protected void onWorkerThreadComplete(List<BlockPos> edits) {
+		//TODO have threads take a copy of chunks for use before running
+		//      OR replace thread system with an entity that ticks over time to collect data
+		if (world instanceof WorldServer) {
+			//Sort distance
+			edits.sort(buildSorter());
 
-            //Schedule edits to run in the world
-            ((WorldServer) world).addScheduledTask(() -> scheduledTask(removeFirst, edits));
-        }
-    }
+			//Pull out fluids and falling blocks to prevent lag issues
+			final List<BlockPos> removeFirst = edits.stream()
+				                                   .filter(blockPos -> world.isBlockLoaded(blockPos))
+				                                   .filter(this::isFluid)
+				                                   .collect(Collectors.toList());
 
-    private void scheduledTask(List<BlockPos> removeFirst, List<BlockPos> edits) {
+			//Schedule edits to run in the world
+			((WorldServer) world).addScheduledTask(() -> scheduledTask(removeFirst, edits));
+		}
+	}
 
-        //Remove any blocks that could cause issues when queued
-        removeFirst.forEach(blockPos -> world.setBlockState(blockPos, replaceState, 2));
+	private void scheduledTask(List<BlockPos> removeFirst, List<BlockPos> edits) {
 
-        //Queue edits, even the ones from the previous
-        BlockEditHandler.queue(world, edits, blockPos -> destroyBlock(blockPos));
+		//Remove any blocks that could cause issues when queued
+		removeFirst.forEach(blockPos -> world.setBlockState(blockPos, replaceState, 2));
 
-        //Notify blast we have entered world again
-        onPostThreadJoinWorld();
-    }
+		//Queue edits, even the ones from the previous
+		BlockEditHandler.queue(world, edits, blockPos -> destroyBlock(blockPos));
 
-    protected boolean isFluid(BlockPos blockPos)
-    {
-        IBlockState state = world.getBlockState(blockPos);
-        return state.getMaterial() == Material.WATER || state.getBlock() instanceof BlockFalling;
-    }
+		//Notify blast we have entered world again
+		onPostThreadJoinWorld();
+	}
 
-    protected boolean isInsideMap(int y)
-    {
-        return y >= 0 && y < 256;
-    }
+	protected boolean isFluid(BlockPos blockPos) {
+		IBlockState state = world.getBlockState(blockPos);
+		return state.getMaterial() == Material.WATER || state.getBlock() instanceof BlockFalling;
+	}
 
-    protected boolean shouldEditPos(int x, int y, int z)
-    {
-        final double distSQ = x * x + y * y + z * z;
-        final double blastSQ = this.getBlastRadius() * this.getBlastRadius();
+	protected boolean isInsideMap(int y) {
+		return y >= 0 && y < 256;
+	}
 
-        final int featherEdge = (int) Math.floor(blastSQ * 0.05f);
-        final int delta = (int) Math.floor(blastSQ - distSQ);
+	protected boolean shouldEditPos(int x, int y, int z) {
+		final double distSQ = x * x + y * y + z * z;
+		final double blastSQ = this.getBlastRadius() * this.getBlastRadius();
 
-        if (delta < featherEdge)
-        {
-            final double p2 = 1 - (delta / (double) featherEdge);
-            return world().rand.nextFloat() < p2;
-        }
-        return true;
-    }
+		final int featherEdge = (int) Math.floor(blastSQ * 0.05f);
+		final int delta = (int) Math.floor(blastSQ - distSQ);
 
-    @Override
-    public void onBlastCompleted()
-    {
-        super.onBlastCompleted();
-        this.doDamageEntities(this.getBlastRadius() * 2, Integer.MAX_VALUE);
-    }
+		if (delta < featherEdge) {
+			final double p2 = 1 - (delta / (double) featherEdge);
+			return world().rand.nextFloat() < p2;
+		}
+		return true;
+	}
 
-    @Override
-    protected boolean onDamageEntity(Entity entity)
-    {
-        if (entity instanceof EntityExplosion)
-        {
-            if (((EntityExplosion) entity).getBlast() instanceof BlastRedmatter)
-            {
-                if (!MinecraftForge.EVENT_BUS.post(new BlastCancelEvent(this, ((EntityExplosion) entity).getBlast())))
-                {
-                    entity.setDead();
-                    return true;
-                }
-            }
-        }
+	@Override
+	public void onBlastCompleted() {
+		super.onBlastCompleted();
+		this.doDamageEntities(this.getBlastRadius() * 2, Integer.MAX_VALUE);
+	}
 
-        return false;
-    }
+	@Override
+	protected boolean onDamageEntity(Entity entity) {
+		if (entity instanceof EntityExplosion) {
+			if (((EntityExplosion) entity).getBlast() instanceof BlastRedmatter) {
+				if (!MinecraftForge.EVENT_BUS.post(new BlastCancelEvent(this, ((EntityExplosion) entity).getBlast()))) {
+					entity.setDead();
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 }

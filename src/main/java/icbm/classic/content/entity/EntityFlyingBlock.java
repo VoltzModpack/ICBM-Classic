@@ -18,220 +18,194 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-/** @author Calclavia */
-public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnData
-{
-    public static final float GRAVITY_DEFAULT = 0.045f;
+/**
+ * @author Calclavia
+ */
+public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnData {
 
-    private IBlockState _blockState;
+	public static final float GRAVITY_DEFAULT = 0.045f;
 
-    public float yawChange = 0;
-    public float pitchChange = 0;
+	private IBlockState _blockState;
 
-    public float gravity = GRAVITY_DEFAULT;
+	public float yawChange = 0;
+	public float pitchChange = 0;
 
-    public EntityFlyingBlock(World world)
-    {
-        super(world);
-        this.ticksExisted = 0;
-        this.preventEntitySpawning = true;
-        this.isImmuneToFire = true;
-        //this.yOffset = height / 2.0F;
-        this.setSize(0.98F, 0.98F);
-    }
+	public float gravity = GRAVITY_DEFAULT;
 
-    public EntityFlyingBlock(World world, BlockPos position, IBlockState state)
-    {
-        this(world);
-        this.setPosition(position.getX() + 0.5, position.getY(), position.getZ() + 0.5);
-        this.motionX = 0D;
-        this.motionY = 0D;
-        this.motionZ = 0D;
-        this._blockState = state;
-    }
+	public EntityFlyingBlock(World world) {
+		super(world);
+		this.ticksExisted = 0;
+		this.preventEntitySpawning = true;
+		this.isImmuneToFire = true;
+		//this.yOffset = height / 2.0F;
+		this.setSize(0.98F, 0.98F);
+	}
 
-    public EntityFlyingBlock(World world, BlockPos position, IBlockState state, float gravity)
-    {
-        this(world, position, state);
-        this.gravity = gravity;
-    }
+	public EntityFlyingBlock(World world, BlockPos position, IBlockState state) {
+		this(world);
+		this.setPosition(position.getX() + 0.5, position.getY(), position.getZ() + 0.5);
+		this.motionX = 0D;
+		this.motionY = 0D;
+		this.motionZ = 0D;
+		this._blockState = state;
+	}
 
-    public void restoreGravity()
-    {
-        gravity = GRAVITY_DEFAULT;
-    }
+	public EntityFlyingBlock(World world, BlockPos position, IBlockState state, float gravity) {
+		this(world, position, state);
+		this.gravity = gravity;
+	}
 
-    public IBlockState getBlockState()
-    {
-        if (_blockState == null)
-        {
-            _blockState = Blocks.STONE.getDefaultState();
-        }
-        return _blockState;
-    }
+	public void restoreGravity() {
+		gravity = GRAVITY_DEFAULT;
+	}
 
-    @Override
-    public String getName()
-    {
-        return "Flying Block [" + getBlockState() + ", " + hashCode() + "]";
-    }
+	public IBlockState getBlockState() {
+		if (_blockState == null) {
+			_blockState = Blocks.STONE.getDefaultState();
+		}
+		return _blockState;
+	}
 
-    @Override
-    public void writeSpawnData(ByteBuf data)
-    {
-        ByteBufUtils.writeTag(data, NBTUtil.writeBlockState(new NBTTagCompound(), getBlockState()));
-        data.writeFloat(this.gravity);
-        data.writeFloat(yawChange);
-        data.writeFloat(pitchChange);
-    }
+	@Override
+	public String getName() {
+		return "Flying Block [" + getBlockState() + ", " + hashCode() + "]";
+	}
 
-    @Override
-    public void readSpawnData(ByteBuf data)
-    {
-        _blockState = NBTUtil.readBlockState(ByteBufUtils.readTag(data));
-        gravity = data.readFloat();
-        yawChange = data.readFloat();
-        pitchChange = data.readFloat();
-    }
+	@Override
+	public void writeSpawnData(ByteBuf data) {
+		ByteBufUtils.writeTag(data, NBTUtil.writeBlockState(new NBTTagCompound(), getBlockState()));
+		data.writeFloat(this.gravity);
+		data.writeFloat(yawChange);
+		data.writeFloat(pitchChange);
+	}
 
-    @Override
-    protected void entityInit()
-    {
-    }
+	@Override
+	public void readSpawnData(ByteBuf data) {
+		_blockState = NBTUtil.readBlockState(ByteBufUtils.readTag(data));
+		gravity = data.readFloat();
+		yawChange = data.readFloat();
+		pitchChange = data.readFloat();
+	}
 
-    @Override
-    public void onUpdate()
-    {
-        //Death state handling
-        if (!world.isRemote)
-        {
-            if (_blockState == null || ticksExisted > 20 * 60) //1 min despawn timer
-            {
-                this.setBlock();
-                return;
-            }
+	@Override
+	protected void entityInit() {
+	}
 
-            //TODO make a black list of blocks that shouldn't be a flying entity block
-            if (this.posY > 400 || this.posY < -40)
-            {
-                this.setDead();
-                return;
-            }
+	@Override
+	public void onUpdate() {
+		//Death state handling
+		if (!world.isRemote) {
+			if (_blockState == null || ticksExisted > 20 * 60) //1 min despawn timer
+			{
+				this.setBlock();
+				return;
+			}
 
-            if ((this.onGround && this.ticksExisted > 20))
-            {
-                this.setBlock();
-                return;
-            }
-        }
+			//TODO make a black list of blocks that shouldn't be a flying entity block
+			if (this.posY > 400 || this.posY < -40) {
+				this.setDead();
+				return;
+			}
 
-        //Apply gravity acceleration
-        this.motionY -= gravity;
+			if ((this.onGround && this.ticksExisted > 20)) {
+				this.setBlock();
+				return;
+			}
+		}
 
-        //Do movement
-        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+		//Apply gravity acceleration
+		this.motionY -= gravity;
 
-        //Handle collisions
-        if (this.collided)
-        {
-            this.setPosition(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
-        }
+		//Do movement
+		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
-        //Animation
-        if (this.yawChange > 0)
-        {
-            this.rotationYaw += this.yawChange;
-            this.yawChange -= 2;
-        }
+		//Handle collisions
+		if (this.collided) {
+			this.setPosition(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
+		}
 
-        if (this.pitchChange > 0)
-        {
-            this.rotationPitch += this.pitchChange;
-            this.pitchChange -= 2;
-        }
+		//Animation
+		if (this.yawChange > 0) {
+			this.rotationYaw += this.yawChange;
+			this.yawChange -= 2;
+		}
 
-        //Tick update
-        this.ticksExisted++;
-    }
+		if (this.pitchChange > 0) {
+			this.rotationPitch += this.pitchChange;
+			this.pitchChange -= 2;
+		}
 
-    public void setBlock()
-    {
-        if (!this.world.isRemote)
-        {
-            final int i = MathHelper.floor(posX);
-            final int j = MathHelper.floor(posY);
-            final int k = MathHelper.floor(posZ);
+		//Tick update
+		this.ticksExisted++;
+	}
 
-            final BlockPos pos = new BlockPos(i, j, k);
+	public void setBlock() {
+		if (!this.world.isRemote) {
+			final int i = MathHelper.floor(posX);
+			final int j = MathHelper.floor(posY);
+			final int k = MathHelper.floor(posZ);
 
-            final IBlockState currentState = world.getBlockState(pos);
+			final BlockPos pos = new BlockPos(i, j, k);
 
-            if (currentState.getBlock().isReplaceable(this.world, pos))
-            {
-                this.world.setBlockState(pos, getBlockState(), 3);
-            }
-            //TODO find first block if not replaceable
-        }
+			final IBlockState currentState = world.getBlockState(pos);
 
-        this.setDead();
-    }
+			if (currentState.getBlock().isReplaceable(this.world, pos)) {
+				this.world.setBlockState(pos, getBlockState(), 3);
+			}
+			//TODO find first block if not replaceable
+		}
 
-    /** Checks to see if and entity is touching the missile. If so, blow up! */
+		this.setDead();
+	}
 
-    @Override
-    public AxisAlignedBB getCollisionBox(Entity par1Entity)
-    {
-        // Make sure the entity is not an item
-        if (par1Entity instanceof EntityLiving)
-        {
-            if (getBlockState() != null)
-            {
-                if (!(getBlockState().getBlock() instanceof IFluidBlock) && (this.motionX > 2 || this.motionY > 2 || this.motionZ > 2))
-                {
-                    int damage = (int) (1.2 * (Math.abs(this.motionX) + Math.abs(this.motionY) + Math.abs(this.motionZ)));
-                    ((EntityLiving) par1Entity).attackEntityFrom(DamageSource.FALLING_BLOCK, damage);
-                }
-            }
-        }
+	/**
+	 * Checks to see if and entity is touching the missile. If so, blow up!
+	 */
 
-        return null;
-    }
+	@Override
+	public AxisAlignedBB getCollisionBox(Entity par1Entity) {
+		// Make sure the entity is not an item
+		if (par1Entity instanceof EntityLiving) {
+			if (getBlockState() != null) {
+				if (!(getBlockState().getBlock() instanceof IFluidBlock) && (this.motionX > 2 || this.motionY > 2 || this.motionZ > 2)) {
+					int damage = (int) (1.2 * (Math.abs(this.motionX) + Math.abs(this.motionY) + Math.abs(this.motionZ)));
+					((EntityLiving) par1Entity).attackEntityFrom(DamageSource.FALLING_BLOCK, damage);
+				}
+			}
+		}
 
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-        if (_blockState != null)
-        {
-            nbttagcompound.setTag(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new NBTTagCompound(), _blockState));
-        }
-        nbttagcompound.setFloat(NBTConstants.GRAVITY, this.gravity);
-    }
+		return null;
+	}
 
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        if (nbttagcompound.hasKey(NBTConstants.BLOCK_STATE))
-        {
-            _blockState = NBTUtil.readBlockState(nbttagcompound.getCompoundTag(NBTConstants.BLOCK_STATE));
-        }
-        this.gravity = nbttagcompound.getFloat(NBTConstants.GRAVITY);
-    }
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+		if (_blockState != null) {
+			nbttagcompound.setTag(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new NBTTagCompound(), _blockState));
+		}
+		nbttagcompound.setFloat(NBTConstants.GRAVITY, this.gravity);
+	}
 
-    @Override
-    public boolean canBePushed()
-    {
-        return true;
-    }
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+		if (nbttagcompound.hasKey(NBTConstants.BLOCK_STATE)) {
+			_blockState = NBTUtil.readBlockState(nbttagcompound.getCompoundTag(NBTConstants.BLOCK_STATE));
+		}
+		this.gravity = nbttagcompound.getFloat(NBTConstants.GRAVITY);
+	}
 
-    @Override
-    protected boolean canTriggerWalking()
-    {
-        return true;
-    }
+	@Override
+	public boolean canBePushed() {
+		return true;
+	}
 
-    @Override
-    public boolean canBeCollidedWith()
-    {
-        return true;
-    }
+	@Override
+	protected boolean canTriggerWalking() {
+		return true;
+	}
+
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
 }

@@ -20,115 +20,106 @@ import static java.lang.Math.sin;
  * @author Calclavia
  */
 @Deprecated
-public class ThreadLargeExplosion extends ThreadExplosion
-{
-    public IThreadCallBack callBack;
+public class ThreadLargeExplosion extends ThreadExplosion {
 
-    public ThreadLargeExplosion(Blast blast, int range, float energy, Entity source, IThreadCallBack callBack)
-    {
-        super(blast, range, energy, source);
-        this.callBack = callBack;
-    }
+	public IThreadCallBack callBack;
 
-    public ThreadLargeExplosion(Blast blast, int range, float energy, Entity source)
-    {
-        this(blast, range, energy, source, new BasicResistanceCallBack(blast));
-    }
+	public ThreadLargeExplosion(Blast blast, int range, float energy, Entity source, IThreadCallBack callBack) {
+		super(blast, range, energy, source);
+		this.callBack = callBack;
+	}
 
-    @Override
-    public void doRun(World world, Location center)
-    {
-        long time = System.nanoTime();
+	public ThreadLargeExplosion(Blast blast, int range, float energy, Entity source) {
+		this(blast, range, energy, source, new BasicResistanceCallBack(blast));
+	}
 
-        //How many steps to go per rotation
-        final int steps = (int) Math.ceil(Math.PI / Math.atan(1.0D / this.radius));
+	@Override
+	public void doRun(World world, Location center) {
+		long time = System.nanoTime();
 
-        double x;
-        double y;
-        double z;
+		//How many steps to go per rotation
+		final int steps = (int) Math.ceil(Math.PI / Math.atan(1.0D / this.radius));
 
-        double dx;
-        double dy;
-        double dz;
+		double x;
+		double y;
+		double z;
 
-        double power;
+		double dx;
+		double dy;
+		double dz;
 
-        double yaw;
-        double pitch;
+		double power;
 
-        for (int phi_n = 0; phi_n < 2 * steps && !kill; phi_n++)
-        {
-            for (int theta_n = 0; theta_n < steps && !kill; theta_n++)
-            {
-                //Calculate power
-                power = this.energy - (this.energy * world.rand.nextFloat() / 2);
+		double yaw;
+		double pitch;
 
-                //Get angles for rotation steps
-                yaw = Math.PI * 2 / steps * phi_n;
-                pitch = Math.PI / steps * theta_n;
+		for (int phi_n = 0; phi_n < 2 * steps && !kill; phi_n++) {
+			for (int theta_n = 0; theta_n < steps && !kill; theta_n++) {
+				//Calculate power
+				power = this.energy - (this.energy * world.rand.nextFloat() / 2);
 
-                //Figure out vector to move for trace (cut in half to improve trace skipping blocks)
-                dx = sin(pitch) * cos(yaw) * 0.5;
-                dy = cos(pitch) * 0.5;
-                dz = sin(pitch) * sin(yaw) * 0.5;
+				//Get angles for rotation steps
+				yaw = Math.PI * 2 / steps * phi_n;
+				pitch = Math.PI / steps * theta_n;
 
-                //Reset position to current
-                x = center.x();
-                y = center.y();
-                z = center.z();
+				//Figure out vector to move for trace (cut in half to improve trace skipping blocks)
+				dx = sin(pitch) * cos(yaw) * 0.5;
+				dy = cos(pitch) * 0.5;
+				dz = sin(pitch) * sin(yaw) * 0.5;
 
-                BlockPos prevPos = null;
+				//Reset position to current
+				x = center.x();
+				y = center.y();
+				z = center.z();
 
-                //Trace from start to end
-                while (center.distance(x, y, z) <= this.radius && power > 0 && !kill)
-                {
-                    //Consume power per loop
-                    power -= 0.3F * 0.75F * 5; //TODO why the magic numbers?
+				BlockPos prevPos = null;
 
-                    //Convert double position to int position as block pos
-                    final BlockPos blockPos = new BlockPos(Math.floor(x), Math.floor(y), Math.floor(z));
+				//Trace from start to end
+				while (center.distance(x, y, z) <= this.radius && power > 0 && !kill) {
+					//Consume power per loop
+					power -= 0.3F * 0.75F * 5; //TODO why the magic numbers?
 
-                    //Only do action one time per block (not a perfect solution, but solves double hit on the same block in the same line)
-                    if (prevPos != blockPos)
-                    {
-                        if(!position.world().isBlockLoaded(blockPos)) //TODO: find better fix for non main thread loading
-                            continue;
+					//Convert double position to int position as block pos
+					final BlockPos blockPos = new BlockPos(Math.floor(x), Math.floor(y), Math.floor(z));
 
-                        //Get block state and block from position
-                        final IBlockState state = world.getBlockState(blockPos);
-                        final Block block = state.getBlock();
+					//Only do action one time per block (not a perfect solution, but solves double hit on the same block in the same line)
+					if (prevPos != blockPos) {
+						if (!position.world().isBlockLoaded(blockPos)) //TODO: find better fix for non main thread loading
+							continue;
 
-                        //Ignore air blocks && Only break block that can be broken
-                        if (!block.isAir(state, world, blockPos) && state.getBlockHardness(world, blockPos) >= 0)
-                        {
-                            //Consume power based on block
-                            power -= this.callBack.getResistance(world, position, blockPos, source, block);
+						//Get block state and block from position
+						final IBlockState state = world.getBlockState(blockPos);
+						final Block block = state.getBlock();
 
-                            //If we still have power, break the block
-                            if (power > 0f)
-                            {
-                                this.blast.addThreadResult(blockPos);
-                            }
-                        }
-                    }
+						//Ignore air blocks && Only break block that can be broken
+						if (!block.isAir(state, world, blockPos) && state.getBlockHardness(world, blockPos) >= 0) {
+							//Consume power based on block
+							power -= this.callBack.getResistance(world, position, blockPos, source, block);
 
-                    //Note previous block
-                    prevPos = blockPos;
+							//If we still have power, break the block
+							if (power > 0f) {
+								this.blast.addThreadResult(blockPos);
+							}
+						}
+					}
 
-                    //Move forward
-                    x += dx;
-                    y += dy;
-                    z += dz;
-                }
-            }
-        }
+					//Note previous block
+					prevPos = blockPos;
 
-        if (ConfigDebug.DEBUG_THREADS)
-        {
-            time = System.nanoTime() - time;
-            String timeString = StringHelpers.formatNanoTime(time);
-            String msg = "ThreadLargeExplosion#run() -> Completed calculation in [%s] \nBlast: %s\nCompleted: %s\nRadius: %s\nEnergy: %s";
-            ICBMClassic.logger().info(String.format(msg, timeString, blast, !kill, radius, energy));
-        }
-    }
+					//Move forward
+					x += dx;
+					y += dy;
+					z += dz;
+				}
+			}
+		}
+
+		if (ConfigDebug.DEBUG_THREADS) {
+			time = System.nanoTime() - time;
+			String timeString = StringHelpers.formatNanoTime(time);
+			String msg = "ThreadLargeExplosion#run() -> Completed calculation in [%s] \nBlast: %s\nCompleted: %s\nRadius: %s\nEnergy: %s";
+			ICBMClassic.logger().info(String.format(msg, timeString, blast, !kill, radius, energy));
+		}
+	}
+
 }

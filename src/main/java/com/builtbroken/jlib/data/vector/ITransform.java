@@ -5,7 +5,8 @@ package com.builtbroken.jlib.data.vector;
  *
  * @Calclavia
  */
-public interface ITransform
-{
+public interface ITransform {
+
 	IPos3D transform(IPos3D vector);
+
 }

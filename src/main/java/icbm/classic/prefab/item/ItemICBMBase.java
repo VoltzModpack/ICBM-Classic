@@ -8,11 +8,11 @@ import icbm.classic.ICBMClassic;
  * @author DarkGuardsman
  */
 @Deprecated
-public class ItemICBMBase extends ItemBase
-{
-    public ItemICBMBase(String name)
-    {
-        setName(name);
-        setCreativeTab(ICBMClassic.CREATIVE_TAB);
-    }
+public class ItemICBMBase extends ItemBase {
+
+	public ItemICBMBase(String name) {
+		setName(name);
+		setCreativeTab(ICBMClassic.CREATIVE_TAB);
+	}
+
 }

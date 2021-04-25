@@ -6,21 +6,20 @@ import net.minecraft.world.World;
 
 /**
  * Basic version of the capability that acts as a placeholder
- *
- *
+ * <p>
+ * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/12/2018.
  */
-public class CapabilityEmpChecker implements IEMPReceiver
-{
-    public int timesHitByEMP = 0;
+public class CapabilityEmpChecker implements IEMPReceiver {
 
-    @Override
-    public float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction)
-    {
-        if (doAction)
-        {
-            timesHitByEMP++;
-        }
-        return power;
-    }
+	public int timesHitByEMP = 0;
+
+	@Override
+	public float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction) {
+		if (doAction) {
+			timesHitByEMP++;
+		}
+		return power;
+	}
+
 }

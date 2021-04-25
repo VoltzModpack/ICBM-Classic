@@ -10,25 +10,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 
 @Deprecated
-public class BasicResistanceCallBack implements IThreadCallBack
-{
-    public final Blast blast;
+public class BasicResistanceCallBack implements IThreadCallBack {
 
-    public BasicResistanceCallBack(Blast blast)
-    {
-        this.blast = blast;
-    }
+	public final Blast blast;
 
-    @Override
-    public float getResistance(World world, IPos3D blastCenter, BlockPos pos, Entity source, Block block)
-    {
-        if (block instanceof BlockLiquid || block instanceof IFluidBlock)
-        {
-            return 0.25f;
-        }
-        else
-        {
-            return block.getExplosionResistance(world, pos, source, blast);
-        }
-    }
+	public BasicResistanceCallBack(Blast blast) {
+		this.blast = blast;
+	}
+
+	@Override
+	public float getResistance(World world, IPos3D blastCenter, BlockPos pos, Entity source, Block block) {
+		if (block instanceof BlockLiquid || block instanceof IFluidBlock) {
+			return 0.25f;
+		} else {
+			return block.getExplosionResistance(world, pos, source, blast);
+		}
+	}
+
 }

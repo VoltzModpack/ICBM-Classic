@@ -7,50 +7,44 @@ import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 12/30/2018.
  */
-public class EntityXmasSkeletonBoss extends EntityXmasSkeleton
-{
-    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
+public class EntityXmasSkeletonBoss extends EntityXmasSkeleton {
 
-    public EntityXmasSkeletonBoss(World worldIn)
-    {
-        super(worldIn);
-        this.setSize(0.8F, 4F);
-    }
+	private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
 
-    @Override
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
-        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
-    }
+	public EntityXmasSkeletonBoss(World worldIn) {
+		super(worldIn);
+		this.setSize(0.8F, 4F);
+	}
 
-    @Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
-    }
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
+		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+	}
 
-    @Override
-    public float getEyeHeight()
-    {
-        return 3.4f;
-    }
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
+	}
 
-    @Override
-    public void addTrackingPlayer(EntityPlayerMP player)
-    {
-        super.addTrackingPlayer(player);
-        this.bossInfo.addPlayer(player);
-    }
+	@Override
+	public float getEyeHeight() {
+		return 3.4f;
+	}
 
-    @Override
-    public void removeTrackingPlayer(EntityPlayerMP player)
-    {
-        super.removeTrackingPlayer(player);
-        this.bossInfo.removePlayer(player);
-    }
+	@Override
+	public void addTrackingPlayer(EntityPlayerMP player) {
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void removeTrackingPlayer(EntityPlayerMP player) {
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
+
 }

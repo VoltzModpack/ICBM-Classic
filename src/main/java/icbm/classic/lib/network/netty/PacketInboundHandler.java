@@ -1,7 +1,7 @@
 package icbm.classic.lib.network.netty;
 
-import icbm.classic.lib.network.IPacket;
 import icbm.classic.ICBMClassic;
+import icbm.classic.lib.network.IPacket;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -15,31 +15,26 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  * @since 31/05/14
  */
 @ChannelHandler.Sharable
-public class PacketInboundHandler extends SimpleChannelInboundHandler<IPacket>
-{
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, IPacket packet) throws Exception
-    {
-        try
-        {
-            INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+public class PacketInboundHandler extends SimpleChannelInboundHandler<IPacket> {
 
-            switch (FMLCommonHandler.instance().getEffectiveSide())
-            {
-                case CLIENT:
-                    packet.handleClientSide();
-                    break;
-                case SERVER:
-                    packet.handleServerSide(((NetHandlerPlayServer) netHandler).player);
-                    break;
-                default:
-                    break;
-            }
-        }
-        catch (Exception e)
-        {
-            ICBMClassic.logger().error("Failed to handle packet " + packet, e);
-        }
-    }
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, IPacket packet) throws Exception {
+		try {
+			INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+
+			switch (FMLCommonHandler.instance().getEffectiveSide()) {
+				case CLIENT:
+					packet.handleClientSide();
+					break;
+				case SERVER:
+					packet.handleServerSide(((NetHandlerPlayServer) netHandler).player);
+					break;
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			ICBMClassic.logger().error("Failed to handle packet " + packet, e);
+		}
+	}
 
 }

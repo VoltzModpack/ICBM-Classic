@@ -5,79 +5,71 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 1/1/2019.
  */
-public class EntityXmasCreeper extends EntityXmasZombie
-{
-    private boolean altGun = false;
+public class EntityXmasCreeper extends EntityXmasZombie {
 
-    public EntityXmasCreeper(World worldIn)
-    {
-        super(worldIn);
-        this.setSize(0.6F, 1.7F);
-    }
+	private boolean altGun = false;
 
-    @Override
-    public float getEyeHeight()
-    {
-        return 1.4F;
-    }
+	public EntityXmasCreeper(World worldIn) {
+		super(worldIn);
+		this.setSize(0.6F, 1.7F);
+	}
 
-    protected void debugProjectileSpawns()
-    {
-        double x = posX + getProjectileXOffset(null, 0, 0);
-        double y = posY + getProjectileYOffset(null, 0, 0);
-        double z = posZ + getProjectileZOffset(null, 0, 0);
+	@Override
+	public float getEyeHeight() {
+		return 1.4F;
+	}
 
-        world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, x, y, z, 0, 0, 0);
+	protected void debugProjectileSpawns() {
+		double x = posX + getProjectileXOffset(null, 0, 0);
+		double y = posY + getProjectileYOffset(null, 0, 0);
+		double z = posZ + getProjectileZOffset(null, 0, 0);
 
-        altGun = !altGun;
-        x = posX + getProjectileXOffset(null, 0, 0);
-        y = posY + getProjectileYOffset(null, 0, 0);
-        z = posZ + getProjectileZOffset(null, 0, 0);
+		world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, x, y, z, 0, 0, 0);
 
-        world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, x, y, z, 0, 0, 0);
+		altGun = !altGun;
+		x = posX + getProjectileXOffset(null, 0, 0);
+		y = posY + getProjectileYOffset(null, 0, 0);
+		z = posZ + getProjectileZOffset(null, 0, 0);
 
-        altGun = !altGun;
+		world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, x, y, z, 0, 0, 0);
 
-        double r = getFacingRotation();
-        x = posX + (Math.cos(r) - Math.sin(r)) * 0.4;
-        y = posY + getProjectileYOffset(null, 0, 0);
-        z = posZ + (Math.sin(r) + Math.cos(r)) * 0.4;
+		altGun = !altGun;
 
-        world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, x, y, z, 0, 0, 0);
-    }
+		double r = getFacingRotation();
+		x = posX + (Math.cos(r) - Math.sin(r)) * 0.4;
+		y = posY + getProjectileYOffset(null, 0, 0);
+		z = posZ + (Math.sin(r) + Math.cos(r)) * 0.4;
 
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
-    {
-        super.attackEntityWithRangedAttack(target, distanceFactor);
-        altGun = !altGun;
-        super.attackEntityWithRangedAttack(target, distanceFactor);
-    }
+		world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, x, y, z, 0, 0, 0);
+	}
 
-    @Override
-    protected int getDamageForGun()
-    {
-        return 2; //TODO change back to 3
-    }
+	@Override
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+		super.attackEntityWithRangedAttack(target, distanceFactor);
+		altGun = !altGun;
+		super.attackEntityWithRangedAttack(target, distanceFactor);
+	}
 
-    @Override
-    protected double getArmOffset()
-    {
-        return (altGun ? 0.35 : -0.35);
-    }
+	@Override
+	protected int getDamageForGun() {
+		return 2; //TODO change back to 3
+	}
 
-    @Override
-    protected double getForwardOffset()
-    {
-        return  0.5;
-    }
+	@Override
+	protected double getArmOffset() {
+		return (altGun ? 0.35 : -0.35);
+	}
 
-    @Override
-    protected double getProjectileYOffset(EntityLivingBase target, double delta, double distance)
-    {
-        return 1;
-    }
+	@Override
+	protected double getForwardOffset() {
+		return 0.5;
+	}
+
+	@Override
+	protected double getProjectileYOffset(EntityLivingBase target, double delta, double distance) {
+		return 1;
+	}
+
 }

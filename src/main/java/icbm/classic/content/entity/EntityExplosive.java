@@ -1,11 +1,11 @@
 package icbm.classic.content.entity;
 
-import icbm.classic.api.refs.ICBMExplosives;
 import icbm.classic.api.ICBMClassicAPI;
-import icbm.classic.lib.NBTConstants;
 import icbm.classic.api.caps.IEMPReceiver;
+import icbm.classic.api.refs.ICBMExplosives;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.api.tile.IRotatable;
+import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.capability.emp.CapabilityEMP;
 import icbm.classic.lib.capability.emp.CapabilityEmpKill;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveEntity;
@@ -25,218 +25,187 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
 
-public class EntityExplosive extends Entity implements IRotatable, IEntityAdditionalSpawnData
-{
-    // How long the fuse is (in ticks)
-    public int fuse = -1;
+public class EntityExplosive extends Entity implements IRotatable, IEntityAdditionalSpawnData {
 
-    private EnumFacing _facing = EnumFacing.NORTH;
+	// How long the fuse is (in ticks)
+	public int fuse = -1;
 
-    //Capabilities
-    public final IEMPReceiver capabilityEMP = new CapabilityEmpKill(this);
-    public final CapabilityExplosiveEntity capabilityExplosive = new CapabilityExplosiveEntity(this);
+	private EnumFacing _facing = EnumFacing.NORTH;
 
-    public EntityExplosive(World par1World)
-    {
-        super(par1World);
-        this.preventEntitySpawning = true;
-        this.setSize(0.98F, 0.98F);
-        //this.yOffset = this.height / 2.0F;
-    }
+	//Capabilities
+	public final IEMPReceiver capabilityEMP = new CapabilityEmpKill(this);
+	public final CapabilityExplosiveEntity capabilityExplosive = new CapabilityExplosiveEntity(this);
 
-    public EntityExplosive(World par1World, Pos position, EnumFacing orientation, ItemStack stack)
-    {
-        this(par1World);
-        this.setPosition(position.x(), position.y(), position.z());
-        float var8 = (float) (Math.random() * Math.PI * 2.0D);
-        this.motionX = (-((float) Math.sin(var8)) * 0.02F);
-        this.motionY = 0.20000000298023224D;
-        this.motionZ = (-((float) Math.cos(var8)) * 0.02F);
-        this.prevPosX = position.x();
-        this.prevPosY = position.y();
-        this.prevPosZ = position.z();
-        this._facing = orientation;
+	public EntityExplosive(World par1World) {
+		super(par1World);
+		this.preventEntitySpawning = true;
+		this.setSize(0.98F, 0.98F);
+		//this.yOffset = this.height / 2.0F;
+	}
 
-        capabilityExplosive.setStack(stack);
-    }
+	public EntityExplosive(World par1World, Pos position, EnumFacing orientation, ItemStack stack) {
+		this(par1World);
+		this.setPosition(position.x(), position.y(), position.z());
+		float var8 = (float) (Math.random() * Math.PI * 2.0D);
+		this.motionX = (-((float) Math.sin(var8)) * 0.02F);
+		this.motionY = 0.20000000298023224D;
+		this.motionZ = (-((float) Math.cos(var8)) * 0.02F);
+		this.prevPosX = position.x();
+		this.prevPosY = position.y();
+		this.prevPosZ = position.z();
+		this._facing = orientation;
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @Override
-    public void onUpdate()
-    {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+		capabilityExplosive.setStack(stack);
+	}
 
-        this.motionX *= 0.95;
-        this.motionY -= 0.045D;
-        this.motionZ *= 0.95;
+	/**
+	 * Called to update the entity's position/logic.
+	 */
+	@Override
+	public void onUpdate() {
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
 
-        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+		this.motionX *= 0.95;
+		this.motionY -= 0.045D;
+		this.motionZ *= 0.95;
 
-        if (this.onGround)
-        {
-            this.motionX *= 0.699999988079071D;
-            this.motionZ *= 0.699999988079071D;
-            this.motionY *= -0.5D;
-        }
+		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
-        //Init fuse
-        if (fuse == -1)
-        {
-            this.fuse = ICBMClassicAPI.EX_BLOCK_REGISTRY.getFuseTime(world, posX, posY, posZ, getExplosiveData().getRegistryID());
-        }
+		if (this.onGround) {
+			this.motionX *= 0.699999988079071D;
+			this.motionZ *= 0.699999988079071D;
+			this.motionY *= -0.5D;
+		}
 
-        //Tick fuse to render effects
-        ICBMClassicAPI.EX_BLOCK_REGISTRY.tickFuse(world, posX, posY, posZ, this.fuse, getExplosiveData().getRegistryID());
+		//Init fuse
+		if (fuse == -1) {
+			this.fuse = ICBMClassicAPI.EX_BLOCK_REGISTRY.getFuseTime(world, posX, posY, posZ, getExplosiveData().getRegistryID());
+		}
 
-        //Tick fuse
-        if (this.fuse-- < 1)
-        {
-            this.explode();
-        }
+		//Tick fuse to render effects
+		ICBMClassicAPI.EX_BLOCK_REGISTRY.tickFuse(world, posX, posY, posZ, this.fuse, getExplosiveData().getRegistryID());
 
-        super.onUpdate();
-    }
+		//Tick fuse
+		if (this.fuse-- < 1) {
+			this.explode();
+		}
 
-    public void explode()
-    {
-        //TODO hook particles to blast, as well hook to explosive handler
-        this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, 0.0D, 0.0D, 0.0D);
-        ExplosiveHandler.createExplosion(this, this.world, this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, getExplosiveCap());
-        this.setDead();
-    }
+		super.onUpdate();
+	}
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
-    {
-        this.fuse = nbt.getByte(NBTConstants.FUSE);
-        getExplosiveCap().deserializeNBT(nbt.getCompoundTag(NBTConstants.EXPLOSIVE_STACK));
-    }
+	public void explode() {
+		//TODO hook particles to blast, as well hook to explosive handler
+		this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, 0.0D, 0.0D, 0.0D);
+		ExplosiveHandler.createExplosion(this, this.world, this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, getExplosiveCap());
+		this.setDead();
+	}
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
-    {
-        nbt.setByte(NBTConstants.FUSE, (byte) this.fuse);
-        nbt.setTag(NBTConstants.EXPLOSIVE_STACK, getExplosiveCap().serializeNBT());
-    }
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
+		this.fuse = nbt.getByte(NBTConstants.FUSE);
+		getExplosiveCap().deserializeNBT(nbt.getCompoundTag(NBTConstants.EXPLOSIVE_STACK));
+	}
 
-    @Override
-    protected void entityInit()
-    {
-    }
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
+		nbt.setByte(NBTConstants.FUSE, (byte) this.fuse);
+		nbt.setTag(NBTConstants.EXPLOSIVE_STACK, getExplosiveCap().serializeNBT());
+	}
 
-    @Override
-    protected boolean canTriggerWalking()
-    {
-        return true;
-    }
+	@Override
+	protected void entityInit() {
+	}
 
-    @Override
-    public boolean canBeCollidedWith()
-    {
-        return true;
-    }
+	@Override
+	protected boolean canTriggerWalking() {
+		return true;
+	}
 
-    @Override
-    public boolean canBePushed()
-    {
-        return true;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
 
-    @Override
-    public EnumFacing getDirection()
-    {
-        if (_facing == null)
-        {
-            _facing = EnumFacing.NORTH;
-        }
-        return this._facing;
-    }
+	@Override
+	public boolean canBePushed() {
+		return true;
+	}
 
-    @Override
-    public void setDirection(EnumFacing facingDirection)
-    {
-        this._facing = facingDirection;
-    }
+	@Override
+	public EnumFacing getDirection() {
+		if (_facing == null) {
+			_facing = EnumFacing.NORTH;
+		}
+		return this._facing;
+	}
 
-    @Override
-    public void writeSpawnData(ByteBuf data)
-    {
-        data.writeInt(this.fuse);
-        data.writeByte(getDirection().ordinal());
-        ByteBufUtils.writeTag(data, getExplosiveCap().serializeNBT());
-    }
+	@Override
+	public void setDirection(EnumFacing facingDirection) {
+		this._facing = facingDirection;
+	}
 
-    @Override
-    public void readSpawnData(ByteBuf data)
-    {
-        this.fuse = data.readInt();
-        this._facing = EnumFacing.byIndex(data.readByte());
-        getExplosiveCap().deserializeNBT(ByteBufUtils.readTag(data));
-    }
+	@Override
+	public void writeSpawnData(ByteBuf data) {
+		data.writeInt(this.fuse);
+		data.writeByte(getDirection().ordinal());
+		ByteBufUtils.writeTag(data, getExplosiveCap().serializeNBT());
+	}
 
-    public CapabilityExplosiveEntity getExplosiveCap()
-    {
-        return capabilityExplosive;
-    }
+	@Override
+	public void readSpawnData(ByteBuf data) {
+		this.fuse = data.readInt();
+		this._facing = EnumFacing.byIndex(data.readByte());
+		getExplosiveCap().deserializeNBT(ByteBufUtils.readTag(data));
+	}
 
-    public IExplosiveData getExplosiveData()
-    {
-        if (getExplosiveCap() != null)
-        {
-            final IExplosiveData data = getExplosiveCap().getExplosiveData();
-            if (data != null)
-            {
-                return data;
-            }
-        }
-        return ICBMExplosives.CONDENSED;
-    }
+	public CapabilityExplosiveEntity getExplosiveCap() {
+		return capabilityExplosive;
+	}
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityEMP.EMP)
-        {
-            return (T) capabilityEMP;
-        }
-        else if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY)
-        {
-            return (T) getExplosiveCap();
-        }
-        return super.getCapability(capability, facing);
-    }
+	public IExplosiveData getExplosiveData() {
+		if (getExplosiveCap() != null) {
+			final IExplosiveData data = getExplosiveCap().getExplosiveData();
+			if (data != null) {
+				return data;
+			}
+		}
+		return ICBMExplosives.CONDENSED;
+	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityEMP.EMP)
-        {
-            return true;
-        }
-        else if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY)
-        {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
-    }
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityEMP.EMP) {
+			return (T) capabilityEMP;
+		} else if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
+			return (T) getExplosiveCap();
+		}
+		return super.getCapability(capability, facing);
+	}
 
-    @Override
-    public String getName()
-    {
-        if (getExplosiveData() != null)
-        {
-            return "Explosive[" + getExplosiveData().getRegistryName() + "]";
-        }
-        return "Explosive";
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityEMP.EMP) {
+			return true;
+		} else if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public String getName() {
+		if (getExplosiveData() != null) {
+			return "Explosive[" + getExplosiveData().getRegistryName() + "]";
+		}
+		return "Explosive";
+	}
+
 }

@@ -12,60 +12,53 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedGlass extends Block
-{
-    public BlockReinforcedGlass()
-    {
-        super(Material.GLASS);
-        this.setRegistryName(ICBMConstants.PREFIX + "reinforcedGlass");
-        this.setTranslationKey(ICBMConstants.PREFIX + "reinforcedGlass");
-        this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
-        this.setHardness(10);
-        this.setResistance(48);
-    }
+public class BlockReinforcedGlass extends Block {
 
-    @Override
-    protected boolean canSilkHarvest()
-    {
-        return true;
-    }
+	public BlockReinforcedGlass() {
+		super(Material.GLASS);
+		this.setRegistryName(ICBMConstants.PREFIX + "reinforcedGlass");
+		this.setTranslationKey(ICBMConstants.PREFIX + "reinforcedGlass");
+		this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
+		this.setHardness(10);
+		this.setResistance(48);
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	protected boolean canSilkHarvest() {
+		return true;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
-        IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-        Block block = iblockstate.getBlock();
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-        if (blockState != iblockstate)
-        {
-            return true;
-        }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
+		Block block = iblockstate.getBlock();
 
-        if (block == this)
-        {
-            return false;
-        }
+		if (blockState != iblockstate) {
+			return true;
+		}
 
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
+		if (block == this) {
+			return false;
+		}
+
+		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+
 }

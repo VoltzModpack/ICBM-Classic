@@ -1,264 +1,264 @@
 {
   "airstrike": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:airstrike",
-    "sounds": [
-      {
-        "name": "icbmclassic:airstrike",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:airstrike",
+	"sounds": [
+	  {
+		"name": "icbmclassic:airstrike",
+		"sream": false
+	  }
+	]
   },
   "alarm": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:alarm",
-    "sounds": [
-      {
-        "name": "icbmclassic:alarm",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:alarm",
+	"sounds": [
+	  {
+		"name": "icbmclassic:alarm",
+		"sream": false
+	  }
+	]
   },
   "antigravity": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.antigravity",
-    "sounds": [
-      {
-        "name": "icbmclassic:antigravity",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.antigravity",
+	"sounds": [
+	  {
+		"name": "icbmclassic:antigravity",
+		"sream": false
+	  }
+	]
   },
   "antimatter": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.antimatter",
-    "sounds": [
-      {
-        "name": "icbmclassic:antimatter",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.antimatter",
+	"sounds": [
+	  {
+		"name": "icbmclassic:antimatter",
+		"sream": false
+	  }
+	]
   },
   "beamcharging": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:beam.charge",
-    "sounds": [
-      {
-        "name": "icbmclassic:beamcharging",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:beam.charge",
+	"sounds": [
+	  {
+		"name": "icbmclassic:beamcharging",
+		"sream": false
+	  }
+	]
   },
   "collapse": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.collapse",
-    "sounds": [
-      {
-        "name": "icbmclassic:collapse1",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse2",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse3",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse4",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse5",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse6",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse7",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:collapse8",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.collapse",
+	"sounds": [
+	  {
+		"name": "icbmclassic:collapse1",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse2",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse3",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse4",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse5",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse6",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse7",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:collapse8",
+		"sream": false
+	  }
+	]
   },
   "debilitation": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.debilitation",
-    "sounds": [
-      {
-        "name": "icbmclassic:debilitation",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.debilitation",
+	"sounds": [
+	  {
+		"name": "icbmclassic:debilitation",
+		"sream": false
+	  }
+	]
   },
   "emp": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.emp",
-    "sounds": [
-      {
-        "name": "icbmclassic:emp",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.emp",
+	"sounds": [
+	  {
+		"name": "icbmclassic:emp",
+		"sream": false
+	  }
+	]
   },
   "explosion": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion",
-    "sounds": [
-      {
-        "name": "icbmclassic:explosion1",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion",
+	"sounds": [
+	  {
+		"name": "icbmclassic:explosion1",
+		"sream": false
+	  }
+	]
   },
   "explosionfire": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.fire",
-    "sounds": [
-      {
-        "name": "icbmclassic:explosionfire",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.fire",
+	"sounds": [
+	  {
+		"name": "icbmclassic:explosionfire",
+		"sream": false
+	  }
+	]
   },
   "gasleak": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:gas.leak",
-    "sounds": [
-      {
-        "name": "icbmclassic:gasleak",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:gas.leak",
+	"sounds": [
+	  {
+		"name": "icbmclassic:gasleak",
+		"sream": false
+	  }
+	]
   },
   "hypersonic": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.hypersonic",
-    "sounds": [
-      {
-        "name": "icbmclassic:hypersonic",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.hypersonic",
+	"sounds": [
+	  {
+		"name": "icbmclassic:hypersonic",
+		"sream": false
+	  }
+	]
   },
   "interface": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:interface",
-    "sounds": [
-      {
-        "name": "icbmclassic:interface1",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:interface",
+	"sounds": [
+	  {
+		"name": "icbmclassic:interface1",
+		"sream": false
+	  }
+	]
   },
   "laser": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:laser",
-    "sounds": [
-      {
-        "name": "icbmclassic:laser1",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:laser",
+	"sounds": [
+	  {
+		"name": "icbmclassic:laser1",
+		"sream": false
+	  }
+	]
   },
   "lasershot": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:laser.shot",
-    "sounds": [
-      {
-        "name": "icbmclassic:lasershot",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:laser.shot",
+	"sounds": [
+	  {
+		"name": "icbmclassic:lasershot",
+		"sream": false
+	  }
+	]
   },
   "machinehum": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:machine.hum",
-    "sounds": [
-      {
-        "name": "icbmclassic:machinehum",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:machine.hum",
+	"sounds": [
+	  {
+		"name": "icbmclassic:machinehum",
+		"sream": false
+	  }
+	]
   },
   "missileinair": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:missile.movement",
-    "sounds": [
-      {
-        "name": "icbmclassic:missileinair_short",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:missile.movement",
+	"sounds": [
+	  {
+		"name": "icbmclassic:missileinair_short",
+		"sream": false
+	  }
+	]
   },
   "missilelaunch": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:missile.launch",
-    "sounds": [
-      {
-        "name": "icbmclassic:missilelaunch1",
-        "sream": false
-      },
-      {
-        "name": "icbmclassic:missilelaunch2",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:missile.launch",
+	"sounds": [
+	  {
+		"name": "icbmclassic:missilelaunch1",
+		"sream": false
+	  },
+	  {
+		"name": "icbmclassic:missilelaunch2",
+		"sream": false
+	  }
+	]
   },
   "powerdown": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:power.down",
-    "sounds": [
-      {
-        "name": "icbmclassic:powerdown",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:power.down",
+	"sounds": [
+	  {
+		"name": "icbmclassic:powerdown",
+		"sream": false
+	  }
+	]
   },
   "radaralarm": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:alarm.radar",
-    "sounds": [
-      {
-        "name": "icbmclassic:radaralarm",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:alarm.radar",
+	"sounds": [
+	  {
+		"name": "icbmclassic:radaralarm",
+		"sream": false
+	  }
+	]
   },
   "redmatter": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.redmatter",
-    "sounds": [
-      {
-        "name": "icbmclassic:redmatter",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.redmatter",
+	"sounds": [
+	  {
+		"name": "icbmclassic:redmatter",
+		"sream": false
+	  }
+	]
   },
   "sonicwave": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:explosion.sonicwave",
-    "sounds": [
-      {
-        "name": "icbmclassic:sonicwave",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:explosion.sonicwave",
+	"sounds": [
+	  {
+		"name": "icbmclassic:sonicwave",
+		"sream": false
+	  }
+	]
   },
   "targetlocked": {
-    "category": "block",
-    "subtitle": "subtitle.icbmclassic:target.locked",
-    "sounds": [
-      {
-        "name": "icbmclassic:targetlocked",
-        "sream": false
-      }
-    ]
+	"category": "block",
+	"subtitle": "subtitle.icbmclassic:target.locked",
+	"sounds": [
+	  {
+		"name": "icbmclassic:targetlocked",
+		"sream": false
+	  }
+	]
   }
 }

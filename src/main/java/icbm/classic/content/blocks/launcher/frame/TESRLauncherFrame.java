@@ -11,32 +11,30 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 1/10/2017.
  */
-public class TESRLauncherFrame extends TileEntitySpecialRenderer<TileLauncherFrame>
-{
-    public static final ModelLauncerFrame MODEL = new ModelLauncerFrame();
-    public static final ResourceLocation TEXTURE_FILE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/models/" + "launcher_0.png");
+public class TESRLauncherFrame extends TileEntitySpecialRenderer<TileLauncherFrame> {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void render(TileLauncherFrame frame, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-    {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x + 0.5F, (float) y + 1.25F, (float) z + 0.5F);
-        GlStateManager.scale(1f, 0.85f, 1f);
+	public static final ModelLauncerFrame MODEL = new ModelLauncerFrame();
+	public static final ResourceLocation TEXTURE_FILE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/models/" + "launcher_0.png");
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FILE);
-        GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void render(TileLauncherFrame frame, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate((float) x + 0.5F, (float) y + 1.25F, (float) z + 0.5F);
+		GlStateManager.scale(1f, 0.85f, 1f);
 
-        if (frame.getRotation() != EnumFacing.NORTH && frame.getRotation() != EnumFacing.SOUTH)
-        {
-            GlStateManager.rotate(90F, 0.0F, 180F, 1.0F);
-        }
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FILE);
+		GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
 
-        MODEL.render(0.0625F);
+		if (frame.getRotation() != EnumFacing.NORTH && frame.getRotation() != EnumFacing.SOUTH) {
+			GlStateManager.rotate(90F, 0.0F, 180F, 1.0F);
+		}
 
-        GlStateManager.popMatrix();
-    }
+		MODEL.render(0.0625F);
+
+		GlStateManager.popMatrix();
+	}
+
 }

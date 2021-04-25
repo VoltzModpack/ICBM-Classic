@@ -7,84 +7,76 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 /**
- *
  * Created by Dark(DarkGuardsman, Robert) on 12/31/2018.
  */
-public class EntityXmasRPG extends EntityFireball
-{
-    public EntityXmasRPG(World worldIn)
-    {
-        super(worldIn);
-        this.setSize(0.3125F, 0.3125F);
-    }
+public class EntityXmasRPG extends EntityFireball {
 
-    @Override
-    public void onUpdate()
-    {
-        super.onUpdate();
+	public EntityXmasRPG(World worldIn) {
+		super(worldIn);
+		this.setSize(0.3125F, 0.3125F);
+	}
 
-        if(!world.isRemote && ticksExisted > 100)
-        {
-            setDead();
-        }
-    }
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
 
-    /**
-     * Uses the provided coordinates as a heading and determines the velocity from it with the set
-     * force and random variance. Args: x, y, z, force, forceVariation
-     */
-    public void setArrowHeading(double vecX, double vecY, double vecZ, float scale, float random)
-    {
-        //Normalize vector
-        float mag = MathHelper.sqrt(vecX * vecX + vecY * vecY + vecZ * vecZ);
-        vecX /= mag;
-        vecY /= mag;
-        vecZ /= mag;
+		if (!world.isRemote && ticksExisted > 100) {
+			setDead();
+		}
+	}
 
-        //Add random
-        vecX += this.rand.nextGaussian() * 0.007499999832361937D * random;
-        vecY += this.rand.nextGaussian() * 0.007499999832361937D * random;
-        vecZ += this.rand.nextGaussian() * 0.007499999832361937D * random;
+	/**
+	 * Uses the provided coordinates as a heading and determines the velocity from it with the set force and random
+	 * variance. Args: x, y, z, force, forceVariation
+	 */
+	public void setArrowHeading(double vecX, double vecY, double vecZ, float scale, float random) {
+		//Normalize vector
+		float mag = MathHelper.sqrt(vecX * vecX + vecY * vecY + vecZ * vecZ);
+		vecX /= mag;
+		vecY /= mag;
+		vecZ /= mag;
 
-        //Scale to power
-        vecX *= scale;
-        vecY *= scale;
-        vecZ *= scale;
+		//Add random
+		vecX += this.rand.nextGaussian() * 0.007499999832361937D * random;
+		vecY += this.rand.nextGaussian() * 0.007499999832361937D * random;
+		vecZ += this.rand.nextGaussian() * 0.007499999832361937D * random;
 
-        //Set motion
-        this.motionX = vecX;
-        this.motionY = vecY;
-        this.motionZ = vecZ;
+		//Scale to power
+		vecX *= scale;
+		vecY *= scale;
+		vecZ *= scale;
 
-        this.accelerationX = vecX * 0.1f;
-        this.accelerationY = vecY * 0.1f;
-        this.accelerationZ = vecZ * 0.1f;
+		//Set motion
+		this.motionX = vecX;
+		this.motionY = vecY;
+		this.motionZ = vecZ;
 
-        //Update rotation
-        float var10 = MathHelper.sqrt(vecX * vecX + vecZ * vecZ);
-        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(vecX, vecZ) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(vecY, var10) * 180.0D / Math.PI);
-    }
+		this.accelerationX = vecX * 0.1f;
+		this.accelerationY = vecY * 0.1f;
+		this.accelerationZ = vecZ * 0.1f;
 
-    @Override
-    protected void onImpact(RayTraceResult result)
-    {
-        if (!this.world.isRemote)
-        {
-            world.createExplosion(this, result.hitVec.x, result.hitVec.y, result.hitVec.z, 1, false);
-            this.setDead();
-        }
-    }
+		//Update rotation
+		float var10 = MathHelper.sqrt(vecX * vecX + vecZ * vecZ);
+		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(vecX, vecZ) * 180.0D / Math.PI);
+		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(vecY, var10) * 180.0D / Math.PI);
+	}
 
-    @Override
-    public boolean canBeCollidedWith()
-    {
-        return false;
-    }
+	@Override
+	protected void onImpact(RayTraceResult result) {
+		if (!this.world.isRemote) {
+			world.createExplosion(this, result.hitVec.x, result.hitVec.y, result.hitVec.z, 1, false);
+			this.setDead();
+		}
+	}
 
-    @Override
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        return false;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return false;
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		return false;
+	}
+
 }

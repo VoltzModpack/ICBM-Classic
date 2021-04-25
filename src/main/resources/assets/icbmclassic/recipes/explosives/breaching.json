@@ -1,22 +1,22 @@
 {
   "result": {
-    "explosive": "icbmclassic:breaching",
-    "count": 2
+	"explosive": "icbmclassic:breaching",
+	"count": 2
   },
   "pattern": [
-    "grg",
-    "grg",
-    "grg"
+	"grg",
+	"grg",
+	"grg"
   ],
   "type": "icbmclassic:explosive",
   "key": {
-    "r": {
-      "type" : "icbmclassic:explosive",
-      "explosive": "icbmclassic:condensed"
-    },
-    "g": {
-      "item": "minecraft:gunpowder",
-      "data": 0
-    }
+	"r": {
+	  "type": "icbmclassic:explosive",
+	  "explosive": "icbmclassic:condensed"
+	},
+	"g": {
+	  "item": "minecraft:gunpowder",
+	  "data": 0
+	}
   }
 }

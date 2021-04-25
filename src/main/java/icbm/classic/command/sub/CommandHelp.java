@@ -9,17 +9,15 @@ import javax.annotation.Nonnull;
 /**
  * Created by Robert Seifert on 1/6/20.
  */
-public class CommandHelp extends SubCommand
-{
+public class CommandHelp extends SubCommand {
 
-    public CommandHelp()
-    {
-        super("help");
-    }
+	public CommandHelp() {
+		super("help");
+	}
 
-    @Override
-    public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args)
-    {
-        parent.getSubCommands().forEach(command -> command.displayHelp(sender));
-    }
+	@Override
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) {
+		parent.getSubCommands().forEach(command -> command.displayHelp(sender));
+	}
+
 }

@@ -1,16 +1,16 @@
 {
   "result": {
-    "explosive": "icbmclassic:attractive",
-    "count": 1
+	"explosive": "icbmclassic:attractive",
+	"count": 1
   },
   "pattern": [
-    "cc"
+	"cc"
   ],
   "type": "icbmclassic:explosive",
   "key": {
-    "c": {
-      "type" : "icbmclassic:explosive",
-      "explosive": "icbmclassic:condensed"
-    }
+	"c": {
+	  "type": "icbmclassic:explosive",
+	  "explosive": "icbmclassic:condensed"
+	}
   }
 }

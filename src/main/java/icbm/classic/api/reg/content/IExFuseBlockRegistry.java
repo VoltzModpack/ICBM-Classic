@@ -8,42 +8,40 @@ import net.minecraft.world.World;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 9/7/2019.
  */
-public interface IExFuseBlockRegistry
-{
-    /**
-     * Called to set a supplier that will be used to define the fuse time
-     * of the explosive.
-     * <p>
-     * Do not use this in place of normal events, this is designed to add logic for
-     * specific block types.
-     *
-     * @param exName
-     * @param fuseTimer
-     */
-    void setFuseSupplier(ResourceLocation exName, WorldPosIntSupplier fuseTimer);
+public interface IExFuseBlockRegistry {
 
-    /**
-     * Called to set a function to invoke each tick of an explosive block's fuse.
-     * Use this to create interesting effects for unique explosives
-     * <p>
-     * Do not use this in place of normal events, this is designed to add logic for
-     * specific block types.
-     *
-     * @param exName
-     * @param function
-     */
-    void setFuseTickListener(ResourceLocation exName, WorldTickFunction function);
+	/**
+	 * Called to set a supplier that will be used to define the fuse time of the explosive.
+	 * <p>
+	 * Do not use this in place of normal events, this is designed to add logic for specific block types.
+	 *
+	 * @param exName
+	 * @param fuseTimer
+	 */
+	void setFuseSupplier(ResourceLocation exName, WorldPosIntSupplier fuseTimer);
 
-    /**
-     * Called by objects to tick the fuse for the explosive
-     *
-     * @param world
-     * @param posX
-     * @param posY
-     * @param posZ
-     * @param ticksExisted
-     */
-    void tickFuse(World world, double posX, double posY, double posZ, int ticksExisted, int explosiveID);
+	/**
+	 * Called to set a function to invoke each tick of an explosive block's fuse. Use this to create interesting effects
+	 * for unique explosives
+	 * <p>
+	 * Do not use this in place of normal events, this is designed to add logic for specific block types.
+	 *
+	 * @param exName
+	 * @param function
+	 */
+	void setFuseTickListener(ResourceLocation exName, WorldTickFunction function);
 
-    int getFuseTime(World world, double posX, double posY, double posZ, int explosiveID);
+	/**
+	 * Called by objects to tick the fuse for the explosive
+	 *
+	 * @param world
+	 * @param posX
+	 * @param posY
+	 * @param posZ
+	 * @param ticksExisted
+	 */
+	void tickFuse(World world, double posX, double posY, double posZ, int ticksExisted, int explosiveID);
+
+	int getFuseTime(World world, double posX, double posY, double posZ, int explosiveID);
+
 }
