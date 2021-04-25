@@ -1,7 +1,8 @@
 package icbm.classic;
 
 import icbm.classic.content.entity.missile.EntityMissile;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.world.World;
 
 /**
@@ -9,11 +10,11 @@ import net.minecraft.world.World;
  */
 public class TestUtils {
 
-	public static EntitySheep sheep(World world, int x, int y, int z) {
-		final EntitySheep sheep = new EntitySheep(world);
+	public static SheepEntity sheep(World world, int x, int y, int z) {
+		final SheepEntity sheep = new SheepEntity(EntityType.SHEEP, world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(x, y, z);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 		return sheep;
 	}
 
@@ -21,7 +22,7 @@ public class TestUtils {
 		final EntityMissile missile = new EntityMissile(world);
 		missile.forceSpawn = true;
 		missile.setPosition(x, y, z);
-		world.spawnEntity(missile);
+		world.addEntity(missile);
 		return missile;
 	}
 

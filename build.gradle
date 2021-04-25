@@ -4,7 +4,7 @@ buildscript {
         jcenter()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             name = "sonatype"
@@ -29,10 +29,20 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.4.2'
+    testCompile 'org.mockito:mockito-core:3.+'
 }
 
 configurations {
     jar.archiveName = project.name + "-${minecraft_version}-" + project.version + ".jar"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 idea {
@@ -80,7 +90,7 @@ minecraft {
             property 'forge.logging.console.level', 'info'
 
             mods {
-                icbm-classic {
+                icbm_classic {
                     source sourceSets.main
                 }
             }
@@ -92,7 +102,7 @@ minecraft {
             property 'forge.logging.console.level', 'info'
 
             mods {
-                icbm-classic {
+                icbm_classic {
                     source sourceSets.main
                 }
             }
@@ -107,7 +117,7 @@ minecraft {
             args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                icbm-classic {
+                icbm_classic {
                     source sourceSets.main
                 }
             }

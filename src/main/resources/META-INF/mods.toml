@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+issueTrackerURL=""
+license="MIT"
+
+[[mods]]
+    modId="icbm_classic"
+    version="${version}"
+    displayName="ICBM-Classic"
+    displayURL="https://github.com/BuiltBrokenModding/ICBM-Classic"
+    authors=""
+    credits=""
+    logoFile=""
+    description='''ICBM-Classic is an addon for the game Minecraft via MinecraftForge. It provides a series of small explosive missiles and launchers.'''
+
+[[dependencies.betterinvalidsession]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${mc_version}"
+    side="BOTH"
+[[dependencies.betterinvalidsession]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version}"
+    side="BOTH"
