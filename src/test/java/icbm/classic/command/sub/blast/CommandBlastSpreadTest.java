@@ -12,7 +12,7 @@ import icbm.classic.lib.explosive.reg.ExplosiveRegistry;
 import net.minecraft.command.CommandException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -134,7 +134,7 @@ public class CommandBlastSpreadTest {
 	@ParameterizedTest
 	@MethodSource("provideGoodCommandInputs")
 	void checkCommand(String[] args, int x, int y, int z, int distance) throws CommandException {
-		dummyCommandSender.position = new Vec3d(x, y, z);
+		dummyCommandSender.position = new Vector3d(x, y, z);
 		command.handleCommand(testManager.getServer(), dummyCommandSender, args);
 
 		//Validate message

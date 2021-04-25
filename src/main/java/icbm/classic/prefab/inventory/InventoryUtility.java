@@ -3,7 +3,7 @@ package icbm.classic.prefab.inventory;
 import com.builtbroken.jlib.data.vector.IPos3D;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
@@ -27,8 +27,8 @@ public class InventoryUtility {
 	 * @param pos
 	 * @param destroy - will break the block
 	 */
-	public static List<EntityItem> dropBlockAsItem(World world, BlockPos pos, boolean destroy) {
-		List<EntityItem> entities = new ArrayList();
+	public static List<ItemEntity> dropBlockAsItem(World world, BlockPos pos, boolean destroy) {
+		List<ItemEntity> entities = new ArrayList();
 		if (!world.isRemote) {
 			BlockState state = world.getBlockState(pos);
 
@@ -36,7 +36,7 @@ public class InventoryUtility {
 				List<ItemStack> items = state.getBlock().getDrops(world, pos, state, 0);
 
 				for (ItemStack itemStack : items) {
-					EntityItem entityItem = dropItemStack(world, new Pos(pos), itemStack, 10);
+					ItemEntity entityItem = dropItemStack(world, new Pos(pos), itemStack, 10);
 					if (entityItem != null) {
 						entities.add(entityItem);
 					}
@@ -49,15 +49,15 @@ public class InventoryUtility {
 		return entities;
 	}
 
-	public static EntityItem dropItemStack(World world, IPos3D position, ItemStack itemStack, int delay) {
+	public static ItemEntity dropItemStack(World world, IPos3D position, ItemStack itemStack, int delay) {
 		return dropItemStack(world, position, itemStack, delay, 0f);
 	}
 
-	public static EntityItem dropItemStack(World world, IPos3D position, ItemStack itemStack, int delay, float randomAmount) {
+	public static ItemEntity dropItemStack(World world, IPos3D position, ItemStack itemStack, int delay, float randomAmount) {
 		return dropItemStack(world, position.x(), position.y(), position.z(), itemStack, delay, randomAmount);
 	}
 
-	public static EntityItem dropItemStack(World world, double x, double y, double z, ItemStack itemStack, int delay, float randomAmount) {
+	public static ItemEntity dropItemStack(World world, double x, double y, double z, ItemStack itemStack, int delay, float randomAmount) {
 		//TODO fire drop events if not already done by forge
 		//TODO add banned item filtering, prevent creative mode only items from being dropped
 		if (world != null && !world.isRemote && !itemStack.isEmpty()) {
@@ -71,7 +71,7 @@ public class InventoryUtility {
 				randomZ = world.rand.nextFloat() * randomAmount + (1.0F - randomAmount) * 0.5D;
 			}
 
-			EntityItem entityitem = new EntityItem(world, x + randomX, y + randomY, z + randomZ, itemStack);
+			ItemEntity entityitem = new ItemEntity(world, x + randomX, y + randomY, z + randomZ, itemStack);
 
 			if (randomAmount <= 0) {
 				entityitem.motionX = 0;
@@ -80,7 +80,7 @@ public class InventoryUtility {
 			}
 
 			if (itemStack.hasTagCompound()) {
-				entityitem.getItem().setTagCompound(itemStack.getTagCompound().copy());
+				entityitem.getItem().putCompound(itemStack.getTagCompound().copy());
 			}
 
 			entityitem.setPickupDelay(delay);

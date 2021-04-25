@@ -75,8 +75,8 @@ public class CapabilityExplosive implements IExplosive, ICapabilitySerializable<
 		final CompoundNBT tagCompound = new CompoundNBT();
 		serializeNBT(tagCompound);
 
-		tagCompound.setInteger(NBTConstants.EXPLOSIVE_ID, explosiveID);
-		tagCompound.setTag(NBTConstants.BLAST_DATA, getCustomBlastData());
+		tagCompound.putInt(NBTConstants.EXPLOSIVE_ID, explosiveID);
+		tagCompound.put(NBTConstants.BLAST_DATA, getCustomBlastData());
 		return tagCompound;
 	}
 
@@ -86,11 +86,11 @@ public class CapabilityExplosive implements IExplosive, ICapabilitySerializable<
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		if (nbt.hasKey(NBTConstants.EXPLOSIVE_ID)) {
-			explosiveID = nbt.getInteger(NBTConstants.EXPLOSIVE_ID);
+		if (nbt.contains(NBTConstants.EXPLOSIVE_ID)) {
+			explosiveID = nbt.getInt(NBTConstants.EXPLOSIVE_ID);
 		}
-		if (blastNBT == null || nbt.hasKey(NBTConstants.BLAST_DATA)) {
-			blastNBT = nbt.getCompoundTag(NBTConstants.BLAST_DATA);
+		if (blastNBT == null || nbt.contains(NBTConstants.BLAST_DATA)) {
+			blastNBT = nbt.getCompound(NBTConstants.BLAST_DATA);
 		}
 	}
 

@@ -13,7 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class BlastAntimatter extends BlastThreaded {
 	protected void onWorkerThreadComplete(List<BlockPos> edits) {
 		//TODO have threads take a copy of chunks for use before running
 		//      OR replace thread system with an entity that ticks over time to collect data
-		if (world instanceof WorldServer) {
+		if (world instanceof ServerWorld) {
 			//Sort distance
 			edits.sort(buildSorter());
 
@@ -66,7 +66,7 @@ public class BlastAntimatter extends BlastThreaded {
 				                                   .collect(Collectors.toList());
 
 			//Schedule edits to run in the world
-			((WorldServer) world).addScheduledTask(() -> scheduledTask(removeFirst, edits));
+			((ServerWorld) world).addScheduledTask(() -> scheduledTask(removeFirst, edits));
 		}
 	}
 

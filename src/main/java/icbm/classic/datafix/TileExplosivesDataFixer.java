@@ -15,18 +15,18 @@ public class TileExplosivesDataFixer implements IFixableData {
 
 		if (id.equals(ICBMConstants.PREFIX + "explosive")) {
 			CompoundNBT newNbt = new CompoundNBT();
-			int explosiveID = nbt.getInteger(NBTConstants.EXPLOSIVE_ID);
+			int explosiveID = nbt.getInt(NBTConstants.EXPLOSIVE_ID);
 
 			if (explosiveID == 14) //the S-Mine was removed, make it be the default explosive as a fallback
 				explosiveID = 0;
 			else if (explosiveID > 14) //since it was removed, all the IDs need to move down by one
 				explosiveID--;
 
-			newNbt.setTag(NBTConstants.EXPLOSIVE_STACK, new ItemStack(BlockReg.blockExplosive, 1, explosiveID).serializeNBT());
-			newNbt.setInteger(NBTConstants.X, nbt.getInteger(NBTConstants.X));
-			newNbt.setInteger(NBTConstants.Y, nbt.getInteger(NBTConstants.Y));
-			newNbt.setInteger(NBTConstants.Z, nbt.getInteger(NBTConstants.Z));
-			newNbt.setString(NBTConstants.ID, id);
+			newNbt.put(NBTConstants.EXPLOSIVE_STACK, new ItemStack(BlockReg.blockExplosive, 1, explosiveID).serializeNBT());
+			newNbt.putInt(NBTConstants.X, nbt.getInt(NBTConstants.X));
+			newNbt.putInt(NBTConstants.Y, nbt.getInt(NBTConstants.Y));
+			newNbt.putInt(NBTConstants.Z, nbt.getInt(NBTConstants.Z));
+			newNbt.putString(NBTConstants.ID, id);
 			return newNbt;
 		}
 

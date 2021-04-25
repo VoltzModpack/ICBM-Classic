@@ -3,9 +3,8 @@ package icbm.classic.content.entity;
 import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -166,11 +165,11 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity par1Entity) {
 		// Make sure the entity is not an item
-		if (par1Entity instanceof EntityLiving) {
+		if (par1Entity instanceof LivingEntity) {
 			if (getBlockState() != null) {
 				if (!(getBlockState().getBlock() instanceof IFluidBlock) && (this.motionX > 2 || this.motionY > 2 || this.motionZ > 2)) {
 					int damage = (int) (1.2 * (Math.abs(this.motionX) + Math.abs(this.motionY) + Math.abs(this.motionZ)));
-					((EntityLiving) par1Entity).attackEntityFrom(DamageSource.FALLING_BLOCK, damage);
+					((LivingEntity) par1Entity).attackEntityFrom(DamageSource.FALLING_BLOCK, damage);
 				}
 			}
 		}
@@ -181,15 +180,15 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 	@Override
 	protected void writeEntityToNBT(CompoundNBT nbttagcompound) {
 		if (_blockState != null) {
-			nbttagcompound.setTag(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new CompoundNBT(), _blockState));
+			nbttagcompound.put(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new CompoundNBT(), _blockState));
 		}
-		nbttagcompound.setFloat(NBTConstants.GRAVITY, this.gravity);
+		nbttagcompound.putFloat(NBTConstants.GRAVITY, this.gravity);
 	}
 
 	@Override
 	protected void readEntityFromNBT(CompoundNBT nbttagcompound) {
-		if (nbttagcompound.hasKey(NBTConstants.BLOCK_STATE)) {
-			_blockState = NBTUtil.readBlockState(nbttagcompound.getCompoundTag(NBTConstants.BLOCK_STATE));
+		if (nbttagcompound.contains(NBTConstants.BLOCK_STATE)) {
+			_blockState = NBTUtil.readBlockState(nbttagcompound.getCompound(NBTConstants.BLOCK_STATE));
 		}
 		this.gravity = nbttagcompound.getFloat(NBTConstants.GRAVITY);
 	}

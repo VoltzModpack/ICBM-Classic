@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/9/2017.
@@ -21,7 +21,7 @@ public class TESRRadarStation extends TileEntitySpecialRenderer<TileRadarStation
 	public static final ModelRadarStation MODEL = new ModelRadarStation();
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void render(TileRadarStation te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 

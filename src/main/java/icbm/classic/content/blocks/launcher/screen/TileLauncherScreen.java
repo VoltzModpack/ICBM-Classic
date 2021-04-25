@@ -217,7 +217,7 @@ public class TileLauncherScreen extends TileLauncherPrefab implements IPacketIDR
 	@Override
 	public void readFromNBT(CompoundNBT par1CompoundNBT) {
 		super.readFromNBT(par1CompoundNBT);
-		//this.tier = par1CompoundNBT.getInteger(NBTConstants.TIER);
+		//this.tier = par1CompoundNBT.getInt(NBTConstants.TIER);
 		this.lockHeight = par1CompoundNBT.getShort(NBTConstants.TARGET_HEIGHT);
 	}
 
@@ -226,7 +226,7 @@ public class TileLauncherScreen extends TileLauncherPrefab implements IPacketIDR
 	 */
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT par1CompoundNBT) {
-		//par1CompoundNBT.setInteger(NBTConstants.TIER, this.tier);
+		//par1CompoundNBT.putInt(NBTConstants.TIER, this.tier);
 		par1CompoundNBT.setShort(NBTConstants.TARGET_HEIGHT, this.lockHeight);
 		return super.writeToNBT(par1CompoundNBT);
 	}

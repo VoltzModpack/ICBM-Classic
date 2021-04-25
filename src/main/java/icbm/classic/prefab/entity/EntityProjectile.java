@@ -17,8 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.List;
 import java.util.UUID;
@@ -146,7 +146,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		if (!state.getBlock().isAir(state, world, tilePos)) {
 			//Check if what we hit can be collided with
 			AxisAlignedBB axisalignedbb = state.getCollisionBoundingBox(this.world, tilePos);
-			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(tilePos).contains(new Vec3d(this.posX, this.posY, this.posZ))) {
+			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(tilePos).contains(new Vector3d(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
 			}
 		}
@@ -178,15 +178,15 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 			}
 
 			//Do raytrace TODO move to prefab entity for reuse
-			Vec3d rayStart = new Vec3d(this.posX, this.posY, this.posZ);
-			Vec3d rayEnd = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vector3d rayStart = new Vector3d(this.posX, this.posY, this.posZ);
+			Vector3d rayEnd = new Vector3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			RayTraceResult rayHit = this.world.rayTraceBlocks(rayStart, rayEnd, false, true, false);
 
 			//Reset data to do entity ray trace
-			rayStart = new Vec3d(this.posX, this.posY, this.posZ);
-			rayEnd = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			rayStart = new Vector3d(this.posX, this.posY, this.posZ);
+			rayEnd = new Vector3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			if (rayHit != null) {
-				rayEnd = new Vec3d(rayHit.hitVec.x, rayHit.hitVec.y, rayHit.hitVec.z);
+				rayEnd = new Vector3d(rayHit.hitVec.x, rayHit.hitVec.y, rayHit.hitVec.z);
 			}
 
 			//Handle entity collision boxes
@@ -410,14 +410,14 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		this.setPosition(x, y, z);
 		this.setRotation(yaw, pitch);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void setVelocity(double xx, double yy, double zz) {
 		this.motionX = xx;
 		this.motionY = yy;
@@ -437,58 +437,58 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 	@Override
 	public void writeEntityToNBT(CompoundNBT nbt) {
 		if (tilePos != null) {
-			nbt.setInteger(NBTConstants.X_TILE_POS, this.tilePos.getX());
-			nbt.setInteger(NBTConstants.Y_TILE_POS, this.tilePos.getY());
-			nbt.setInteger(NBTConstants.Z_TILE_POS, this.tilePos.getZ());
+			nbt.putInt(NBTConstants.X_TILE_POS, this.tilePos.getX());
+			nbt.putInt(NBTConstants.Y_TILE_POS, this.tilePos.getY());
+			nbt.putInt(NBTConstants.Z_TILE_POS, this.tilePos.getZ());
 		}
-		nbt.setByte(NBTConstants.SIDE_TILE_POS, (byte) this.sideTile.ordinal());
+		nbt.putByte(NBTConstants.SIDE_TILE_POS, (byte) this.sideTile.ordinal());
 
 		if (blockInside != null) {
-			nbt.setInteger(NBTConstants.IN_TILE_STATE, Block.getStateId(blockInside));
+			nbt.putInt(NBTConstants.IN_TILE_STATE, Block.getStateId(blockInside));
 		}
 
-		nbt.setShort(NBTConstants.LIFE, (short) this.ticksInGround);
-		nbt.setByte(NBTConstants.IN_GROUND, (byte) (this.inGround ? 1 : 0));
+		nbt.putShort(NBTConstants.LIFE, (short) this.ticksInGround);
+		nbt.putByte(NBTConstants.IN_GROUND, (byte) (this.inGround ? 1 : 0));
 		if (sourceOfProjectile != null) {
-			nbt.setTag(NBTConstants.SOURCE_POS, sourceOfProjectile.toNBT());
+			nbt.put(NBTConstants.SOURCE_POS, sourceOfProjectile.toNBT());
 		}
 		if (shootingEntity != null) {
-			nbt.setString(NBTConstants.SHOOTER_UUID, shootingEntity.getUniqueID().toString());
+			nbt.putString(NBTConstants.SHOOTER_UUID, shootingEntity.getUniqueID().toString());
 		}
 	}
 
 	@Override
 	public void readEntityFromNBT(CompoundNBT nbt) {
-		if (nbt.hasKey(NBTConstants.X_TILE)) {
+		if (nbt.contains(NBTConstants.X_TILE)) {
 			//Legacy
 			tilePos = new BlockPos(nbt.getShort(NBTConstants.X_TILE), nbt.getShort(NBTConstants.Y_TILE), nbt.getShort(NBTConstants.Z_TILE));
-		} else if (nbt.hasKey(NBTConstants.X_TILE_POS)) {
-			tilePos = new BlockPos(nbt.getInteger(NBTConstants.X_TILE_POS), nbt.getInteger(NBTConstants.Y_TILE_POS), nbt.getInteger(NBTConstants.Z_TILE_POS));
+		} else if (nbt.contains(NBTConstants.X_TILE_POS)) {
+			tilePos = new BlockPos(nbt.getInt(NBTConstants.X_TILE_POS), nbt.getInt(NBTConstants.Y_TILE_POS), nbt.getInt(NBTConstants.Z_TILE_POS));
 		}
 
-		if (nbt.hasKey(NBTConstants.SIDE_TILE)) {
+		if (nbt.contains(NBTConstants.SIDE_TILE)) {
 			//Legacy
 			this.sideTile = EnumFacing.byIndex(nbt.getShort(NBTConstants.SIDE_TILE));
 		} else {
 			this.sideTile = EnumFacing.byIndex(nbt.getByte(NBTConstants.SIDE_TILE_POS));
 		}
 		this.ticksInGround = nbt.getShort(NBTConstants.LIFE);
-		if (nbt.hasKey(NBTConstants.IN_TILE)) {
+		if (nbt.contains(NBTConstants.IN_TILE)) {
 			//Legacy
 			Block block = Block.getBlockById(nbt.getByte(NBTConstants.IN_TILE));
 			if (block != null) {
 				int meta = nbt.getByte(NBTConstants.IN_DATA);
 				this.blockInside = block.getStateFromMeta(meta);
 			}
-		} else if (nbt.hasKey(NBTConstants.IN_TILE_STATE)) {
-			this.blockInside = Block.getStateById(nbt.getInteger(NBTConstants.IN_TILE_STATE));
+		} else if (nbt.contains(NBTConstants.IN_TILE_STATE)) {
+			this.blockInside = Block.getStateById(nbt.getInt(NBTConstants.IN_TILE_STATE));
 		}
 
 		this.inGround = nbt.getByte(NBTConstants.IN_GROUND) == 1;
-		if (nbt.hasKey(NBTConstants.SOURCE_POS)) {
-			sourceOfProjectile = new Pos(nbt.getCompoundTag(NBTConstants.SOURCE_POS));
+		if (nbt.contains(NBTConstants.SOURCE_POS)) {
+			sourceOfProjectile = new Pos(nbt.getCompound(NBTConstants.SOURCE_POS));
 		}
-		if (nbt.hasKey(NBTConstants.SHOOTER_UUID)) {
+		if (nbt.contains(NBTConstants.SHOOTER_UUID)) {
 			shootingEntityUUID = UUID.fromString(nbt.getString(NBTConstants.SHOOTER_UUID));
 		}
 	}

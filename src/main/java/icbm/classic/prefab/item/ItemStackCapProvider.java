@@ -52,7 +52,7 @@ public class ItemStackCapProvider implements ICapabilityProvider, INBTSerializab
 		CompoundNBT tag = new CompoundNBT();
 		for (Map.Entry<String, Object> entry : keyToCap.entrySet()) {
 			if (entry.getValue() instanceof INBTSerializable) {
-				tag.setTag(entry.getKey(), ((INBTSerializable) entry.getValue()).serializeNBT());
+				tag.put(entry.getKey(), ((INBTSerializable) entry.getValue()).serializeNBT());
 			}
 		}
 		return tag;

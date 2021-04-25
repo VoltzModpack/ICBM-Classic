@@ -7,7 +7,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -103,13 +103,13 @@ public class BlastEndothermic extends BlastBeam {
 		super.onBlastCompleted();
 
 		//Freeze all nearby entities.
-		final List<EntityLiving> livingEntities = world().getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(location.x() - getBlastRadius(), location.y() - getBlastRadius(), location.z() - getBlastRadius(), location.x() + getBlastRadius(), location.y() + getBlastRadius(), location.z() + getBlastRadius()));
+		final List<LivingEntity> livingEntities = world().getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(location.x() - getBlastRadius(), location.y() - getBlastRadius(), location.z() - getBlastRadius(), location.x() + getBlastRadius(), location.y() + getBlastRadius(), location.z() + getBlastRadius()));
 
 		if (livingEntities != null && !livingEntities.isEmpty()) {
-			final Iterator<EntityLiving> it = livingEntities.iterator();
+			final Iterator<LivingEntity> it = livingEntities.iterator();
 
 			while (it.hasNext()) {
-				EntityLiving entity = it.next();
+				LivingEntity entity = it.next();
 				if (entity != null && entity.isEntityAlive()) {
 					entity.addPotionEffect(new CustomPotionEffect(PoisonFrostBite.INSTANCE, 60 * 20, 1, null));
 					entity.addPotionEffect(new PotionEffect(MobEffects.POISON, 10 * 20, 2));

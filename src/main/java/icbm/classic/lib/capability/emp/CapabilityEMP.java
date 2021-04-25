@@ -3,7 +3,7 @@ package icbm.classic.lib.capability.emp;
 import icbm.classic.ICBMConstants;
 import icbm.classic.api.caps.IEMPReceiver;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -41,8 +41,8 @@ public class CapabilityEMP {
 
 	@SubscribeEvent
 	public static void attachCapabilityItem(AttachCapabilitiesEvent<Entity> event) {
-		if (event.getObject() instanceof EntityItem) {
-			event.addCapability(ENTITY_ITEM_CAP, new CapabilityEmpEntityItem((EntityItem) event.getObject()));
+		if (event.getObject() instanceof ItemEntity) {
+			event.addCapability(ENTITY_ITEM_CAP, new CapabilityEmpItemEntity((ItemEntity) event.getObject()));
 		} else if (event.getObject() instanceof EntityCreeper) {
 			event.addCapability(CREEPER_CAP, new CapabilityEmpCreeper((EntityCreeper) event.getObject()));
 		}

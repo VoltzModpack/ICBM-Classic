@@ -118,7 +118,7 @@ public abstract class EntityICBM extends Entity implements IWorldPosition {
 
 	@Override
 	protected void writeEntityToNBT(CompoundNBT nbt) {
-		nbt.setFloat(NBTConstants.HEALTH, this.getHealth());
+		nbt.putFloat(NBTConstants.HEALTH, this.getHealth());
 	}
 
 	@Override

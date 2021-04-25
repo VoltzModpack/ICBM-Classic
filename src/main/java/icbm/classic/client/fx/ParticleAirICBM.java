@@ -3,13 +3,13 @@ package icbm.classic.client.fx;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.client.particle.ParticleSmokeNormal;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 /**
  * Same as normal smoke, but doesn't move upwards on its own
  */
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleAirICBM extends ParticleSmokeNormal {
 
 	public ParticleAirICBM(World worldIn, Pos pos, double vx, double vy, double vz, float scale) {

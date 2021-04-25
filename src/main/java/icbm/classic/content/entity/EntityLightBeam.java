@@ -10,8 +10,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nonnull;
 
@@ -80,7 +80,7 @@ public class EntityLightBeam extends Entity implements IEntityAdditionalSpawnDat
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Nonnull
 	public AxisAlignedBB getRenderBoundingBox() {
 		return new AxisAlignedBB(posX - 5, -10, posZ - 5, posX + 5, Double.POSITIVE_INFINITY, posZ + 5);

@@ -6,7 +6,7 @@ import icbm.classic.api.caps.IExplosive;
 import icbm.classic.api.refs.ICBMExplosives;
 import icbm.classic.api.reg.IExplosiveData;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -72,7 +72,7 @@ public class CapabilityExplosiveEntity implements IExplosive {
 
 	@Override
 	public void onDefuse() {
-		entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, toStack().copy()));
+		entity.world.spawnEntity(new ItemEntity(entity.world, entity.posX, entity.posY, entity.posZ, toStack().copy()));
 	}
 
 	public void setStack(@Nonnull ItemStack stack) {

@@ -37,7 +37,7 @@ public abstract class TileFrequency extends TilePoweredMachine {
 	@Override
 	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
-		this.frequency = nbt.getInteger(NBTConstants.FREQUENCY);
+		this.frequency = nbt.getInt(NBTConstants.FREQUENCY);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public abstract class TileFrequency extends TilePoweredMachine {
 	 */
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
-		nbt.setInteger(NBTConstants.FREQUENCY, this.frequency);
+		nbt.putInt(NBTConstants.FREQUENCY, this.frequency);
 		return super.writeToNBT(nbt);
 	}
 

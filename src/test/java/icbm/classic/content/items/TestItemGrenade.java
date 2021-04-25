@@ -4,7 +4,7 @@ import com.builtbroken.mc.testing.junit.TestManager;
 import icbm.classic.content.entity.EntityGrenade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;

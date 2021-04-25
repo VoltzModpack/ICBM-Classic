@@ -14,8 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 		return true;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, PlayerEntity player, List list, boolean b) {
 		list.add("Fires missiles remotely");
 		list.add("Right click launcher screen to encode");
@@ -65,7 +65,7 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	 * @return frequency
 	 */
 	public float getBroadCastHz(ItemStack stack) {
-		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey(NBTConstants.HZ)) {
+		if (stack.getTagCompound() != null && stack.getTagCompound().contains(NBTConstants.HZ)) {
 			return stack.getTagCompound().getFloat(NBTConstants.HZ);
 		}
 		return 0;
@@ -79,9 +79,9 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	 */
 	public void setBroadCastHz(ItemStack stack, float hz) {
 		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new CompoundNBT());
+			stack.putCompound(new CompoundNBT());
 		}
-		stack.getTagCompound().setFloat(NBTConstants.HZ, hz);
+		stack.getTagCompound().putFloat(NBTConstants.HZ, hz);
 	}
 
 }

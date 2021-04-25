@@ -72,7 +72,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		this(dir.getXOffset(), dir.getYOffset(), dir.getZOffset());
 	}
 
-	public AbstractPos(Vec3d vec) {
+	public AbstractPos(Vector3d vec) {
 		this(vec.x, vec.y, vec.z);
 	}
 
@@ -88,8 +88,8 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	//========Converters=======
 	//=========================
 
-	public Vec3d toVec3d() {
-		return new Vec3d(x(), y(), z());
+	public Vector3d toVector3d() {
+		return new Vector3d(x(), y(), z());
 	}
 
 	public Point toVector2() {
@@ -142,7 +142,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return add(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
-	public R add(Vec3d vec) {
+	public R add(Vector3d vec) {
 		return add(vec.x, vec.y, vec.z);
 	}
 
@@ -150,7 +150,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return sub(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
-	public R sub(Vec3d vec) {
+	public R sub(Vector3d vec) {
 		return add(vec.x, vec.y, vec.z);
 	}
 
@@ -158,7 +158,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return distance(vec.getX() + 0.5, vec.getY() + 0.5, vec.getZ() + 0.5);
 	}
 
-	public double distance(Vec3d vec) {
+	public double distance(Vector3d vec) {
 		return distance(vec.x, vec.y, vec.z);
 	}
 
@@ -170,7 +170,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return multiply(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
-	public R multiply(Vec3d vec) {
+	public R multiply(Vector3d vec) {
 		return multiply(vec.x, vec.y, vec.z);
 	}
 
@@ -178,7 +178,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return divide(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
-	public R divide(Vec3d vec) {
+	public R divide(Vector3d vec) {
 		return divide(vec.x, vec.y, vec.z);
 	}
 
@@ -200,16 +200,16 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	}
 
 	public CompoundNBT writeNBT(CompoundNBT nbt) {
-		nbt.setDouble(NBTConstants.X, x());
-		nbt.setDouble(NBTConstants.Y, y());
-		nbt.setDouble(NBTConstants.Z, z());
+		nbt.putDouble(NBTConstants.X, x());
+		nbt.putDouble(NBTConstants.Y, y());
+		nbt.putDouble(NBTConstants.Z, z());
 		return nbt;
 	}
 
 	public CompoundNBT writeIntNBT(CompoundNBT nbt) {
-		nbt.setInteger(NBTConstants.X, xi());
-		nbt.setInteger(NBTConstants.Y, yi());
-		nbt.setInteger(NBTConstants.Z, zi());
+		nbt.putInt(NBTConstants.X, xi());
+		nbt.putInt(NBTConstants.Y, yi());
+		nbt.putInt(NBTConstants.Z, zi());
 		return nbt;
 	}
 
@@ -251,7 +251,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	}
 
 	public RayTraceResult rayTraceBlocks(World world, IPos3D end, boolean b1, boolean b2, boolean b3) {
-		return world.rayTraceBlocks(toVec3d(), new Vec3d(end.x(), end.y(), end.z()), b1, b2, b3);
+		return world.rayTraceBlocks(toVector3d(), new Vector3d(end.x(), end.y(), end.z()), b1, b2, b3);
 	}
 
 	public RayTraceResult rayTraceEntities(World world, IPos3D end) {
@@ -268,10 +268,10 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 			if (entity != null && entity.canBeCollidedWith() && entity.getEntityBoundingBox() != null) {
 				float border = entity.getCollisionBorderSize();
 				AxisAlignedBB bounds = entity.getEntityBoundingBox().expand(border, border, border);
-				RayTraceResult hit = bounds.calculateIntercept(toVec3d(), new Vec3d(end.x(), end.y(), end.z()));
+				RayTraceResult hit = bounds.calculateIntercept(toVector3d(), new Vector3d(end.x(), end.y(), end.z()));
 
 				if (hit != null) {
-					if (bounds.contains(toVec3d())) {
+					if (bounds.contains(toVector3d())) {
 						if (0 < closetDistance || closetDistance == 0) {
 							closestEntityMOP = new RayTraceResult(entity);
 

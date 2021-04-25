@@ -9,14 +9,14 @@ public class EntityGrenadeDataFixer implements IFixableData {
 
 	@Override
 	public CompoundNBT fixTagCompound(CompoundNBT tag) {
-		if (tag.hasKey(NBTConstants.ID) && tag.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.GRENADE.toString())) {
+		if (tag.contains(NBTConstants.ID) && tag.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.GRENADE.toString())) {
 			String oldKey = "haoMa";
 
-			if (tag.hasKey(oldKey)) {
-				int explosiveID = tag.getInteger(oldKey);
+			if (tag.contains(oldKey)) {
+				int explosiveID = tag.getInt(oldKey);
 
-				tag.removeTag(oldKey); //remove the old entry to not have legacy data. the method name may be misleading, but it actually just removes the key from the tag map
-				tag.setInteger(NBTConstants.EXPLOSIVE_ID, explosiveID);
+				tag.remove(oldKey); //remove the old entry to not have legacy data. the method name may be misleading, but it actually just removes the key from the tag map
+				tag.putInt(NBTConstants.EXPLOSIVE_ID, explosiveID);
 			}
 		}
 

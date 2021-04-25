@@ -11,8 +11,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class ICBMCreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
 		//Insert items in order
 		definedTabItemsInOrder.forEach(item -> collectSubItems(item, list));

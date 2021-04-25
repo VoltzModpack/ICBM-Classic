@@ -231,7 +231,7 @@ public class MissileTrackerWorld extends WorldSavedData {
 		//Load missiles
 		NBTTagList list = nbt.getTagList(NBTConstants.MISSILES, 10);
 		for (int i = 0; i < list.tagCount(); i++) {
-			CompoundNBT missileSave = list.getCompoundTagAt(i);
+			CompoundNBT missileSave = list.getCompoundAt(i);
 			MissileTrackerData mtd = new MissileTrackerData(missileSave);
 			missileList.add(mtd);
 		}
@@ -239,7 +239,7 @@ public class MissileTrackerWorld extends WorldSavedData {
 		//Load missiles that will spawn
 		list = nbt.getTagList(NBTConstants.SPAWNS, 10);
 		for (int i = 0; i < list.tagCount(); i++) {
-			CompoundNBT missileSave = list.getCompoundTagAt(i);
+			CompoundNBT missileSave = list.getCompoundAt(i);
 			MissileTrackerData mtd = new MissileTrackerData(missileSave);
 			missileSpawnList.add(mtd);
 		}
@@ -254,7 +254,7 @@ public class MissileTrackerWorld extends WorldSavedData {
 			mtd.writeToNBT(compound);
 			list.appendTag(compound);
 		}
-		nbt.setTag(NBTConstants.MISSILES, list);
+		nbt.put(NBTConstants.MISSILES, list);
 
 		//Save missiles that will spawn
 		list = new NBTTagList();
@@ -263,7 +263,7 @@ public class MissileTrackerWorld extends WorldSavedData {
 			mtd.writeToNBT(compound);
 			list.appendTag(compound);
 		}
-		nbt.setTag(NBTConstants.SPAWNS, list);
+		nbt.put(NBTConstants.SPAWNS, list);
 
 		return nbt;
 	}

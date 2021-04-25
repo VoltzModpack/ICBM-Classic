@@ -6,9 +6,9 @@ import icbm.classic.api.explosion.IBlastTickable;
 import icbm.classic.lib.transform.vector.Location;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntityMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -26,8 +26,8 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 
 	@Override
 	public IBlastInit setCustomData(@Nonnull CompoundNBT customData) {
-		if (customData != null && customData.hasKey(NBT_LOCATION)) {
-			teleportTarget = new Pos(customData.getCompoundTag(NBT_LOCATION));
+		if (customData != null && customData.contains(NBT_LOCATION)) {
+			teleportTarget = new Pos(customData.getCompound(NBT_LOCATION));
 			//TODO load world ID
 			//TODO data fixer, previous data was store raw as xyz
 		}
@@ -150,7 +150,7 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 		if (!this.world().isRemote) {
 			for (int i = 0; i < 8; i++) //TODO check for safe location to spawn
 			{
-				EntityEnderman enderman = new EntityEnderman(world());
+				EndermanEntity enderman = new EndermanEntity(world());
 				enderman.setPosition(this.location.x(), this.location.y(), this.location.z());
 				this.world().spawnEntity(enderman);
 			}

@@ -204,7 +204,7 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 		NBTTagList nbtList = nbt.getTagList(NBTConstants.ITEMS, 10);
 
 		for (int i = 0; i < nbtList.tagCount(); ++i) {
-			CompoundNBT stackTag = nbtList.getCompoundTagAt(i);
+			CompoundNBT stackTag = nbtList.getCompoundAt(i);
 			byte id = stackTag.getByte(NBTConstants.SLOT);
 
 			if (id >= 0 && id < this.getSizeInventory()) {
@@ -212,7 +212,7 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 			}
 		}
 
-		nbt.setTag(NBTConstants.ITEMS, nbtList);
+		nbt.put(NBTConstants.ITEMS, nbtList);
 		_loading = false;
 	}
 
@@ -222,13 +222,13 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 		for (int i = shiftSlotStart; i < this.getSizeInventory() + shiftSlotStart; ++i) {
 			if (!this.getStackInSlot(i + shiftSlotStart).isEmpty()) {
 				CompoundNBT var4 = new CompoundNBT();
-				var4.setByte(NBTConstants.SLOT, (byte) i);
+				var4.putByte(NBTConstants.SLOT, (byte) i);
 				this.getStackInSlot(i + shiftSlotStart).writeToNBT(var4);
 				nbtList.appendTag(var4);
 			}
 		}
 
-		nbt.setTag(NBTConstants.ITEMS, nbtList);
+		nbt.put(NBTConstants.ITEMS, nbtList);
 		return nbt;
 	}
 

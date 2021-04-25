@@ -8,7 +8,7 @@ import icbm.classic.lib.transform.BlockEditHandler;
 import icbm.classic.lib.transform.PosDistanceSorter;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 
 import java.util.Comparator;
 import java.util.List;
@@ -55,12 +55,12 @@ public abstract class BlastThreaded extends Blast {
 	 * @param edits
 	 */
 	protected void onWorkerThreadComplete(List<BlockPos> edits) {
-		if (world instanceof WorldServer) {
+		if (world instanceof ServerWorld) {
 			//Sort distance
 			edits.sort(buildSorter());
 
 			//Schedule edits to run in the world
-			((WorldServer) world).addScheduledTask(() -> {
+			((ServerWorld) world).addScheduledTask(() -> {
 
 				if (skipQueue()) {
 					edits.forEach(blockPos -> destroyBlock(blockPos));

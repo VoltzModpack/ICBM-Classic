@@ -6,7 +6,7 @@ import icbm.classic.content.entity.missile.EntityMissile;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 

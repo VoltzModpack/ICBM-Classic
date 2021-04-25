@@ -77,7 +77,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 	@Override
 	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
-		if (compound.hasKey(NBTConstants.HOST_POS)) {
+		if (compound.contains(NBTConstants.HOST_POS)) {
 			int[] data = compound.getIntArray(NBTConstants.HOST_POS);
 			hostPosition = new BlockPos(data[0], data[1], data[2]);
 		}

@@ -10,11 +10,11 @@ import icbm.classic.lib.explosive.ExplosiveHandler;
 import icbm.classic.prefab.tile.BlockICBM;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -96,7 +96,7 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	}
 
 	@Override
-	public EntityItem entityDropItem(ItemStack stack, float offsetY) {
+	public ItemEntity entityDropItem(ItemStack stack, float offsetY) {
 		if (stack.getItem() == Item.getItemFromBlock(Blocks.TNT)) {
 			return super.entityDropItem(getCartItem(), offsetY);
 		}
@@ -111,13 +111,13 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	@Override
 	protected void writeEntityToNBT(CompoundNBT nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger(NBTConstants.EXPLOSIVE, explosive);
+		nbt.putInt(NBTConstants.EXPLOSIVE, explosive);
 	}
 
 	@Override
 	protected void readEntityFromNBT(CompoundNBT nbt) {
 		super.readEntityFromNBT(nbt);
-		explosive = nbt.getInteger(NBTConstants.EXPLOSIVE);
+		explosive = nbt.getInt(NBTConstants.EXPLOSIVE);
 	}
 
 	@Override

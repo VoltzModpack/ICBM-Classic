@@ -26,7 +26,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -198,10 +198,10 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 		}
 
 		if (missile.targetPos == null) {
-			Vec3d mpos = new Vec3d(missile.xf(), missile.yf(), missile.zf());    // missile position
-			Vec3d rpos = new Vec3d(this.pos.getX(), this.pos.getY(), this.pos.getZ());   // radar position
+			Vector3d mpos = new Vector3d(missile.xf(), missile.yf(), missile.zf());    // missile position
+			Vector3d rpos = new Vector3d(this.pos.getX(), this.pos.getY(), this.pos.getZ());   // radar position
 
-			double nextDistance = mpos.add(missile.getVelocity().toVec3d()).distanceTo(rpos);   // next distance from missile to radar
+			double nextDistance = mpos.add(missile.getVelocity().toVector3d()).distanceTo(rpos);   // next distance from missile to radar
 			double currentDistance = mpos.distanceTo(rpos); // current distance from missile to radar
 
 			return nextDistance < currentDistance;   // we assume that the missile hits if the distance decreases (the missile is coming closer)
@@ -331,8 +331,8 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	@Override
 	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
-		this.safetyRange = nbt.getInteger(NBTConstants.SAFETY_RADIUS);
-		this.alarmRange = nbt.getInteger(NBTConstants.ALARM_RADIUS);
+		this.safetyRange = nbt.getInt(NBTConstants.SAFETY_RADIUS);
+		this.alarmRange = nbt.getInt(NBTConstants.ALARM_RADIUS);
 		this.emitAll = nbt.getBoolean(NBTConstants.EMIT_ALL);
 	}
 
@@ -341,9 +341,9 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	 */
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
-		nbt.setInteger(NBTConstants.SAFETY_RADIUS, this.safetyRange);
-		nbt.setInteger(NBTConstants.ALARM_RADIUS, this.alarmRange);
-		nbt.setBoolean(NBTConstants.EMIT_ALL, this.emitAll);
+		nbt.putInt(NBTConstants.SAFETY_RADIUS, this.safetyRange);
+		nbt.putInt(NBTConstants.ALARM_RADIUS, this.alarmRange);
+		nbt.putBoolean(NBTConstants.EMIT_ALL, this.emitAll);
 		return super.writeToNBT(nbt);
 	}
 

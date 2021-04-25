@@ -10,7 +10,7 @@ import icbm.classic.content.entity.mobs.EntityXmasZombie;
 import icbm.classic.content.entity.mobs.EntityXmasZombieBoss;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -176,7 +176,7 @@ public class BlastXmas extends Blast implements IBlastTickable {
 	protected void spawnEntity(EntityXmasMob entity, double x, double y, double z) {
 		//Update position and trigger init
 		entity.setPositionAndRotation(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0);
-		entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), (IEntityLivingData) null);
+		entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), (ILivingEntityData) null);
 
 		//Place in world
 		this.world().spawnEntity(entity);

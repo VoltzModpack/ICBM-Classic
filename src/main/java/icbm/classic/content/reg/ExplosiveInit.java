@@ -234,7 +234,7 @@ public class ExplosiveInit {
 					if (explosive != null) {
 						CompoundNBT tag = new CompoundNBT();
 						((Location) link).writeIntNBT(tag);
-						explosive.getCustomBlastData().setTag("", tag);
+						explosive.getCustomBlastData().put("", tag);
 
 						if (!world.isRemote) {
 							//entityPlayer.sendMessage(new TextComponentString("Synced coordinate with " + this.getExplosiveName())); //TODO translate

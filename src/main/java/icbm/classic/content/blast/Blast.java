@@ -17,19 +17,19 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.explosive.ExplosiveHandler;
 import icbm.classic.lib.transform.vector.Location;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
@@ -238,8 +238,8 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 	}
 
 	@Override
-	public Vec3d getPosition() {
-		return this.location.toVec3d();
+	public Vector3d getPosition() {
+		return this.location.toVector3d();
 	}
 
 	/**
@@ -288,7 +288,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 		Location minCoord = location.add(-radius - 1);
 		Location maxCoord = location.add(radius + 1);
 		List<Entity> allEntities = world().getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(minCoord.xi(), minCoord.yi(), minCoord.zi(), maxCoord.xi(), maxCoord.yi(), maxCoord.zi()));
-		Vec3d var31 = new Vec3d(location.x(), location.y(), location.z());
+		Vector3d var31 = new Vector3d(location.x(), location.y(), location.z());
 
 		if (!ConfigBlast.ANTIMATTER_BLOCK_AND_ENT_DAMAGE_ON_REDMATTER && this instanceof BlastAntimatter) {
 			allEntities.sort((e1, e2) -> {
@@ -317,7 +317,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 				continue;
 			}
 
-			if (entity instanceof EntityItem && !destroyItem) {
+			if (entity instanceof ItemEntity && !destroyItem) {
 				continue;
 			}
 
@@ -360,21 +360,21 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 
 	@Override
 	public void load(CompoundNBT nbt) {
-		this.callCount = nbt.getInteger(NBTConstants.CALL_COUNT);
+		this.callCount = nbt.getInt(NBTConstants.CALL_COUNT);
 		this.size = nbt.getFloat(NBTConstants.EXPLOSION_SIZE);
 
-		if (world instanceof WorldServer) {
-			exploder = ((WorldServer) world).getEntityFromUuid(nbt.getUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID));
+		if (world instanceof ServerWorld) {
+			exploder = ((ServerWorld) world).getEntityFromUuid(nbt.getUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID));
 		}
 	}
 
 	@Override
 	public void save(CompoundNBT nbt) {
-		nbt.setInteger(NBTConstants.CALL_COUNT, this.callCount);
-		nbt.setFloat(NBTConstants.EXPLOSION_SIZE, this.size);
+		nbt.putInt(NBTConstants.CALL_COUNT, this.callCount);
+		nbt.putFloat(NBTConstants.EXPLOSION_SIZE, this.size);
 
-		if (world instanceof WorldServer) {
-			nbt.setUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID, this.exploder.getUniqueID());
+		if (world instanceof ServerWorld) {
+			nbt.putUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID, this.exploder.getUniqueID());
 		}
 	}
 

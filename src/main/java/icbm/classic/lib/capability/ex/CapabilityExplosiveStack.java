@@ -68,15 +68,15 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 		//Do not save the stack itself as we are saving to its NBT
 		CompoundNBT save = new CompoundNBT();
 		if (!getCustomBlastData().isEmpty()) {
-			save.setTag(NBTConstants.CUSTOM_EX_DATA, getCustomBlastData());
+			save.put(NBTConstants.CUSTOM_EX_DATA, getCustomBlastData());
 		}
 		return save;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		if (nbt.hasKey(NBTConstants.CUSTOM_EX_DATA)) {
-			custom_ex_data = nbt.getCompoundTag(NBTConstants.CUSTOM_EX_DATA);
+		if (nbt.contains(NBTConstants.CUSTOM_EX_DATA)) {
+			custom_ex_data = nbt.getCompound(NBTConstants.CUSTOM_EX_DATA);
 		}
 	}
 

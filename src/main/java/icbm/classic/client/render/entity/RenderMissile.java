@@ -9,18 +9,18 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nullable;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 /** Handles missile rendering for all object types. This
  * includes entity, item, inventory, and tiles.
  *
@@ -28,15 +28,15 @@ import javax.annotation.Nullable;
  * */
 public class RenderMissile extends Render<EntityMissile> {
 
-	private EntityItem entityItem;
-	private RenderEntityItem2 renderEntityItem;
+	private ItemEntity entityItem;
+	private RenderItemEntity2 renderItemEntity;
 
 	public static RenderMissile INSTANCE;
 
 	public RenderMissile(RenderManager renderManager) {
 		super(renderManager);
-		entityItem = new EntityItem(null);
-		renderEntityItem = new RenderEntityItem2(renderManager, Minecraft.getMinecraft().getRenderItem());
+		entityItem = new ItemEntity(null);
+		renderItemEntity = new RenderItemEntity2(renderManager, Minecraft.getMinecraft().getRenderItem());
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class RenderMissile extends Render<EntityMissile> {
 		{
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
-			Vec3d vec3d = entityMissile.motionVector.toVec3d();
+			Vector3d vec3d = entityMissile.motionVector.toVector3d();
 			bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
 			bufferbuilder.pos(x, y, z).color(0, 255, 0, 255).endVertex();
 			bufferbuilder.pos(x + vec3d.x * 2.0D, y + vec3d.y * 2.0D, z + vec3d.z * 2.0D).color(0, 255, 0, 2555).endVertex();
@@ -113,7 +113,7 @@ public class RenderMissile extends Render<EntityMissile> {
 		entityItem.setItem(missileStack);
 
 		//render entity item
-		renderEntityItem.doRender(entityItem, x, y, z, entityYaw, partialTicks);
+		renderItemEntity.doRender(entityItem, x, y, z, entityYaw, partialTicks);
 	}
 
 }

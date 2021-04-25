@@ -72,13 +72,13 @@ public abstract class TileLauncherPrefab extends TileFrequency implements IRadio
 	@Override
 	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
-		this._targetPos = new Pos(nbt.getCompoundTag(NBTConstants.TARGET));
+		this._targetPos = new Pos(nbt.getCompound(NBTConstants.TARGET));
 	}
 
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
 		if (this._targetPos != null) {
-			nbt.setTag(NBTConstants.TARGET, this._targetPos.toNBT());
+			nbt.put(NBTConstants.TARGET, this._targetPos.toNBT());
 		}
 
 		return super.writeToNBT(nbt);

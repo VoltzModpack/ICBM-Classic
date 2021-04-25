@@ -23,8 +23,8 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 	public ItemRocketLauncher() {
 		super("rocketLauncher");
 		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
-			@SideOnly(Side.CLIENT)
+			@OnlyIn(Dist.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
 				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
 			}
@@ -135,7 +135,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
 		final String key = "item.icbmclassic:rocketLauncher.info";
 		String translation = LanguageUtility.getLocal(key);

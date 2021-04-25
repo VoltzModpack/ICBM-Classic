@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ItemBattery extends ItemICBMBase {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
 		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage energyStorage = stack.getCapability(CapabilityEnergy.ENERGY, null);

@@ -256,7 +256,7 @@ public class BlastNuclear extends BlastThreaded {
 	@Override
 	public void save(CompoundNBT nbt) {
 		super.save(nbt);
-		nbt.setBoolean(NBTConstants.SPAWN_MORE_PARTICLES, this.spawnMoreParticles);
+		nbt.putBoolean(NBTConstants.SPAWN_MORE_PARTICLES, this.spawnMoreParticles);
 	}
 
 }

@@ -11,8 +11,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 public class PacketRedmatterSizeSync implements IPacket<PacketRedmatterSizeSync> //TODO replace with entity data manager
 {
@@ -48,7 +48,7 @@ public class PacketRedmatterSizeSync implements IPacket<PacketRedmatterSizeSync>
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void handleClientSide(PlayerEntity player) {
 		if (Minecraft.getMinecraft().world != null) {
 			final Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);

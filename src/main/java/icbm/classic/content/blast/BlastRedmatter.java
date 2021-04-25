@@ -18,13 +18,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fluids.IFluidBlock;
 
 public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovable {
@@ -293,8 +293,8 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 
 				final double thisSizePct = thisSize / totalSize;
 
-				final Vec3d totalDelta = rmBlast.getPosition().subtract(this.getPosition());
-				final Vec3d thisDelta = totalDelta.scale(thisSizePct);
+				final Vector3d totalDelta = rmBlast.getPosition().subtract(this.getPosition());
+				final Vector3d thisDelta = totalDelta.scale(thisSizePct);
 
 				if (exploder != null) {
 					this.exploder.addVelocity(thisDelta.x, thisDelta.y, thisDelta.z); //TODO we are adding velocity twice
@@ -346,7 +346,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 			} else if (entity instanceof EntityExplosive) //TODO move to capability
 			{
 				((EntityExplosive) entity).explode(); //TODO should trigger the explosive capability
-			} else if (entity instanceof EntityLiving || entity instanceof PlayerEntity) {
+			} else if (entity instanceof LivingEntity || entity instanceof PlayerEntity) {
 				entity.attackEntityFrom(new DamageSourceRedmatter(this), 2000);
 			} else {
 				//Kill entity in the center of the ball

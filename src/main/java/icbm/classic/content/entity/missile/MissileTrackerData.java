@@ -23,7 +23,7 @@ public class MissileTrackerData {
 	public MissileTrackerData(EntityMissile missile) {
 		targetPos = missile.targetPos;
 		missileData = missile.writeToNBT(new CompoundNBT());
-		missileData.removeTag("Pos");
+		missileData.remove("Pos");
 	}
 
 	public MissileTrackerData(CompoundNBT tagCompound) {
@@ -32,15 +32,15 @@ public class MissileTrackerData {
 
 	//Helper methods for saving and loading
 	public void readFromNBT(CompoundNBT nbt) {
-		ticksLeftToTarget = nbt.getInteger(NBTConstants.TICKS);
-		targetPos = new Pos(nbt.getCompoundTag(NBTConstants.TARGET));
-		missileData = nbt.getCompoundTag(NBTConstants.DATA);
+		ticksLeftToTarget = nbt.getInt(NBTConstants.TICKS);
+		targetPos = new Pos(nbt.getCompound(NBTConstants.TARGET));
+		missileData = nbt.getCompound(NBTConstants.DATA);
 	}
 
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
-		nbt.setInteger(NBTConstants.TICKS, ticksLeftToTarget);
-		nbt.setTag(NBTConstants.TARGET, targetPos.writeNBT(new CompoundNBT()));
-		nbt.setTag(NBTConstants.DATA, missileData);
+		nbt.putInt(NBTConstants.TICKS, ticksLeftToTarget);
+		nbt.put(NBTConstants.TARGET, targetPos.writeNBT(new CompoundNBT()));
+		nbt.put(NBTConstants.DATA, missileData);
 		return nbt;
 	}
 

@@ -70,12 +70,12 @@ public class TilePoweredMachine extends TileMachine implements IEnergyBufferProv
 	@Override
 	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
-		setEnergy(compound.getInteger(NBTConstants.ENERGY));
+		setEnergy(compound.getInt(NBTConstants.ENERGY));
 	}
 
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT compound) {
-		compound.setInteger(NBTConstants.ENERGY, getEnergy());
+		compound.putInt(NBTConstants.ENERGY, getEnergy());
 		return super.writeToNBT(compound);
 	}
 

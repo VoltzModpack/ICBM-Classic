@@ -3,17 +3,17 @@ package icbm.classic.content.potion;
 import icbm.classic.ICBMClassic;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.EntityZombieVillager;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.ZombifiedPiglinEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.monster.ZombieVillagerEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class PoisonContagion extends CustomPotion {
 	@Override
 	public void performEffect(LivingEntity entityLiving, int amplifier) {
 		World world = entityLiving.world;
-		if (!(entityLiving instanceof EntityZombie) && !(entityLiving instanceof EntityPigZombie)) {
+		if (!(entityLiving instanceof ZombieEntity) && !(entityLiving instanceof ZombifiedPiglinEntity)) {
 			entityLiving.attackEntityFrom(DamageSource.MAGIC, 1);
 		}
 
@@ -41,19 +41,19 @@ public class PoisonContagion extends CustomPotion {
 
 			for (LivingEntity entity : entities) {
 				if (entity != null && entity != entityLiving) {
-					if (entity instanceof EntityPig) {
-						EntityPigZombie newEntity = new EntityPigZombie(entity.world);
+					if (entity instanceof PigEntity) {
+						ZombifiedPiglinEntity newEntity = new ZombifiedPiglinEntity(entity.world);
 						newEntity.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
 
 						if (!entity.world.isRemote) {
-							entity.world.spawnEntity(newEntity);
+							entity.world.addEntity(newEntity);
 						}
 						entity.setDead();
-					} else if (entity instanceof EntityVillager) {
-						if ((world.getDifficulty() == EnumDifficulty.NORMAL || world.getDifficulty() == EnumDifficulty.HARD)) {
+					} else if (entity instanceof VillagerEntity) {
+						if ((world.getDifficulty() == Difficulty.NORMAL || world.getDifficulty() == Difficulty.HARD)) {
 
-							EntityVillager entityvillager = (EntityVillager) entity;
-							EntityZombieVillager entityzombievillager = new EntityZombieVillager(world);
+							VillagerEntity entityvillager = (VillagerEntity) entity;
+							ZombieVillagerEntity entityzombievillager = new ZombieVillagerEntity(world);
 							entityzombievillager.copyLocationAndAnglesFrom(entityvillager);
 							world.removeEntity(entityvillager);
 							entityzombievillager.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityzombievillager)), null);
@@ -66,7 +66,7 @@ public class PoisonContagion extends CustomPotion {
 								entityzombievillager.setAlwaysRenderNameTag(entityvillager.getAlwaysRenderNameTag());
 							}
 
-							world.spawnEntity(entityzombievillager);
+							world.addEntity(entityzombievillager);
 							world.playEvent((PlayerEntity) null, 1026, new BlockPos(entity), 0);
 						}
 						entity.setDead();

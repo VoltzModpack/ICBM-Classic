@@ -9,22 +9,22 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
-public class RenderEntityItem2 extends Render<EntityItem> {
+@OnlyIn(Dist.CLIENT)
+public class RenderItemEntity2 extends Render<ItemEntity> {
 
 	private final RenderItem itemRenderer;
 	private final Random random = new Random();
 
-	public RenderEntityItem2(RenderManager renderManagerIn, RenderItem p_i46167_2_) {
+	public RenderItemEntity2(RenderManager renderManagerIn, RenderItem p_i46167_2_) {
 		super(renderManagerIn);
 		this.itemRenderer = p_i46167_2_;
 		this.shadowSize = 0.15F;
@@ -34,7 +34,7 @@ public class RenderEntityItem2 extends Render<EntityItem> {
 	/**
 	 * Renders the desired {@code T} type Entity.
 	 */
-	public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(ItemEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		ItemStack itemstack = entity.getItem();
 		int i = itemstack.isEmpty() ? 187 : Item.getIdFromItem(itemstack.getItem()) + itemstack.getMetadata();
 		this.random.setSeed((long) i);
@@ -83,7 +83,7 @@ public class RenderEntityItem2 extends Render<EntityItem> {
 	/**
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
-	protected ResourceLocation getEntityTexture(EntityItem entity) {
+	protected ResourceLocation getEntityTexture(ItemEntity entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

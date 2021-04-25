@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/10/2017.
@@ -25,7 +25,7 @@ public class TESRLauncherScreen extends TileEntitySpecialRenderer<TileLauncherSc
 	public static final ModelTier3LauncherScreen model2 = new ModelTier3LauncherScreen();
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void render(TileLauncherScreen te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);

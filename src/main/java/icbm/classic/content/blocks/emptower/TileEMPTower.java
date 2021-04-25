@@ -147,7 +147,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	@Override
 	public void readFromNBT(CompoundNBT readFromNBT) {
 		super.readFromNBT(readFromNBT);
-		this.empRadius = readFromNBT.getInteger(NBTConstants.EMP_RADIUS);
+		this.empRadius = readFromNBT.getInt(NBTConstants.EMP_RADIUS);
 		this.empMode = EMPMode.values()[readFromNBT.getByte(NBTConstants.EMP_MODE)];
 	}
 
@@ -156,8 +156,8 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	 */
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT saveToNBT) {
-		saveToNBT.setInteger(NBTConstants.EMP_RADIUS, this.empRadius);
-		saveToNBT.setByte(NBTConstants.EMP_MODE, (byte) this.empMode.ordinal());
+		saveToNBT.putInt(NBTConstants.EMP_RADIUS, this.empRadius);
+		saveToNBT.putByte(NBTConstants.EMP_MODE, (byte) this.empMode.ordinal());
 		return super.writeToNBT(saveToNBT);
 	}
 

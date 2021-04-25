@@ -29,8 +29,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 		this.setRegistryName(ICBMConstants.DOMAIN, "radarGun");
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> lines, ITooltipFlag flagIn) {
 		String localization = LanguageUtility.getLocal(getTranslationKey() + ".info");
@@ -68,7 +68,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 		{
 			if (!world.isRemote) {
 				ItemStack stack = player.getHeldItem(handIn);
-				stack.setTagCompound(null);
+				stack.putCompound(null);
 				stack.setItemDamage(0);
 				LanguageUtility.addChatToPlayer(player, "gps.cleared.name");
 				player.inventoryContainer.detectAndSendChanges();
@@ -105,7 +105,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 		}
 
 		if (player.isSneaking()) {
-			stack.setTagCompound(null);
+			stack.putCompound(null);
 			stack.setItemDamage(0);
 			LanguageUtility.addChatToPlayer(player, "gps.cleared.name");
 			player.inventoryContainer.detectAndSendChanges();
@@ -167,8 +167,8 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 
 	@Override
 	public Location getLocation(ItemStack stack) {
-		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey(NBT_LINK_POS)) {
-			return new Location(stack.getTagCompound().getCompoundTag(NBT_LINK_POS));
+		if (stack.getTagCompound() != null && stack.getTagCompound().contains(NBT_LINK_POS)) {
+			return new Location(stack.getTagCompound().getCompound(NBT_LINK_POS));
 		}
 		return null;
 	}
@@ -177,7 +177,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	public void setLocation(ItemStack stack, IWorldPosition loc) {
 		if (loc != null) {
 			if (stack.getTagCompound() == null) {
-				stack.setTagCompound(new CompoundNBT());
+				stack.putCompound(new CompoundNBT());
 			}
 
 			CompoundNBT save = new CompoundNBT();
@@ -186,9 +186,9 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 			} else {
 				new Location(loc).writeNBT(save);
 			}
-			stack.getTagCompound().setTag(NBT_LINK_POS, save);
+			stack.getTagCompound().put(NBT_LINK_POS, save);
 		} else if (stack.getTagCompound() != null) {
-			stack.getTagCompound().removeTag(NBT_LINK_POS);
+			stack.getTagCompound().remove(NBT_LINK_POS);
 		}
 	}
 

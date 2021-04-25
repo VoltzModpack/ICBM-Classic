@@ -28,8 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -110,12 +110,12 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	@Override
 	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
-		_tier = EnumTier.get(compound.getInteger(NBTConstants.TIER));
+		_tier = EnumTier.get(compound.getInt(NBTConstants.TIER));
 	}
 
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT compound) {
-		compound.setInteger(NBTConstants.TIER, _tier.ordinal());
+		compound.putInt(NBTConstants.TIER, _tier.ordinal());
 		return super.writeToNBT(compound);
 	}
 
@@ -129,7 +129,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 		return writeToNBT(new CompoundNBT());
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		readFromNBT(pkt.getNbtCompound());

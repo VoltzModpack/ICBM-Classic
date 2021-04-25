@@ -12,9 +12,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.ArrayList;
@@ -58,11 +58,11 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 
 	public Cube(CompoundNBT nbt) {
 		super(nbt);
-		if (nbt.hasKey(NBTConstants.POINT_ONE)) {
-			pointOne = new Pos(nbt.getCompoundTag(NBTConstants.POINT_ONE));
+		if (nbt.contains(NBTConstants.POINT_ONE)) {
+			pointOne = new Pos(nbt.getCompound(NBTConstants.POINT_ONE));
 		}
-		if (nbt.hasKey(NBTConstants.POINT_TWO)) {
-			pointTwo = new Pos(nbt.getCompoundTag(NBTConstants.POINT_TWO));
+		if (nbt.contains(NBTConstants.POINT_TWO)) {
+			pointTwo = new Pos(nbt.getCompound(NBTConstants.POINT_TWO));
 		}
 		recalc();
 	}
@@ -115,10 +115,10 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 
 	public CompoundNBT save(CompoundNBT tag) {
 		if (pointOne != null) {
-			tag.setTag(NBTConstants.POINT_ONE, new Pos(pointOne).writeNBT(new CompoundNBT()));
+			tag.put(NBTConstants.POINT_ONE, new Pos(pointOne).writeNBT(new CompoundNBT()));
 		}
 		if (pointTwo != null) {
-			tag.setTag(NBTConstants.POINT_TWO, new Pos(pointTwo).writeNBT(new CompoundNBT()));
+			tag.put(NBTConstants.POINT_TWO, new Pos(pointTwo).writeNBT(new CompoundNBT()));
 		}
 		return tag;
 	}
@@ -157,7 +157,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 	/// Collision Detection
 	/////////////////////
 
-	public boolean intersects(Vec3d v) {
+	public boolean intersects(Vector3d v) {
 		return intersects(v.x, v.y, v.z);
 	}
 
@@ -205,7 +205,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return isInsideBounds(other.minX, other.minY, other.minZ, other.maxX, other.maxY, other.maxZ);
 	}
 
-	public boolean isVecInYZ(Vec3d v) {
+	public boolean isVecInYZ(Vector3d v) {
 		return isWithinY(v) && isWithinZ(v);
 	}
 
@@ -213,7 +213,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return isWithinY(v) && isWithinZ(v);
 	}
 
-	public boolean isWithinXZ(Vec3d v) {
+	public boolean isWithinXZ(Vector3d v) {
 		return isWithinX(v) && isWithinZ(v);
 	}
 
@@ -225,7 +225,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return isWithinRange(min().x(), max().x(), v);
 	}
 
-	public boolean isWithinX(Vec3d v) {
+	public boolean isWithinX(Vector3d v) {
 		return isWithinX(v.x);
 	}
 
@@ -237,7 +237,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return isWithinRange(min().y(), max().y(), v);
 	}
 
-	public boolean isWithinY(Vec3d v) {
+	public boolean isWithinY(Vector3d v) {
 		return isWithinY(v.y);
 	}
 
@@ -249,7 +249,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return isWithinRange(min().z(), max().z(), v);
 	}
 
-	public boolean isWithinZ(Vec3d v) {
+	public boolean isWithinZ(Vector3d v) {
 		return isWithinZ(v.z);
 	}
 
@@ -389,7 +389,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return (int) getSizeX() == (int) getSizeY() && (int) getSizeY() == (int) getSizeZ();
 	}
 
-	public double distance(Vec3d v) {
+	public double distance(Vector3d v) {
 		if (!isValid()) {
 			if (min() != null) {
 				return new Pos(min()).distance(v);
@@ -494,7 +494,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		List<Chunk> chunks = new ArrayList();
 		for (int chunkX = (min().xi() >> 4) - 1; chunkX <= (max().xi() >> 4) + 1; chunkX++) {
 			for (int chunkZ = (min().zi() >> 4) - 1; chunkZ <= (max().zi() >> 4) + 1; chunkZ++) {
-				if (loaded || (!(world instanceof WorldServer) || ((WorldServer) world).getChunkProvider().chunkExists(chunkX, chunkZ))) {
+				if (loaded || (!(world instanceof ServerWorld) || ((ServerWorld) world).getChunkProvider().chunkExists(chunkX, chunkZ))) {
 					Chunk chunk = world.getChunk(chunkX, chunkZ);
 					if (chunk != null) {
 						chunks.add(chunk);

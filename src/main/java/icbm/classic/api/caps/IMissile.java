@@ -3,7 +3,7 @@ package icbm.classic.api.caps;
 import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.api.explosion.BlastState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -46,7 +46,7 @@ public interface IMissile extends IWorldPosition {
 	default void dropMissileAsItem() {
 		ItemStack stack = toStack();
 		if (stack != null && !stack.isEmpty() && world() != null) {
-			world().spawnEntity(new EntityItem(world(), x(), y(), z(), stack));
+			world().spawnEntity(new ItemEntity(world(), x(), y(), z(), stack));
 		}
 	}
 

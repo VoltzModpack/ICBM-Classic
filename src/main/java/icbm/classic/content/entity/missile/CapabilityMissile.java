@@ -5,7 +5,7 @@ import icbm.classic.api.explosion.BlastState;
 import icbm.classic.content.reg.ItemReg;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -30,7 +30,7 @@ public class CapabilityMissile implements IMissile {
 	public void dropMissileAsItem() {
 		ItemStack stack = toStack();
 		if (stack != null && !stack.isEmpty() && world() != null) {
-			world().spawnEntity(new EntityItem(world(), x(), y(), z(), stack));
+			world().spawnEntity(new ItemEntity(world(), x(), y(), z(), stack));
 		}
 		missile.setDead();
 	}

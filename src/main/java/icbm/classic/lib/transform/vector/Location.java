@@ -15,7 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -28,7 +28,7 @@ public class Location extends AbstractLocation<Location> implements IWorldPositi
 	}
 
 	public Location(CompoundNBT nbt) {
-		this(DimensionManager.getWorld(nbt.getInteger(NBTConstants.DIMENSION)), nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
+		this(DimensionManager.getWorld(nbt.getInt(NBTConstants.DIMENSION)), nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
 	}
 
 	public Location(ByteBuf data) {
@@ -59,7 +59,7 @@ public class Location extends AbstractLocation<Location> implements IWorldPositi
 		this(world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public Location(World world, Vec3d vec) {
+	public Location(World world, Vector3d vec) {
 		this(world, vec.x, vec.y, vec.z);
 	}
 

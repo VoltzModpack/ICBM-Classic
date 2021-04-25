@@ -10,8 +10,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ItemTracker extends ItemICBMElectrical {
 		//TODO use ItemCompass render to aim icon towards target
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List lines) {
 		Entity trackingEntity = getTrackingEntity(FMLClientHandler.instance().getClient().world, stack);
@@ -38,18 +38,18 @@ public class ItemTracker extends ItemICBMElectrical {
 
 	public void setTrackingEntity(ItemStack itemStack, Entity entity) {
 		if (itemStack.getTagCompound() == null) {
-			itemStack.setTagCompound(new CompoundNBT());
+			itemStack.putCompound(new CompoundNBT());
 		}
 
 		if (entity != null) {
-			itemStack.getTagCompound().setInteger(NBTConstants.TRACKING_ENTITY, entity.getEntityId());
+			itemStack.getTagCompound().putInt(NBTConstants.TRACKING_ENTITY, entity.getEntityId());
 		}
 	}
 
 	public Entity getTrackingEntity(World worldObj, ItemStack itemStack) {
 		if (worldObj != null) {
 			if (itemStack.getTagCompound() != null) {
-				int trackingID = itemStack.getTagCompound().getInteger(NBTConstants.TRACKING_ENTITY);
+				int trackingID = itemStack.getTagCompound().getInt(NBTConstants.TRACKING_ENTITY);
 				return worldObj.getEntityByID(trackingID);
 			}
 		}

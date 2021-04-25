@@ -42,7 +42,7 @@ public class TileEntityExplosive extends TileEntity implements IRotatable {
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
 		if (capabilityExplosive != null && capabilityExplosive.toStack() != null) {
-			nbt.setTag(NBTConstants.EXPLOSIVE_STACK, capabilityExplosive.toStack().serializeNBT());
+			nbt.put(NBTConstants.EXPLOSIVE_STACK, capabilityExplosive.toStack().serializeNBT());
 		}
 		return super.writeToNBT(nbt);
 	}

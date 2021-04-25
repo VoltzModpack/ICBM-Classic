@@ -8,7 +8,7 @@ import icbm.classic.content.entity.missile.EntityMissile;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -88,7 +88,7 @@ public class CommandRemoveTest {
 	@ParameterizedTest
 	@MethodSource("provideArgsToTest")
 	void command_removeNothing(String[] args, boolean removeMissile) {
-		dummyCommandSender.position = new Vec3d(100, 200, 100);
+		dummyCommandSender.position = new Vector3d(100, 200, 100);
 
 		//Spawn some sheep to act as decoys
 		TestUtils.sheep(testManager.getWorld(), 100, 20, 100);
@@ -110,7 +110,7 @@ public class CommandRemoveTest {
 	@ParameterizedTest
 	@MethodSource("provideArgsToTest")
 	void command_removeMissiles(String[] args, boolean removeMissile) {
-		dummyCommandSender.position = new Vec3d(100, 20, 100);
+		dummyCommandSender.position = new Vector3d(100, 20, 100);
 
 		//Spawn some sheep to act as decoys
 		TestUtils.sheep(testManager.getWorld(), 100, 20, 100);

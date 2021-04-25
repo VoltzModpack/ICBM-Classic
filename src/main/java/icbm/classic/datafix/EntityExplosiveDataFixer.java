@@ -15,10 +15,10 @@ public class EntityExplosiveDataFixer implements IFixableData {
 	@Override
 	public CompoundNBT fixTagCompound(CompoundNBT compound) {
 		//Match to entity, we get all entity tags as input
-		if (compound.hasKey(NBTConstants.ID) && compound.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.BLOCK_EXPLOSIVE.toString())) {
+		if (compound.contains(NBTConstants.ID) && compound.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.BLOCK_EXPLOSIVE.toString())) {
 			//Fix explosive ID save
-			if (compound.hasKey(NBTConstants.EXPLOSIVE_ID)) {
-				int id = compound.getInteger(NBTConstants.EXPLOSIVE_ID);
+			if (compound.contains(NBTConstants.EXPLOSIVE_ID)) {
+				int id = compound.getInt(NBTConstants.EXPLOSIVE_ID);
 
 				//Generate stack so we can serialize off it
 				final ItemStack stack = new ItemStack(BlockReg.blockExplosive, 1, id);
@@ -26,17 +26,17 @@ public class EntityExplosiveDataFixer implements IFixableData {
 				//Handle custom explosive data
 				final IExplosive ex = stack.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
 				if (ex instanceof CapabilityExplosiveStack) {
-					if (compound.hasKey(NBTConstants.DATA)) {
-						((CapabilityExplosiveStack) ex).setCustomData(compound.getCompoundTag(NBTConstants.DATA));
+					if (compound.contains(NBTConstants.DATA)) {
+						((CapabilityExplosiveStack) ex).setCustomData(compound.getCompound(NBTConstants.DATA));
 					}
 				}
 
 				//Remove old tags
-				compound.removeTag(NBTConstants.EXPLOSIVE_ID);
-				compound.removeTag(NBTConstants.DATA);
+				compound.remove(NBTConstants.EXPLOSIVE_ID);
+				compound.remove(NBTConstants.DATA);
 
 				//Save stack
-				compound.setTag(NBTConstants.EXPLOSIVE_STACK, stack.serializeNBT());
+				compound.put(NBTConstants.EXPLOSIVE_STACK, stack.serializeNBT());
 			}
 		}
 		return compound;

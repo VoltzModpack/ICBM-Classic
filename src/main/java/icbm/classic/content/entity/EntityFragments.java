@@ -8,8 +8,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
@@ -188,7 +188,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 		if (iblockstate.getMaterial() != Material.AIR) {
 			AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, inTilePosition);
 
-			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(inTilePosition).contains(new Vec3d(this.posX, this.posY, this.posZ))) {
+			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(inTilePosition).contains(new Vector3d(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
 			}
 		}
@@ -211,17 +211,17 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 			++this.ticksInAir;
 
 			//Check for block collision
-			Vec3d start = new Vec3d(this.posX, this.posY, this.posZ);
-			Vec3d end = new Vec3d(this.posX + this.motionX * 2, this.posY + this.motionY * 2, this.posZ + this.motionZ * 2);
+			Vector3d start = new Vector3d(this.posX, this.posY, this.posZ);
+			Vector3d end = new Vector3d(this.posX + this.motionX * 2, this.posY + this.motionY * 2, this.posZ + this.motionZ * 2);
 			RayTraceResult raytraceresult = this.world.rayTraceBlocks(start, end, false, true, false);
 
 			//Reset start end
-			start = new Vec3d(this.posX, this.posY, this.posZ);
-			end = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			start = new Vector3d(this.posX, this.posY, this.posZ);
+			end = new Vector3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			//IF hit, change end to last block hit
 			if (raytraceresult != null) {
-				end = new Vec3d(raytraceresult.hitVec.x, raytraceresult.hitVec.y, raytraceresult.hitVec.z);
+				end = new Vector3d(raytraceresult.hitVec.x, raytraceresult.hitVec.y, raytraceresult.hitVec.z);
 			}
 
 			//Check for entities
@@ -345,12 +345,12 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 			//Notify that we hit an entity
 			this.onImpactEntity(entity);
 
-			if (this.isBurning() && !(entity instanceof EntityEnderman)) {
+			if (this.isBurning() && !(entity instanceof EndermanEntity)) {
 				entity.setFire(5);
 			}
 
 			if (entity.attackEntityFrom(damagesource, (float) damageScaled)) {
-				if (!(entity instanceof EntityEnderman)) {
+				if (!(entity instanceof EndermanEntity)) {
 					this.setDead();
 				}
 			} else {
@@ -413,7 +413,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 	}
 
 	@Nullable
-	protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
+	protected Entity findEntityOnPath(Vector3d start, Vector3d end) {
 		Entity resultEntity = null;
 		List<Entity> entityList = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX * 1.2, this.motionY * 1.2, this.motionZ * 1.2).grow(1.0D), e -> e.canBeCollidedWith());
 		double d0 = 0.0D;
@@ -444,8 +444,8 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 	 */
 	@Override
 	public void writeEntityToNBT(CompoundNBT nbt) {
-		nbt.setByte(NBTConstants.SHAKE, (byte) this.arrowShake);
-		nbt.setBoolean(NBTConstants.IS_EXPLOSIVE, this.isExplosive);
+		nbt.putByte(NBTConstants.SHAKE, (byte) this.arrowShake);
+		nbt.putBoolean(NBTConstants.IS_EXPLOSIVE, this.isExplosive);
 	}
 
 	/**

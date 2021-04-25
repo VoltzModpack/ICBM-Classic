@@ -17,7 +17,7 @@ public class BlastNightmare extends Blast {
 			//Spawn bats
 			final int batCount = (size / 10) + world().rand.nextInt(size / 10);
 			for (int i = 0; i < batCount; i++) {
-				//EntityBat bat = new EntityBat(world());
+				//BatEntity bat = new BatEntity(world());
 				//DelayedActionHandler.add(new DelayedSpawn(oldWorld(), center, bat, 10, (i + oldWorld().rand.nextInt(size)) * 20));
 			}
 
@@ -26,7 +26,7 @@ public class BlastNightmare extends Blast {
 			for (int i = 0; i < monsterCount; i++) {
 				//TODO distribute using missile miss spread code
 				//TODO materialize zombies as ghosts so they can walk through walls in order to find an air pocket to spawn
-				//EntityZombie zombie = new EntityZombie(world());
+				//ZombieEntity zombie = new ZombieEntity(world());
 				//DelayedActionHandler.add(new DelayedSpawn(oldWorld(), center, zombie, 10, (i + oldWorld().rand.nextInt(size * 2)) * 20));
 			}
 

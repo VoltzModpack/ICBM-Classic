@@ -290,7 +290,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	@Override
 	public void load(CompoundNBT nbt) {
 		super.load(nbt);
-		this.duration = nbt.getInteger(NBTConstants.DURATION);
+		this.duration = nbt.getInt(NBTConstants.DURATION);
 		this.applyContagiousEffect = nbt.getBoolean(NBTConstants.IS_CONTAGIOUS);
 		this.applyPoisonEffect = nbt.getBoolean(NBTConstants.IS_POISONOUS);
 		this.applyConfusionEffect = nbt.getBoolean(NBTConstants.IS_CONFUSE);
@@ -304,15 +304,15 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	@Override
 	public void save(CompoundNBT nbt) {
 		super.save(nbt);
-		nbt.setInteger(NBTConstants.DURATION, this.duration);
-		nbt.setBoolean(NBTConstants.IS_CONTAGIOUS, this.applyContagiousEffect);
-		nbt.setBoolean(NBTConstants.IS_POISONOUS, this.applyPoisonEffect);
-		nbt.setBoolean(NBTConstants.IS_CONFUSE, this.applyConfusionEffect);
-		nbt.setBoolean(NBTConstants.IS_MUTATE, this.mutateEntities);
-		nbt.setFloat(NBTConstants.RED, this.red);
-		nbt.setFloat(NBTConstants.GREEN, this.green);
-		nbt.setFloat(NBTConstants.BLUE, this.blue);
-		nbt.setBoolean(NBTConstants.PLAY_SHORT_SOUND_FX, this.playShortSoundFX);
+		nbt.putInt(NBTConstants.DURATION, this.duration);
+		nbt.putBoolean(NBTConstants.IS_CONTAGIOUS, this.applyContagiousEffect);
+		nbt.putBoolean(NBTConstants.IS_POISONOUS, this.applyPoisonEffect);
+		nbt.putBoolean(NBTConstants.IS_CONFUSE, this.applyConfusionEffect);
+		nbt.putBoolean(NBTConstants.IS_MUTATE, this.mutateEntities);
+		nbt.putFloat(NBTConstants.RED, this.red);
+		nbt.putFloat(NBTConstants.GREEN, this.green);
+		nbt.putFloat(NBTConstants.BLUE, this.blue);
+		nbt.putBoolean(NBTConstants.PLAY_SHORT_SOUND_FX, this.playShortSoundFX);
 	}
 
 }

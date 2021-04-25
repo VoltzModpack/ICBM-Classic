@@ -283,14 +283,14 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	protected void readEntityFromNBT(CompoundNBT nbt) {
-		if (nbt.hasKey(NBTConstants.EXPLOSIVE)) {
-			explosive.deserializeNBT(nbt.getCompoundTag(NBTConstants.EXPLOSIVE));
+		if (nbt.contains(NBTConstants.EXPLOSIVE)) {
+			explosive.deserializeNBT(nbt.getCompound(NBTConstants.EXPLOSIVE));
 		}
 	}
 
 	@Override
 	protected void writeEntityToNBT(CompoundNBT nbt) {
-		nbt.setTag(NBTConstants.EXPLOSIVE, explosive.serializeNBT());
+		nbt.put(NBTConstants.EXPLOSIVE, explosive.serializeNBT());
 	}
 
 	@Override

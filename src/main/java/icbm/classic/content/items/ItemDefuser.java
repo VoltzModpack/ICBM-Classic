@@ -7,7 +7,7 @@ import icbm.classic.content.entity.EntityBombCart;
 import icbm.classic.lib.LanguageUtility;
 import icbm.classic.prefab.item.ItemICBMElectrical;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
@@ -55,7 +55,7 @@ public class ItemDefuser extends ItemICBMElectrical {
 				}
 
 				if (!entity.world.isRemote) {
-					entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(Blocks.TNT)));
+					entity.world.spawnEntity(new ItemEntity(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(Blocks.TNT)));
 				}
 				entity.setDead();
 			} else if (entity instanceof EntityBombCart) {

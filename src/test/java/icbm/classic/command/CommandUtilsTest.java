@@ -11,10 +11,10 @@ import icbm.classic.content.entity.EntityGrenade;
 import icbm.classic.content.entity.missile.EntityMissile;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.BatEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.AfterAll;
@@ -69,10 +69,10 @@ public class CommandUtilsTest {
 	private static Stream<Arguments> provideIsICBMEntityData() {
 		final FakeWorld world = FakeWorld.newWorld("isICBMEntity");
 		return Stream.of(
-			Arguments.of(new EntityZombie(world), false),
-			Arguments.of(new EntityBat(world), false),
-			Arguments.of(new EntityEnderman(world), false),
-			Arguments.of(new EntitySheep(world), false),
+			Arguments.of(new ZombieEntity(world), false),
+			Arguments.of(new BatEntity(world), false),
+			Arguments.of(new EndermanEntity(world), false),
+			Arguments.of(new SheepEntity(world), false),
 			Arguments.of(new EntityGrenade(world), true),
 			Arguments.of(new EntityMissile(world), true),
 			Arguments.of(new EntityExplosive(world), true),
@@ -91,9 +91,9 @@ public class CommandUtilsTest {
 	private static Stream<Arguments> provideIsMissileData() {
 		final FakeWorld world = FakeWorld.newWorld("isMissile");
 		return Stream.of(
-			Arguments.of(new EntityZombie(world), false),
-			Arguments.of(new EntityBat(world), false),
-			Arguments.of(new EntityEnderman(world), false),
+			Arguments.of(new ZombieEntity(world), false),
+			Arguments.of(new BatEntity(world), false),
+			Arguments.of(new EndermanEntity(world), false),
 			Arguments.of(new EntitySheep(world), false),
 			Arguments.of(new EntityGrenade(world), false),
 			Arguments.of(new EntityMissile(world), true),
@@ -152,33 +152,33 @@ public class CommandUtilsTest {
 		final World world = testManager.getWorld();
 
 		//Sheep in range
-		EntitySheep sheep = new EntitySheep(world);
+		SheepEntity sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 10, 100);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 11, 100);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 100);
 		world.spawnEntity(sheep);
 
 		//Sheep not in range
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(200, 12, 100);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 300);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 500);
 		world.spawnEntity(sheep);
@@ -193,34 +193,34 @@ public class CommandUtilsTest {
 		final World world = testManager.getWorld();
 
 		//Sheep in range
-		EntitySheep sheep = new EntitySheep(world);
+		SheepEntity sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 10, 100);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 11, 100);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 100);
 		world.spawnEntity(sheep);
 
 		//Sheep not in range
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(200, 12, 100);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 300);
 		world.spawnEntity(sheep);
 
-		sheep = new EntitySheep(world);
+		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 500);
 		world.spawnEntity(sheep);

@@ -108,7 +108,7 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	@Override
 	protected void readEntityFromNBT(CompoundNBT nbt) {
 		this.fuse = nbt.getByte(NBTConstants.FUSE);
-		getExplosiveCap().deserializeNBT(nbt.getCompoundTag(NBTConstants.EXPLOSIVE_STACK));
+		getExplosiveCap().deserializeNBT(nbt.getCompound(NBTConstants.EXPLOSIVE_STACK));
 	}
 
 	/**
@@ -116,8 +116,8 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	 */
 	@Override
 	protected void writeEntityToNBT(CompoundNBT nbt) {
-		nbt.setByte(NBTConstants.FUSE, (byte) this.fuse);
-		nbt.setTag(NBTConstants.EXPLOSIVE_STACK, getExplosiveCap().serializeNBT());
+		nbt.putByte(NBTConstants.FUSE, (byte) this.fuse);
+		nbt.put(NBTConstants.EXPLOSIVE_STACK, getExplosiveCap().serializeNBT());
 	}
 
 	@Override

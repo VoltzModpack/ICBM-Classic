@@ -3,7 +3,7 @@ package icbm.classic.prefab;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Potion;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 
 /**
  * @author Calclavia, Darkguardsman
@@ -82,7 +82,7 @@ public abstract class CustomPotion extends Potion {
 		}
 
 		//Disable mal effects with peaceful on
-		return disablePeaceful && ent.getEntityWorld().getDifficulty() == EnumDifficulty.EASY;
+		return disablePeaceful && ent.getEntityWorld().getDifficulty() == Difficulty.EASY;
 	}
 
 	/**

@@ -34,8 +34,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -151,14 +151,14 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 		return capability == CapabilityEMP.EMP || super.hasCapability(capability, facing);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return this.getEntityBoundingBox().expand(5, 5, 5);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean isInRangeToRenderDist(double distance) {
 		double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 10.0D;
 
@@ -539,16 +539,16 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	@Override
 	public void readEntityFromNBT(CompoundNBT nbt) {
 		super.readEntityFromNBT(nbt);
-		this.targetPos = new Pos(nbt.getCompoundTag(NBTConstants.TARGET));
-		this.launcherPos = new Pos(nbt.getCompoundTag(NBTConstants.LAUNCHER_POS));
+		this.targetPos = new Pos(nbt.getCompound(NBTConstants.TARGET));
+		this.launcherPos = new Pos(nbt.getCompound(NBTConstants.LAUNCHER_POS));
 		this.acceleration = nbt.getFloat(NBTConstants.ACCELERATION);
-		this.targetHeight = nbt.getInteger(NBTConstants.TARGET_HEIGHT);
-		this.explosiveID = nbt.getInteger(NBTConstants.EXPLOSIVE_ID);
-		this.ticksInAir = nbt.getInteger(NBTConstants.TICKS_IN_AIR);
+		this.targetHeight = nbt.getInt(NBTConstants.TARGET_HEIGHT);
+		this.explosiveID = nbt.getInt(NBTConstants.EXPLOSIVE_ID);
+		this.ticksInAir = nbt.getInt(NBTConstants.TICKS_IN_AIR);
 		this.lockHeight = nbt.getDouble(NBTConstants.LOCK_HEIGHT);
-		this.missileType = MissileFlightType.get(nbt.getInteger(NBTConstants.MISSILE_TYPE));
-		this.preLaunchSmokeTimer = nbt.getInteger(NBTConstants.PRE_LAUNCH_SMOKE_TIMER);
-		this.blastData = nbt.getCompoundTag(NBTConstants.ADDITIONAL_MISSILE_DATA);
+		this.missileType = MissileFlightType.get(nbt.getInt(NBTConstants.MISSILE_TYPE));
+		this.preLaunchSmokeTimer = nbt.getInt(NBTConstants.PRE_LAUNCH_SMOKE_TIMER);
+		this.blastData = nbt.getCompound(NBTConstants.ADDITIONAL_MISSILE_DATA);
 	}
 
 	/**
@@ -558,21 +558,21 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	public void writeEntityToNBT(CompoundNBT nbt) {
 		super.writeEntityToNBT(nbt);
 		if (this.targetPos != null) {
-			nbt.setTag(NBTConstants.TARGET, this.targetPos.toNBT());
+			nbt.put(NBTConstants.TARGET, this.targetPos.toNBT());
 		}
 
 		if (this.launcherPos != null) {
-			nbt.setTag(NBTConstants.LAUNCHER_POS, this.launcherPos.toNBT());
+			nbt.put(NBTConstants.LAUNCHER_POS, this.launcherPos.toNBT());
 		}
 
-		nbt.setFloat(NBTConstants.ACCELERATION, this.acceleration);
-		nbt.setInteger(NBTConstants.EXPLOSIVE_ID, this.explosiveID);
-		nbt.setInteger(NBTConstants.TARGET_HEIGHT, this.targetHeight);
-		nbt.setInteger(NBTConstants.TICKS_IN_AIR, this.ticksInAir);
-		nbt.setDouble(NBTConstants.LOCK_HEIGHT, this.lockHeight);
-		nbt.setInteger(NBTConstants.MISSILE_TYPE, this.missileType.ordinal());
-		nbt.setInteger(NBTConstants.PRE_LAUNCH_SMOKE_TIMER, this.preLaunchSmokeTimer);
-		nbt.setTag(NBTConstants.ADDITIONAL_MISSILE_DATA, this.blastData);
+		nbt.putFloat(NBTConstants.ACCELERATION, this.acceleration);
+		nbt.putInt(NBTConstants.EXPLOSIVE_ID, this.explosiveID);
+		nbt.putInt(NBTConstants.TARGET_HEIGHT, this.targetHeight);
+		nbt.putInt(NBTConstants.TICKS_IN_AIR, this.ticksInAir);
+		nbt.putDouble(NBTConstants.LOCK_HEIGHT, this.lockHeight);
+		nbt.putInt(NBTConstants.MISSILE_TYPE, this.missileType.ordinal());
+		nbt.putInt(NBTConstants.PRE_LAUNCH_SMOKE_TIMER, this.preLaunchSmokeTimer);
+		nbt.put(NBTConstants.ADDITIONAL_MISSILE_DATA, this.blastData);
 	}
 
 }

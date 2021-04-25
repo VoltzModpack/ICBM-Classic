@@ -91,9 +91,9 @@ public class CapabilityMissileLauncher extends CapabilityPrefab implements IMiss
 
 	@Override
 	protected void save(CompoundNBT tag) {
-		tag.setDouble(NBTConstants.TARGET_X, target_x);
-		tag.setDouble(NBTConstants.TARGET_Y, target_y);
-		tag.setDouble(NBTConstants.TARGET_Z, target_z);
+		tag.putDouble(NBTConstants.TARGET_X, target_x);
+		tag.putDouble(NBTConstants.TARGET_Y, target_y);
+		tag.putDouble(NBTConstants.TARGET_Z, target_z);
 	}
 
 	@Override

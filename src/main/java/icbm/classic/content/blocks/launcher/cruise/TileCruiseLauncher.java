@@ -35,8 +35,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDReceiver, IGuiTile, IInventoryProvider<ExternalInventory> {
 
@@ -226,8 +226,8 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	@Override
 	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
-		getInventory().load(nbt.getCompoundTag(NBTConstants.INVENTORY));
-		currentAim.readFromNBT(nbt.getCompoundTag(NBTConstants.CURRENT_AIM));
+		getInventory().load(nbt.getCompound(NBTConstants.INVENTORY));
+		currentAim.readFromNBT(nbt.getCompound(NBTConstants.CURRENT_AIM));
 		initFromLoad();
 	}
 
@@ -236,8 +236,8 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	 */
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
-		nbt.setTag(NBTConstants.INVENTORY, getInventory().save(new CompoundNBT()));
-		nbt.setTag(NBTConstants.CURRENT_AIM, currentAim.writeNBT(new CompoundNBT()));
+		nbt.put(NBTConstants.INVENTORY, getInventory().save(new CompoundNBT()));
+		nbt.put(NBTConstants.CURRENT_AIM, currentAim.writeNBT(new CompoundNBT()));
 		return super.writeToNBT(nbt);
 	}
 
@@ -247,7 +247,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 		currentAim.set(aim);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		super.onDataPacket(net, pkt);
