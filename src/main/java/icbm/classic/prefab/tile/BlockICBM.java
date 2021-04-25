@@ -5,11 +5,11 @@ import icbm.classic.ICBMConstants;
 import icbm.classic.api.tile.multiblock.IMultiTileHost;
 import icbm.classic.content.blocks.multiblock.MultiBlockHelper;
 import icbm.classic.prefab.inventory.IInventoryProvider;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -20,7 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class BlockICBM extends BlockContainer {
+public abstract class BlockICBM extends ContainerBlock {
 
 	public static final PropertyDirection ROTATION_PROP = PropertyDirection.create("rotation");
 	public static final PropertyTier TIER_PROP = new PropertyTier();
@@ -45,7 +45,7 @@ public abstract class BlockICBM extends BlockContainer {
 
 	@Override
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(ROTATION_PROP, Direction.byIndex(meta));
+		return getDefaultState().with(ROTATION_PROP, Direction.byIndex(meta));
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public abstract class BlockICBM extends BlockContainer {
 
 	@Override
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
-		return getDefaultState().withProperty(ROTATION_PROP, placer.getHorizontalFacing());
+		return getDefaultState().with(ROTATION_PROP, placer.getHorizontalFacing());
 	}
 
 	@Override

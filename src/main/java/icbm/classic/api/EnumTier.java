@@ -8,6 +8,7 @@ import net.minecraft.util.text.TextFormatting;
  * Created by Dark(DarkGuardsman, Robert) on 1/31/2018.
  */
 public enum EnumTier implements IStringSerializable {
+
 	ONE(TextFormatting.GREEN),
 	TWO(TextFormatting.YELLOW),
 	THREE(TextFormatting.GOLD),
@@ -26,15 +27,15 @@ public enum EnumTier implements IStringSerializable {
 
 	@Override
 	public String toString() {
-		return this.getName();
+		return this.getString();
 	}
 
 	public String getLocalizedName() {
-		return LanguageUtility.getLocal("tier.icbmclassic." + getName());
+		return LanguageUtility.getLocal("tier.icbmclassic." + getString());
 	}
 
 	@Override
-	public String getName() {
+	public String getString() {
 		return name().toLowerCase();
 	}
 
@@ -44,4 +45,5 @@ public enum EnumTier implements IStringSerializable {
 		}
 		return ONE;
 	}
+
 }

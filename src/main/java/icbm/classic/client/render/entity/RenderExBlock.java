@@ -37,8 +37,8 @@ public class RenderExBlock extends Render<EntityExplosive> {
 
 	public void renderBlock(EntityExplosive entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		final BlockState blockState = BlockReg.blockExplosive.getDefaultState()
-			                               .withProperty(BlockICBM.ROTATION_PROP, Direction.UP) //TODO get direction from rotation
-			                               .withProperty(BlockExplosive.EX_PROP, entity.getExplosiveData());
+			                               .with(BlockICBM.ROTATION_PROP, Direction.UP) //TODO get direction from rotation
+			                               .with(BlockExplosive.EX_PROP, entity.getExplosiveData());
 		final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 		GlStateManager.pushMatrix();

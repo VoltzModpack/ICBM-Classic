@@ -25,10 +25,10 @@ import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.

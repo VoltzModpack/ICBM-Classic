@@ -16,7 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -197,7 +197,7 @@ public class BlockLaunchScreen extends BlockICBM {
 		if (tile instanceof TileLauncherScreen) {
 			tier = ((TileLauncherScreen) tile)._tier;
 		}
-		return state.withProperty(TIER_PROP, tier);
+		return state.with(TIER_PROP, tier);
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public class BlockLaunchScreen extends BlockICBM {
 		ItemStack stack = placer.getHeldItem(hand);
 
 		//set tier and horizontal facing. latter seems to be the other way around as for other BlockICBMs, so super is not called and the rotation is set here instead
-		return getDefaultState().withProperty(TIER_PROP, EnumTier.get(stack.getDamage())).withProperty(ROTATION_PROP, placer.getHorizontalFacing().getOpposite());
+		return getDefaultState().with(TIER_PROP, EnumTier.get(stack.getDamage())).with(ROTATION_PROP, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override

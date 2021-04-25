@@ -30,7 +30,7 @@ public class BlockLauncherBase extends BlockICBM {
 
 	public BlockLauncherBase() {
 		super("launcherbase", Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION_PROP, Direction.NORTH).withProperty(TIER_PROP, EnumTier.ONE));
+		this.setDefaultState(this.blockState.getBaseState().with(ROTATION_PROP, Direction.NORTH).with(TIER_PROP, EnumTier.ONE));
 		this.blockHardness = 10f;
 		this.blockResistance = 10f;
 	}
@@ -72,7 +72,7 @@ public class BlockLauncherBase extends BlockICBM {
 		ItemStack stack = placer.getHeldItem(hand);
 
 		//Set tier
-		state = state.withProperty(TIER_PROP, EnumTier.get(stack.getDamage()));
+		state = state.with(TIER_PROP, EnumTier.get(stack.getDamage()));
 
 		return state;
 	}
@@ -84,7 +84,7 @@ public class BlockLauncherBase extends BlockICBM {
 		if (tile instanceof TileLauncherBase) {
 			tier = ((TileLauncherBase) tile)._tier;
 		}
-		return state.withProperty(TIER_PROP, tier);
+		return state.with(TIER_PROP, tier);
 	}
 
 	@Override

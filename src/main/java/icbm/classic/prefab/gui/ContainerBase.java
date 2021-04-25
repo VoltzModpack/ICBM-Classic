@@ -2,9 +2,9 @@ package icbm.classic.prefab.gui;
 
 import icbm.classic.prefab.inventory.IInventoryProvider;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 
 public class ContainerBase<H extends Object> extends Container {
 
@@ -62,13 +62,13 @@ public class ContainerBase<H extends Object> extends Container {
 		//Inventory
 		for (int row = 0; row < 3; ++row) {
 			for (int slot = 0; slot < 9; ++slot) {
-				this.addSlotToContainer(new Slot(player.inventory, slot + row * 9 + 9, slot * 18 + x, row * 18 + y));
+				this.addSlot(new Slot(player.inventory, slot + row * 9 + 9, slot * 18 + x, row * 18 + y));
 			}
 		}
 
 		//Hot bar
 		for (int slot = 0; slot < 9; ++slot) {
-			this.addSlotToContainer(new Slot(player.inventory, slot, slot * 18 + x, 58 + y));
+			this.addSlot(new Slot(player.inventory, slot, slot * 18 + x, 58 + y));
 		}
 	}
 

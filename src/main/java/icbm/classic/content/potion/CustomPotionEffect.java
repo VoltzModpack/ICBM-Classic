@@ -1,16 +1,17 @@
 package icbm.classic.content.potion;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectType;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomPotionEffect extends PotionEffect {
+public class CustomPotionEffect extends Effect {
 
-	public CustomPotionEffect(Potion potion, int duration, int amplifier) {
-		super(potion, duration, amplifier);
+	public CustomPotionEffect(EffectType effect, int duration, int amplifier) {
+		super(effect, duration, amplifier);
 	}
 
 	/**

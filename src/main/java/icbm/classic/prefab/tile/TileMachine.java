@@ -91,7 +91,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	protected void onFirstTick() {
 		//TODO remove set state hack when Forge patches TE access in get drops
 		if (getBlockState().getProperties().containsKey(BlockICBM.TIER_PROP)) {
-			world.setBlockState(pos, getBlockState().withProperty(BlockICBM.TIER_PROP, getTier()));
+			world.setBlockState(pos, getBlockState().with(BlockICBM.TIER_PROP, getTier()));
 		}
 	}
 
@@ -221,7 +221,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 			//Update block state
 			BlockState state = getBlockState();
 			if (state.getProperties().containsKey(BlockICBM.ROTATION_PROP)) {
-				world.setBlockState(pos, getBlockState().withProperty(BlockICBM.ROTATION_PROP, facingDirection));
+				world.setBlockState(pos, getBlockState().with(BlockICBM.ROTATION_PROP, facingDirection));
 			}
 		}
 	}
@@ -236,7 +236,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 			if (isServer()) {
 				BlockState state = getBlockState();
 				if (state.getProperties().containsKey(BlockICBM.TIER_PROP)) {
-					world.setBlockState(pos, state.withProperty(BlockICBM.TIER_PROP, tier));
+					world.setBlockState(pos, state.with(BlockICBM.TIER_PROP, tier));
 				}
 			}
 		}

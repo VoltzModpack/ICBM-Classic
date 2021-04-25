@@ -1,21 +1,21 @@
 package icbm.classic.content.blocks;
 
 import icbm.classic.ICBMConstants;
-import net.minecraft.block.BlockButton;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class BlockGlassButton extends BlockButton {
+public class BlockGlassButton extends AbstractButtonBlock {
 
 	public BlockGlassButton() {
 		super(false);

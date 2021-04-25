@@ -88,7 +88,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 		try {
 			if (!this.world().isRemote) {
 				//Forge event, allows for interaction and canceling the explosion
-				if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world, this)) {
+				if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world(), this)) {
 					return BlastState.FORGE_EVENT_CANCEL;
 				}
 
@@ -136,7 +136,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 	 * @return
 	 */
 	public boolean onBlastTick(int ticksExisted) {
-		if (!world.isRemote) {
+		if (!world().isRemote) {
 			//Do setup work
 			if (!doFirstSetup()) {
 				return false;

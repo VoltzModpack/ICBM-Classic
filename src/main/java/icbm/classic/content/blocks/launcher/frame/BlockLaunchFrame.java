@@ -59,7 +59,7 @@ public class BlockLaunchFrame extends BlockICBM {
 		if (tile instanceof TileLauncherFrame) {
 			tier = ((TileLauncherFrame) tile)._tier;
 		}
-		return state.withProperty(TIER_PROP, tier);
+		return state.with(TIER_PROP, tier);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class BlockLaunchFrame extends BlockICBM {
 		ItemStack stack = placer.getHeldItem(hand);
 
 		//Set tier
-		return state.withProperty(TIER_PROP, EnumTier.get(stack.getDamage()));
+		return state.with(TIER_PROP, EnumTier.get(stack.getDamage()));
 	}
 
 	@Override

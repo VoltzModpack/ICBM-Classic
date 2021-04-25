@@ -38,8 +38,8 @@ public class RenderFragments extends Render<EntityFragments> {
 		this.bindEntityTexture(entity);
 		if (entity.isAnvil) {
 			final BlockState blockState = Blocks.ANVIL.getDefaultState()
-				                               .withProperty(BlockAnvil.DAMAGE, entity.world.rand.nextInt(2))
-				                               .withProperty(BlockAnvil.FACING, Direction.Plane.HORIZONTAL.facings()[entity.world.rand.nextInt(3)]);
+				                               .with(BlockAnvil.DAMAGE, entity.world.rand.nextInt(2))
+				                               .with(BlockAnvil.FACING, Direction.Plane.HORIZONTAL.facings()[entity.world.rand.nextInt(3)]);
 			//TODO store rotation and damage in entity to reduce random nature
 
 			final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();

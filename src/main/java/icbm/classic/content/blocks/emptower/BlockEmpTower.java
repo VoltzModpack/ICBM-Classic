@@ -4,12 +4,12 @@ import icbm.classic.ICBMClassic;
 import icbm.classic.api.tile.multiblock.IMultiTileHost;
 import icbm.classic.content.blocks.multiblock.MultiBlockHelper;
 import icbm.classic.prefab.tile.BlockICBM;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -71,8 +71,8 @@ public class BlockEmpTower extends BlockICBM {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(BlockState state) {
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Nullable

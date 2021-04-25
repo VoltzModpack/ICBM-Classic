@@ -9,13 +9,13 @@ import icbm.classic.content.items.*;
 import icbm.classic.prefab.item.ItemBase;
 import icbm.classic.prefab.item.ItemBlockRotatedMultiTile;
 import icbm.classic.prefab.item.ItemBlockSubTypes;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
@@ -89,18 +89,18 @@ public class ItemReg {
 		event.getRegistry().register(new ItemMissile());
 
 		//Block items
-		event.getRegistry().register(new ItemBlock(BlockReg.blockGlassPlate).setRegistryName(BlockReg.blockGlassPlate.getRegistryName()));
-		event.getRegistry().register(new ItemBlock(BlockReg.blockGlassButton).setRegistryName(BlockReg.blockGlassButton.getRegistryName()));
+		event.getRegistry().register(new BlockItem(BlockReg.blockGlassPlate).setRegistryName(BlockReg.blockGlassPlate.getRegistryName()));
+		event.getRegistry().register(new BlockItem(BlockReg.blockGlassButton).setRegistryName(BlockReg.blockGlassButton.getRegistryName()));
 		event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockSpikes));
 		event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockConcrete));
-		event.getRegistry().register(new ItemBlock(BlockReg.blockReinforcedGlass).setRegistryName(BlockReg.blockReinforcedGlass.getRegistryName()));
+		event.getRegistry().register(new BlockItem(BlockReg.blockReinforcedGlass).setRegistryName(BlockReg.blockReinforcedGlass.getRegistryName()));
 		event.getRegistry().register(new ItemBlockExplosive(BlockReg.blockExplosive).setRegistryName(BlockReg.blockExplosive.getRegistryName()));
-		event.getRegistry().register(new ItemBlock(BlockReg.blockEmpTower).setRegistryName(BlockReg.blockEmpTower.getRegistryName()));
-		event.getRegistry().register(new ItemBlock(BlockReg.blockRadarStation).setRegistryName(BlockReg.blockRadarStation.getRegistryName()));
+		event.getRegistry().register(new BlockItem(BlockReg.blockEmpTower).setRegistryName(BlockReg.blockEmpTower.getRegistryName()));
+		event.getRegistry().register(new BlockItem(BlockReg.blockRadarStation).setRegistryName(BlockReg.blockRadarStation.getRegistryName()));
 		event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockLaunchSupport));
 		event.getRegistry().register(new ItemBlockRotatedMultiTile(BlockReg.blockLaunchBase, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
 		event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockLaunchScreen));
-		event.getRegistry().register(new ItemBlock(BlockReg.blockCruiseLauncher).setRegistryName(BlockReg.blockCruiseLauncher.getRegistryName()));
+		event.getRegistry().register(new BlockItem(BlockReg.blockCruiseLauncher).setRegistryName(BlockReg.blockCruiseLauncher.getRegistryName()));
 
 		//Crafting resources
 		if (ConfigItems.ENABLE_CRAFTING_ITEMS) {

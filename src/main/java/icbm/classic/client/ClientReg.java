@@ -201,7 +201,7 @@ public class ClientReg {
 			blockModelMap.put(data, facingModelMap);
 
 			//Add item state
-			//BlockState state = BlockReg.blockExplosive.getDefaultState().withProperty(BlockICBM.ROTATION_PROP, Direction.UP);
+			//BlockState state = BlockReg.blockExplosive.getDefaultState().with(BlockICBM.ROTATION_PROP, Direction.UP);
 			// String properties_string = getPropertyString(state.getProperties());
 			itemBlockModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
 		}
@@ -226,7 +226,7 @@ public class ClientReg {
 			}
 		});
 		for (EnumTier tier : new EnumTier[] {EnumTier.ONE, EnumTier.TWO, EnumTier.THREE}) {
-			BlockState state = block.getDefaultState().withProperty(BlockICBM.TIER_PROP, tier).withProperty(BlockICBM.ROTATION_PROP, Direction.UP);
+			BlockState state = block.getDefaultState().with(BlockICBM.TIER_PROP, tier).with(BlockICBM.ROTATION_PROP, Direction.UP);
 			String properties_string = getPropertyString(state.getProperties());
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), tier.ordinal(), new ModelResourceLocation(resourcePath, properties_string));
 		}

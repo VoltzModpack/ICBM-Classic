@@ -2,7 +2,7 @@ package icbm.classic.content.blocks.launcher.cruise;
 
 import icbm.classic.prefab.gui.ContainerBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCruiseLauncher extends ContainerBase<TileCruiseLauncher> {

@@ -101,7 +101,7 @@ public class TileEntityExplosive extends TileEntity implements IRotatable {
 	@Override
 	public void setDirection(Direction facingDirection) {
 		BlockState state = world.getBlockState(pos);
-		state = state.withProperty(BlockExplosive.ROTATION_PROP, facingDirection);
+		state = state.with(BlockExplosive.ROTATION_PROP, facingDirection);
 		this.world.setBlockState(pos, state, 2);
 	}
 

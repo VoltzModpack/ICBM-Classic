@@ -1,20 +1,20 @@
 package icbm.classic.client.fx;
 
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.client.particle.ParticleSmokeNormal;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.client.particle.SmokeParticle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleSmokeICBM extends ParticleSmokeNormal {
+public class ParticleSmokeICBM extends SmokeParticle {
 
-	public ParticleSmokeICBM(World worldIn, Pos pos, double vx, double vy, double vz, float scale) {
+	public ParticleSmokeICBM(ClientWorld worldIn, Pos pos, double vx, double vy, double vz, float scale) {
 		super(worldIn, pos.x(), pos.y(), pos.z(), vx, vy, vz, scale);
 	}
 
 	public ParticleSmokeICBM setAge(int age) {
-		this.particleMaxAge = age;
+		this.maxAge = age;
 		return this;
 	}
 

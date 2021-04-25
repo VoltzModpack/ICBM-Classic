@@ -3,10 +3,10 @@ package icbm.classic.lib.transform;
 import icbm.classic.ICBMConstants;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collection;
 import java.util.HashMap;

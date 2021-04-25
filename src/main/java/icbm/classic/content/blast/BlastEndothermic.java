@@ -5,11 +5,12 @@ import icbm.classic.content.potion.CustomPotionEffect;
 import icbm.classic.content.potion.PoisonFrostBite;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSnow;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.init.MobEffects;
+import net.minecraft.block.SnowBlock;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -52,9 +53,9 @@ public class BlastEndothermic extends BlastBeam {
 					world.setBlockState(targetPosition, Blocks.OBSIDIAN.getDefaultState());
 				} else if (blockState.getBlock() == Blocks.FLOWING_LAVA) {
 					int level = Math.min(8, Math.max(1, blockState.getValue(BlockLiquid.LEVEL) / 2));
-					world.setBlockState(targetPosition, Blocks.SNOW_LAYER.getDefaultState()
-						                                    .withProperty(BlockSnow.LAYERS, level), 3);
-				} else if (blockState.getBlock() == Blocks.MAGMA) {
+					world.setBlockState(targetPosition, Blocks.SNOW.getDefaultState()
+						                                    .with(SnowBlock.LAYERS, level), 3);
+				} else if (blockState.getBlock() == Blocks.MAGMA_BLOCK) {
 					world.setBlockState(targetPosition, Blocks.STONE.getDefaultState(), 3);
 				} else if (blockState.getBlock() == Blocks.NETHERRACK) {
 					world.setBlockState(targetPosition, Blocks.DIRT.getDefaultState(), 3);
@@ -89,10 +90,10 @@ public class BlastEndothermic extends BlastBeam {
 			final BlockState blockState = world.getBlockState(pos);
 			final BlockState blockStateUnder = world.getBlockState(pos.down());
 			if (blockState.getBlock().isReplaceable(world, pos)
-				    && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)
+				    && Blocks.SNOW.canPlaceBlockAt(world, pos)
 				    && blockStateUnder.isSideSolid(world, pos.down(), Direction.UP)) {
 				world.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState()
-					                         .withProperty(BlockSnow.LAYERS, 1 + world.rand.nextInt(7)), 3);
+					                         .with(BlockSnow.LAYERS, 1 + world.rand.nextInt(7)), 3);
 
 			}
 		}
@@ -112,9 +113,9 @@ public class BlastEndothermic extends BlastBeam {
 				LivingEntity entity = it.next();
 				if (entity != null && entity.isEntityAlive()) {
 					entity.addPotionEffect(new CustomPotionEffect(PoisonFrostBite.INSTANCE, 60 * 20, 1, null));
-					entity.addPotionEffect(new PotionEffect(MobEffects.POISON, 10 * 20, 2));
-					entity.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 120 * 20, 2));
-					entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 120 * 20, 4));
+					entity.addPotionEffect(new PotionEffect(Effects.POISON, 10 * 20, 2));
+					entity.addPotionEffect(new PotionEffect(Effects.MINING_FATIGUE, 120 * 20, 2));
+					entity.addPotionEffect(new PotionEffect(Effects.SLOWNESS, 120 * 20, 4));
 				}
 			}
 		}

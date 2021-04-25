@@ -54,7 +54,7 @@ public class BlockSpikes extends Block {
 
 	@Override
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
-		return getDefaultState().withProperty(SPIKE_PROPERTY, EnumSpikes.get(meta));
+		return getDefaultState().with(SPIKE_PROPERTY, EnumSpikes.get(meta));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class BlockSpikes extends Block {
 
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(SPIKE_PROPERTY, EnumSpikes.get(meta));
+		return this.getDefaultState().with(SPIKE_PROPERTY, EnumSpikes.get(meta));
 	}
 
 	@Override

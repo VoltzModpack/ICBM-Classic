@@ -3,7 +3,7 @@ package icbm.classic.lib.recipe;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -16,7 +16,7 @@ public class ExRecipeFactory implements IRecipeFactory {
 	@Override
 	public IRecipe parse(JsonContext context, JsonObject json) {
 		//Pull result from json
-		final JsonObject resultObject = JsonUtils.getJsonObject(json, "result");
+		final JsonObject resultObject = JSONUtils.getJsonObject(json, "result");
 		final ItemStack resultStack = ExIngredientFactory.getStack(resultObject);
 
 		//Convert stack back to json
@@ -25,7 +25,7 @@ public class ExRecipeFactory implements IRecipeFactory {
 		if (resultStack.getHasSubtypes()) {
 			newResult.addProperty("data", resultStack.getDamage());
 		}
-		newResult.addProperty("count", JsonUtils.getInt(json, "count", 1));
+		newResult.addProperty("count", JSONUtils.getInt(json, "count", 1));
 
 		//TODO add support NBT
 

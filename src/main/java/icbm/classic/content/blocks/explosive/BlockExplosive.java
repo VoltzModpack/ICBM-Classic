@@ -15,7 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -58,7 +58,7 @@ public class BlockExplosive extends BlockICBM {
 		}
 
 		if (explosiveData != null) {
-			return state.withProperty(EX_PROP, explosiveData);
+			return state.with(EX_PROP, explosiveData);
 		}
 		return state;
 	}
@@ -96,15 +96,15 @@ public class BlockExplosive extends BlockICBM {
 	@Override
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
 		ItemStack stack = placer.getHeldItem(hand);
-		BlockState state = getDefaultState().withProperty(ROTATION_PROP, facing);
+		BlockState state = getDefaultState().with(ROTATION_PROP, facing);
 		IExplosiveData prop = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(stack.getDamage());
 		if (prop != null) {
-			return state.withProperty(EX_PROP, prop);
+			return state.with(EX_PROP, prop);
 		} else { // if the explosives id doesnt exist, then fallback to the one with the id 0
 			prop = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(0);
 			ICBMClassic.logger().log(Level.ERROR, "Unable to get explosives kind, choosing " + prop.getRegistryName().toString() + " as a fallback.");
 			stack.setItemDamage(0);
-			return state.withProperty(EX_PROP, prop);
+			return state.with(EX_PROP, prop);
 		}
 	}
 

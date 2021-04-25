@@ -1,23 +1,23 @@
 package icbm.classic.client.fx;
 
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.client.particle.ParticleSmokeNormal;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.client.particle.SmokeParticle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Same as normal smoke, but doesn't move upwards on its own
  */
 @OnlyIn(Dist.CLIENT)
-public class ParticleAirICBM extends ParticleSmokeNormal {
+public class ParticleAirICBM extends SmokeParticle {
 
-	public ParticleAirICBM(World worldIn, Pos pos, double vx, double vy, double vz, float scale) {
+	public ParticleAirICBM(ClientWorld worldIn, Pos pos, double vx, double vy, double vz, float scale) {
 		super(worldIn, pos.x(), pos.y(), pos.z(), vx, vy, vz, scale);
 	}
 
 	public ParticleAirICBM setAge(int age) {
-		this.particleMaxAge = age;
+		this.maxAge = age;
 		return this;
 	}
 
@@ -42,11 +42,11 @@ public class ParticleAirICBM extends ParticleSmokeNormal {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (this.particleAge++ >= this.particleMaxAge) {
+		if (this.age++ >= this.maxAge) {
 			this.setExpired();
 		}
 
-		this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
+		this.setParticleTextureIndex(7 - this.age * 8 / this.maxAge);
 		this.move(this.motionX, this.motionY, this.motionZ);
 
 		if (this.posY == this.prevPosY) {

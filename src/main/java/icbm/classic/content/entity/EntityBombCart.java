@@ -10,22 +10,22 @@ import icbm.classic.lib.explosive.ExplosiveHandler;
 import icbm.classic.prefab.tile.BlockICBM;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.item.EntityMinecartTNT;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.item.minecart.TNTMinecartEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityBombCart extends EntityMinecartTNT implements IEntityAdditionalSpawnData {
+public class EntityBombCart extends TNTMinecartEntity implements IEntityAdditionalSpawnData {
 
 	public int explosive = -1; //TODO move to capability
 	public CompoundNBT data; //TODO move to capability
@@ -53,7 +53,7 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	@Override
 	protected void explodeCart(double par1) {
 		// TODO add event
-		this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+		this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
 		ExplosiveHandler.createExplosion(this, world, posX, posY, posZ, explosive, 1, data);
 		this.setDead();
 	}
@@ -123,8 +123,8 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	@Override
 	public BlockState getDefaultDisplayTile() {
 		return BlockReg.blockExplosive.getDefaultState()
-			       .withProperty(BlockExplosive.EX_PROP, ICBMClassicHelpers.getExplosive(explosive, false))
-			       .withProperty(BlockICBM.ROTATION_PROP, Direction.UP);
+			       .with(BlockExplosive.EX_PROP, ICBMClassicHelpers.getExplosive(explosive, false))
+			       .with(BlockICBM.ROTATION_PROP, Direction.UP);
 	}
 
 }

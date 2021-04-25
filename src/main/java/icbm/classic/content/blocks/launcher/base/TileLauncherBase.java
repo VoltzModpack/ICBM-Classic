@@ -480,7 +480,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 			}
 
 			//Update block state
-			world.setBlockState(pos, getBlockState().withProperty(BlockICBM.ROTATION_PROP, facingDirection));
+			world.setBlockState(pos, getBlockState().with(BlockICBM.ROTATION_PROP, facingDirection));
 
 			//Create new structure
 			if (isServer()) {

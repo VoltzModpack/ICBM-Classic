@@ -46,7 +46,7 @@ public class BlockConcrete extends Block {
 
 	@Override
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
-		return getDefaultState().withProperty(TYPE_PROP, EnumType.get(meta));
+		return getDefaultState().with(TYPE_PROP, EnumType.get(meta));
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class BlockConcrete extends Block {
 
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(TYPE_PROP, EnumType.get(meta));
+		return this.getDefaultState().with(TYPE_PROP, EnumType.get(meta));
 	}
 
 	@Override

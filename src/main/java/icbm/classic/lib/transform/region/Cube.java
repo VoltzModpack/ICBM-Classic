@@ -15,6 +15,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -461,10 +462,10 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 	 * @return list
 	 */
 	public List<TileEntity> getTilesInArea(World world) {
-		List<TileEntity> tilesInArea = new ArrayList();
+		List<TileEntity> tilesInArea = new ArrayList<>();
 		for (Chunk chunk : getChunks(world)) {
 			for (Object object : chunk.getTileEntityMap().values()) {
-				if (object instanceof TileEntity && ((TileEntity) object).isInvalid() && ((TileEntity) object).getWorld() != null && isWithin(((TileEntity) object).getPos())) {
+				if (object instanceof TileEntity && ((TileEntity) object).isRemoved() && ((TileEntity) object).getWorld() != null && isWithin(((TileEntity) object).getPos())) {
 					tilesInArea.add((TileEntity) object);
 				}
 			}

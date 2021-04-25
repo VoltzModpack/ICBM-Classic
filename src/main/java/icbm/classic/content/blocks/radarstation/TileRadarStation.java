@@ -98,7 +98,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 				}
 			} else {
 				if (detectedEntities.size() > 0) {
-					world.setBlockState(getPos(), getBlockState().withProperty(BlockRadarStation.REDSTONE_PROPERTY, false));
+					world.setBlockState(getPos(), getBlockState().with(BlockRadarStation.REDSTONE_PROPERTY, false));
 				}
 
 				incomingMissiles.clear();
@@ -108,7 +108,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 			//Update redstone state
 			final boolean shouldBeOn = checkExtract() && detectedEntities.size() > 0;
 			if (world.getBlockState(getPos()).getValue(BlockRadarStation.REDSTONE_PROPERTY) != shouldBeOn) {
-				world.setBlockState(getPos(), getBlockState().withProperty(BlockRadarStation.REDSTONE_PROPERTY, shouldBeOn));
+				world.setBlockState(getPos(), getBlockState().with(BlockRadarStation.REDSTONE_PROPERTY, shouldBeOn));
 				for (Direction facing : Direction.HORIZONTALS) {
 					BlockPos pos = getPos().add(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
 					for (Direction enumfacing : Direction.values()) {
