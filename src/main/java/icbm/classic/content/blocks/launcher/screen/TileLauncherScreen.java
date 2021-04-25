@@ -19,7 +19,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.text.TextComponentString;
 
 /**
@@ -62,7 +62,7 @@ public class TileLauncherScreen extends TileLauncherPrefab implements IPacketIDR
 		super.update();
 		if (this.launcherBase == null || this.launcherBase.isInvalid()) {
 			this.launcherBase = null;
-			for (EnumFacing rotation : EnumFacing.HORIZONTALS) {
+			for (Direction rotation : Direction.HORIZONTALS) {
 				final Pos position = new Pos((IPos3D) this).add(rotation);
 				final TileEntity tileEntity = position.getTileEntity(world);
 				if (tileEntity != null) {

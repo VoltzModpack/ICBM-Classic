@@ -1,6 +1,6 @@
 package icbm.classic.command.system;
 
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -29,7 +29,7 @@ public abstract class SubCommand implements ISubCommand {
 	}
 
 	@Override
-	public String getUsage(ICommandSender sender) {
+	public String getUsage(CommandSource sender) {
 		if (parent == null) {
 			return "/" + getName();
 		}
@@ -37,7 +37,7 @@ public abstract class SubCommand implements ISubCommand {
 	}
 
 	@Override
-	public void displayHelp(ICommandSender sender) {
+	public void displayHelp(CommandSource sender) {
 		collectHelpForAll((string) -> sendHelpMessage(sender, string));
 
 		//If we have a command sender entity then we can run world based commands
@@ -50,7 +50,7 @@ public abstract class SubCommand implements ISubCommand {
 		}
 	}
 
-	private void sendHelpMessage(ICommandSender sender, String message) {
+	private void sendHelpMessage(CommandSource sender, String message) {
 		sender.sendMessage(new TextComponentString((getUsage(sender) + " " + message).trim()));
 	}
 
@@ -82,7 +82,7 @@ public abstract class SubCommand implements ISubCommand {
 	}
 
 	@Override
-	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
+	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
 		return Collections.<String>emptyList();
 	}
 

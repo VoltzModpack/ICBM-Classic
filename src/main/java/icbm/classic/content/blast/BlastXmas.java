@@ -11,8 +11,8 @@ import icbm.classic.content.entity.mobs.EntityXmasZombieBoss;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
@@ -45,7 +45,7 @@ public class BlastXmas extends Blast implements IBlastTickable {
 
 			//End explosion if we hit the timer end
 			if (callCount > this.callCountEnd) {
-				spawnEntity(zombie ? new EntityXmasZombieBoss(world()) : new EntityXmasSkeletonBoss(world()), x, y + 4, z);
+				addEntity(zombie ? new EntityXmasZombieBoss(world()) : new EntityXmasSkeletonBoss(world()), x, y + 4, z);
 				return true;
 			}
 		}
@@ -53,7 +53,7 @@ public class BlastXmas extends Blast implements IBlastTickable {
 	}
 
 	public void generateGround() {
-		final EnumFacing[] directions = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.DOWN};
+		final Direction[] directions = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
 		final Queue<BlockPos> blocksToPath = new LinkedList();
 		final Set<BlockPos> pathed = new HashSet();
 
@@ -80,7 +80,7 @@ public class BlastXmas extends Blast implements IBlastTickable {
 			}
 
 			//Path
-			for (EnumFacing dir : directions) {
+			for (Direction dir : directions) {
 				final BlockPos next = pos.offset(dir);
 				if (!pathed.contains(next)) {
 					//Get block data
@@ -170,16 +170,16 @@ public class BlastXmas extends Blast implements IBlastTickable {
 			}
 
 		}
-		spawnEntity(entity, x, y, z);
+		addEntity(entity, x, y, z);
 	}
 
-	protected void spawnEntity(EntityXmasMob entity, double x, double y, double z) {
+	protected void addEntity(EntityXmasMob entity, double x, double y, double z) {
 		//Update position and trigger init
 		entity.setPositionAndRotation(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0);
 		entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), (ILivingEntityData) null);
 
 		//Place in world
-		this.world().spawnEntity(entity);
+		this.world().addEntity(entity);
 	}
 
 	protected double findEmptyY(double x, double y, double z) {

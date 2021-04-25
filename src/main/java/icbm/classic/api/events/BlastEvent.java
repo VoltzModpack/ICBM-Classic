@@ -3,7 +3,7 @@ package icbm.classic.api.events;
 import icbm.classic.api.explosion.IBlast;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/3/19.

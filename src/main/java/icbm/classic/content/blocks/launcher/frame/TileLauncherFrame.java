@@ -10,8 +10,8 @@ import icbm.classic.prefab.tile.TileMachine;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
@@ -53,7 +53,7 @@ public class TileLauncherFrame extends TileMachine implements IPacketIDReceiver,
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		if (launcherBase != null) {
 			return launcherBase.hasCapability(capability, facing);
 		}
@@ -62,7 +62,7 @@ public class TileLauncherFrame extends TileMachine implements IPacketIDReceiver,
 
 	@Override
 	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (launcherBase != null) {
 			return launcherBase.getCapability(capability, facing);
 		}
@@ -101,11 +101,11 @@ public class TileLauncherFrame extends TileMachine implements IPacketIDReceiver,
 	}
 
 	@Override
-	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
+	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, Hand hand, Direction side, float xHit, float yHit, float zHit) {
 		return this.onPlayerRightClick(player, hand, player.getHeldItem(hand));
 	}
 
-	protected boolean onPlayerRightClick(PlayerEntity player, EnumHand hand, ItemStack heldItem) {
+	protected boolean onPlayerRightClick(PlayerEntity player, Hand hand, ItemStack heldItem) {
 		if (launcherBase != null) {
 			return launcherBase.onPlayerRightClick(player, hand, heldItem);
 		}

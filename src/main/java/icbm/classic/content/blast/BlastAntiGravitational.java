@@ -92,7 +92,7 @@ public class BlastAntiGravitational extends BlastThreaded implements IBlastTicka
 										entity.pitchChange = 100 * world().rand.nextFloat();
 										entity.motionY += Math.max(0.15 * world().rand.nextFloat(), 0.1);
 										entity.noClip = true;
-										world().spawnEntity(entity);
+										world().addEntity(entity);
 
 										//Track flying block
 										flyingBlocks.add(entity);

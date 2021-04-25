@@ -46,7 +46,7 @@ public interface IMissile extends IWorldPosition {
 	default void dropMissileAsItem() {
 		ItemStack stack = toStack();
 		if (stack != null && !stack.isEmpty() && world() != null) {
-			world().spawnEntity(new ItemEntity(world(), x(), y(), z(), stack));
+			world().addEntity(new ItemEntity(world(), x(), y(), z(), stack));
 		}
 	}
 

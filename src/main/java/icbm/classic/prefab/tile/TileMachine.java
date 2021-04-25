@@ -21,7 +21,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -207,15 +207,15 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 		return world != null && world.isRemote;
 	}
 
-	public EnumFacing getRotation() {
+	public Direction getRotation() {
 		BlockState state = getBlockState();
 		if (state.getProperties().containsKey(BlockICBM.ROTATION_PROP)) {
 			return state.getValue(BlockICBM.ROTATION_PROP);
 		}
-		return EnumFacing.NORTH;
+		return Direction.NORTH;
 	}
 
-	public void setRotation(EnumFacing facingDirection) {
+	public void setRotation(Direction facingDirection) {
 		//Only update if state has changed
 		if (facingDirection != getRotation()) {
 			//Update block state
@@ -303,7 +303,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 
 	@Override
 	@Optional.Method(modid = "ic2")
-	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
+	public double injectEnergy(Direction directionFrom, double amount, double voltage) {
 		if (!ConfigIC2.DISABLED && hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage energyStorage = getCapability(CapabilityEnergy.ENERGY, null);
 			if (energyStorage != null) {
@@ -317,7 +317,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 
 	@Override
 	@Optional.Method(modid = "ic2")
-	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side) {
+	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side) {
 		return !ConfigIC2.DISABLED && hasCapability(CapabilityEnergy.ENERGY, side);
 	}
 

@@ -20,8 +20,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -255,7 +255,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	}
 
 	@Override
-	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
+	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, Hand hand, Direction side, float xHit, float yHit, float zHit) {
 		if (isServer()) {
 			openGui(player, 0);
 		}

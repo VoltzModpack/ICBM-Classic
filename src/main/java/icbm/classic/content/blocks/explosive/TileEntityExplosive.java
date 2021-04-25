@@ -13,7 +13,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -48,13 +48,13 @@ public class TileEntityExplosive extends TileEntity implements IRotatable {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY && capabilityExplosive != null || super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
 			return (T) capabilityExplosive;
 		}
@@ -71,7 +71,7 @@ public class TileEntityExplosive extends TileEntity implements IRotatable {
 				entityExplosive.setFire(100);
 			}
 
-			world.spawnEntity(entityExplosive);
+			world.addEntity(entityExplosive);
 			world.setBlockToAir(pos);
 
 			ICBMClassic.logger().info("TileEntityExplosive: Triggered ITEM{" + capabilityExplosive.toStack() + "] " + capabilityExplosive.getExplosiveData().getRegistryName() + " at location " + getPos());
@@ -94,12 +94,12 @@ public class TileEntityExplosive extends TileEntity implements IRotatable {
 	}
 
 	@Override
-	public EnumFacing getDirection() {
-		return EnumFacing.byIndex(this.getBlockMetadata());
+	public Direction getDirection() {
+		return Direction.byIndex(this.getBlockMetadata());
 	}
 
 	@Override
-	public void setDirection(EnumFacing facingDirection) {
+	public void setDirection(Direction facingDirection) {
 		BlockState state = world.getBlockState(pos);
 		state = state.withProperty(BlockExplosive.ROTATION_PROP, facingDirection);
 		this.world.setBlockState(pos, state, 2);

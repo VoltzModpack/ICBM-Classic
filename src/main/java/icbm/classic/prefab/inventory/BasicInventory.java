@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
@@ -201,10 +201,10 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 		_loading = true;
 		this.inventoryMap.clear();
 
-		NBTTagList nbtList = nbt.getTagList(NBTConstants.ITEMS, 10);
+		ListNBT nbtList = nbt.getList(NBTConstants.ITEMS, 10);
 
-		for (int i = 0; i < nbtList.tagCount(); ++i) {
-			CompoundNBT stackTag = nbtList.getCompoundAt(i);
+		for (int i = 0; i < nbtList.size(); ++i) {
+			CompoundNBT stackTag = nbtList.getCompound(i);
 			byte id = stackTag.getByte(NBTConstants.SLOT);
 
 			if (id >= 0 && id < this.getSizeInventory()) {
@@ -217,7 +217,7 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 	}
 
 	public CompoundNBT save(CompoundNBT nbt) {
-		NBTTagList nbtList = new NBTTagList();
+		ListNBT nbtList = new ListNBT();
 
 		for (int i = shiftSlotStart; i < this.getSizeInventory() + shiftSlotStart; ++i) {
 			if (!this.getStackInSlot(i + shiftSlotStart).isEmpty()) {

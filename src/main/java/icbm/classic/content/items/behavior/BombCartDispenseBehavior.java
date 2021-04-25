@@ -8,7 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -18,7 +18,7 @@ public class BombCartDispenseBehavior extends BehaviorDefaultDispenseItem {
 
 	@Override
 	public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-		EnumFacing enumfacing = source.getBlockState().getValue(BlockDispenser.FACING);
+		Direction enumfacing = source.getBlockState().getValue(BlockDispenser.FACING);
 		World world = source.getWorld();
 		double x = source.getX() + (double) enumfacing.getXOffset() * 1.125D;
 		double y = Math.floor(source.getY()) + (double) enumfacing.getYOffset();
@@ -49,7 +49,7 @@ public class BombCartDispenseBehavior extends BehaviorDefaultDispenseItem {
 					 ((BlockRailBase) blockB.getBlock()).getRailDirection(world, blockpos.down(), blockB, null)
 					 : BlockRailBase.EnumRailDirection.NORTH_SOUTH);
 
-			if (enumfacing != EnumFacing.DOWN && railB.isAscending()) {
+			if (enumfacing != Direction.DOWN && railB.isAscending()) {
 				heightDelta = -0.4D;
 			} else {
 				heightDelta = -0.9D;
@@ -62,7 +62,7 @@ public class BombCartDispenseBehavior extends BehaviorDefaultDispenseItem {
 			cart.setCustomNameTag(stack.getDisplayName());
 		}
 
-		world.spawnEntity(cart);
+		world.addEntity(cart);
 		stack.shrink(1);
 		return stack;
 	}

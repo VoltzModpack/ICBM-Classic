@@ -16,8 +16,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -48,7 +48,7 @@ public class ItemBombCart extends ItemBase {
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
 	 */
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		BlockState iblockstate = worldIn.getBlockState(pos);
 
 		if (!BlockRailBase.isRailBlock(iblockstate)) {
@@ -70,7 +70,7 @@ public class ItemBombCart extends ItemBase {
 					entityminecart.setCustomNameTag(itemstack.getDisplayName());
 				}
 
-				worldIn.spawnEntity(entityminecart);
+				worldIn.addEntity(entityminecart);
 			}
 
 			itemstack.shrink(1);

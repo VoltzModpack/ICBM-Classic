@@ -3,7 +3,7 @@ package icbm.classic.content.entity.mobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -38,7 +38,7 @@ public class EntityXmasSnowman extends EntityXmasSkeleton {
 		if (!this.world.isRemote) {
 			int i = MathHelper.floor(this.posX);
 			int j = MathHelper.floor(this.posY);
-			int k = MathHelper.floor(this.posZ);
+			int k = MathHelper.floor(this.getPosZ());
 
 			if (this.isWet()) {
 				this.attackEntityFrom(DamageSource.DROWN, 1.0F);
@@ -93,7 +93,7 @@ public class EntityXmasSnowman extends EntityXmasSkeleton {
 		//this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 
 		//Spawn
-		this.world.spawnEntity(fragment);
+		this.world.addEntity(fragment);
 	}
 
 	@Override

@@ -1,10 +1,10 @@
 package icbm.classic.client.render.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import icbm.classic.content.entity.missile.EntityMissile;
 import icbm.classic.content.reg.ItemReg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -36,7 +36,7 @@ public class RenderMissile extends Render<EntityMissile> {
 	public RenderMissile(RenderManager renderManager) {
 		super(renderManager);
 		entityItem = new ItemEntity(null);
-		renderItemEntity = new RenderItemEntity2(renderManager, Minecraft.getMinecraft().getRenderItem());
+		renderItemEntity = new RenderItemEntity2(renderManager, Minecraft.getInstance().getRender());
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class RenderMissile extends Render<EntityMissile> {
 		final float scale = 2;
 		GlStateManager.scale(scale, scale, scale);
 		renderMissile(entityMissile.explosiveID,
-			entityMissile.world, entityMissile.posX, entityMissile.posY, entityMissile.posZ,
+			entityMissile.world, entityMissile.getPosX(), entityMissile.getPosY(), entityMissile.getPosZ(),
 			0, 0, 0, entityYaw, partialTicks);
 
 		//Reset

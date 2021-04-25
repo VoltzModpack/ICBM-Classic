@@ -31,8 +31,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -119,7 +119,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 					seat.rideOffset = new Pos(getRotation()).multiply(0.5, 1, 0.5);
 					seat.setPosition(x() + 0.5, y() + 0.5, z() + 0.5);
 					seat.setSize(0.5f, 2.5f);
-					world.spawnEntity(seat);
+					world.addEntity(seat);
 				}
 				//Destroy seat if no missile
 				else if (getMissileStack().isEmpty() && seat != null) {
@@ -143,7 +143,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 				this.launchScreen = null;
 
 				//Check on all 4 sides
-				for (EnumFacing rotation : EnumFacing.HORIZONTALS) {
+				for (Direction rotation : Direction.HORIZONTALS) {
 					//Get tile entity on side
 					Pos position = new Pos(getPos()).add(rotation);
 					TileEntity tileEntity = this.world.getTileEntity(position.toBlockPos());
@@ -166,7 +166,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return getInventory() != null;
 		} else if (launchScreen != null) {
@@ -177,7 +177,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 
 	@Override
 	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) getInventory().itemHandlerWrapper;
 		} else if (launchScreen != null) {
@@ -194,12 +194,12 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	}
 
 	@Override
-	public boolean canStore(ItemStack stack, EnumFacing side) {
+	public boolean canStore(ItemStack stack, Direction side) {
 		return stack != null && stack.getItem() == ItemReg.itemMissile;
 	}
 
 	@Override
-	public boolean canRemove(ItemStack stack, EnumFacing side) {
+	public boolean canRemove(ItemStack stack, Direction side) {
 		return true;
 	}
 
@@ -263,7 +263,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 					missile.capabilityMissile.launch(target.x(), target.y(), target.z(), lockHeight);
 
 					//Spawn entity
-					((ServerWorld) getWorld()).addScheduledTask(() -> getWorld().spawnEntity(missile));
+					((ServerWorld) getWorld()).addScheduledTask(() -> getWorld().addEntity(missile));
 
 					//Grab rider
 					if (seat != null && seat.getRidingEntity() != null) //TODO add hook to disable riding some missiles
@@ -359,24 +359,24 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 		return getInventory().getStackInSlot(0);
 	}
 
-	public boolean onPlayerRightClick(PlayerEntity player, EnumHand hand, ItemStack heldItem) {
+	public boolean onPlayerRightClick(PlayerEntity player, Hand hand, ItemStack heldItem) {
 
 		if (!tryInsertMissile(player, hand, heldItem) && launchScreen != null) {
-			return BlockReg.blockLaunchScreen.onBlockActivated(world, launchScreen.getPos(), world.getBlockState(launchScreen.getPos()), player, hand, EnumFacing.NORTH, 0, 0, 0);
+			return BlockReg.blockLaunchScreen.onBlockActivated(world, launchScreen.getPos(), world.getBlockState(launchScreen.getPos()), player, hand, Direction.NORTH, 0, 0, 0);
 			//return launchScreen.onPlayerActivated(player, side, hit);
 		}
 
 		return true;
 	}
 
-	public boolean tryInsertMissile(PlayerEntity player, EnumHand hand, ItemStack heldItem) {
+	public boolean tryInsertMissile(PlayerEntity player, Hand hand, ItemStack heldItem) {
 		if (heldItem.getItem() instanceof ItemMissile && this.getMissileStack().isEmpty()) {
 			if (heldItem.getItem() instanceof ItemMissile) {
 				if (this.getMissileStack().isEmpty()) {
 					if (isServer()) {
 						getInventory().setInventorySlotContents(0, heldItem);
 						if (!player.capabilities.isCreativeMode) {
-							player.setItemStackToSlot(hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+							player.setItemStackToSlot(hand == Hand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
 							player.inventoryContainer.detectAndSendChanges();
 						}
 					}
@@ -386,7 +386,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 		} else if (player.isSneaking() && heldItem.isEmpty() && !this.getMissileStack().isEmpty()) {
 			if (isServer()) {
 
-				player.setItemStackToSlot(hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND, this.getMissileStack());
+				player.setItemStackToSlot(hand == Hand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND, this.getMissileStack());
 				getInventory().setInventorySlotContents(0, ItemStack.EMPTY);
 				player.inventoryContainer.detectAndSendChanges();
 			}
@@ -409,7 +409,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	}
 
 	@Override
-	public boolean canStore(ItemStack stack, int slot, EnumFacing side) {
+	public boolean canStore(ItemStack stack, int slot, Direction side) {
 		return slot == 0 && stack.getItem() instanceof ItemMissile;
 	}
 
@@ -445,7 +445,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	}
 
 	@Override
-	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
+	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, Hand hand, Direction side, float xHit, float yHit, float zHit) {
 		return this.onPlayerRightClick(player, hand, player.getHeldItem(hand));
 	}
 
@@ -459,21 +459,21 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 		return getLayoutOfMultiBlock(getRotation());
 	}
 
-	public static List<BlockPos> getLayoutOfMultiBlock(EnumFacing facing) {
-		if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
+	public static List<BlockPos> getLayoutOfMultiBlock(Direction facing) {
+		if (facing == Direction.EAST || facing == Direction.WEST) {
 			return eastWestMultiBlockCache;
 		}
 		return northSouthMultiBlockCache;
 	}
 
 	@Override
-	public void setRotation(EnumFacing facingDirection) {
+	public void setRotation(Direction facingDirection) {
 		//Only update if state has changed
 		if (facingDirection != getRotation()
 
 			    //Prevent up and down placement
-			    && facingDirection != EnumFacing.UP
-			    && facingDirection != EnumFacing.DOWN) {
+			    && facingDirection != Direction.UP
+			    && facingDirection != Direction.DOWN) {
 			//Clear old structure
 			if (isServer()) {
 				MultiBlockHelper.destroyMultiBlockStructure(this, false, true, false);

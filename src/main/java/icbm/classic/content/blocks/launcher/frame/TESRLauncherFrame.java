@@ -2,9 +2,9 @@ package icbm.classic.content.blocks.launcher.frame;
 
 import icbm.classic.ICBMConstants;
 import icbm.classic.client.models.ModelLauncerFrame;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,7 +28,7 @@ public class TESRLauncherFrame extends TileEntitySpecialRenderer<TileLauncherFra
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FILE);
 		GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
 
-		if (frame.getRotation() != EnumFacing.NORTH && frame.getRotation() != EnumFacing.SOUTH) {
+		if (frame.getRotation() != Direction.NORTH && frame.getRotation() != Direction.SOUTH) {
 			GlStateManager.rotate(90F, 0.0F, 180F, 1.0F);
 		}
 

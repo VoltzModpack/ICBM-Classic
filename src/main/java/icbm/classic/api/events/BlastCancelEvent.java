@@ -1,7 +1,7 @@
 package icbm.classic.api.events;
 
 import icbm.classic.api.explosion.IBlast;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.eventbus.api.Cancelable;
 
 /**
  * Called when one blast causes the removal (destroys) another blast. Cancel this event to not remove (destroy) the

@@ -15,8 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -45,7 +45,7 @@ public abstract class BlockICBM extends BlockContainer {
 
 	@Override
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(ROTATION_PROP, EnumFacing.byIndex(meta));
+		return getDefaultState().withProperty(ROTATION_PROP, Direction.byIndex(meta));
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public abstract class BlockICBM extends BlockContainer {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
 		return getDefaultState().withProperty(ROTATION_PROP, placer.getHorizontalFacing());
 	}
 

@@ -2,8 +2,8 @@ package icbm.classic.api.tile.multiblock;
 
 import icbm.classic.api.data.IWorldPosition;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Collection;
@@ -44,7 +44,7 @@ public interface IMultiTileHost extends IWorldPosition {
 	 * @param player - person who clicked the tile
 	 * @param side   - side clicked
 	 */
-	boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit);
+	boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, Hand hand, Direction side, float xHit, float yHit, float zHit);
 
 	/**
 	 * Called when the player left clicks a tile. No additional data is provided beyond tile and player due to MC's

@@ -9,9 +9,9 @@ import icbm.classic.client.models.ModelTier2LauncherRail;
 import icbm.classic.client.models.ModelTier3LauncherBottom;
 import icbm.classic.client.models.ModelTier3LauncherRail;
 import icbm.classic.client.render.entity.RenderMissile;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -42,7 +42,7 @@ public class TESRLauncherBase extends TileEntitySpecialRenderer<TileLauncherBase
 
 		GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
 
-		if (launcher.getRotation() != EnumFacing.NORTH && launcher.getRotation() != EnumFacing.SOUTH) {
+		if (launcher.getRotation() != Direction.NORTH && launcher.getRotation() != Direction.SOUTH) {
 			GlStateManager.rotate(90F, 0F, 180F, 1.0F);
 		}
 
@@ -70,7 +70,7 @@ public class TESRLauncherBase extends TileEntitySpecialRenderer<TileLauncherBase
 		if (!launcher.getMissileStack().isEmpty()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5F, y + 0.7f, z + 0.5F);
-			if (launcher.getRotation() == EnumFacing.NORTH || launcher.getRotation() == EnumFacing.SOUTH) {
+			if (launcher.getRotation() == Direction.NORTH || launcher.getRotation() == Direction.SOUTH) {
 				GlStateManager.translate(0.05, 0, -0.1);
 				GlStateManager.rotate(90F, 0F, 1F, 0F);
 			} else {

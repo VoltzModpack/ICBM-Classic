@@ -20,7 +20,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -214,7 +214,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 		final EntityFlyingBlock entity = new EntityFlyingBlock(this.world(), blockPos, blockState);
 		entity.yawChange = 50 * this.world().rand.nextFloat();
 		entity.pitchChange = 50 * this.world().rand.nextFloat();
-		this.world().spawnEntity(entity);
+		this.world().addEntity(entity);
 
 		this.handleEntities(entity); //TODO why? this should just be an apply velocity call
 	}

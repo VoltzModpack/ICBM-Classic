@@ -9,7 +9,7 @@ import icbm.classic.command.ICBMCommands;
 import icbm.classic.command.system.SubCommand;
 import icbm.classic.lib.explosive.ExplosiveHandler;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.SyntaxErrorException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
@@ -54,13 +54,13 @@ public class CommandBlastTrigger extends SubCommand {
 	}
 
 	@Override
-	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		if (args.length <= 0 || !doCommand(server, sender, args)) {
 			throw new WrongUsageException(ICBMCommands.TRANSLATION_UNKNOWN_COMMAND, getUsage(sender));
 		}
 	}
 
-	private boolean doCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws SyntaxErrorException {
+	private boolean doCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws SyntaxErrorException {
 		//Get explosive from user
 		final IExplosiveData explosiveData = getExplosive(args[0]);
 
@@ -74,7 +74,7 @@ public class CommandBlastTrigger extends SubCommand {
 		return false;
 	}
 
-	private void shortVersion(ICommandSender sender, IExplosiveData explosiveData, String[] args) throws SyntaxErrorException {
+	private void shortVersion(CommandSource sender, IExplosiveData explosiveData, String[] args) throws SyntaxErrorException {
 		final float scale = Float.parseFloat(args[1]);
 		if (scale <= 0) {
 			throw new SyntaxErrorException(TRANSLATION_ERROR_SCALE_ZERO);
@@ -90,7 +90,7 @@ public class CommandBlastTrigger extends SubCommand {
 		trigger(sender, world, x, y, z, explosiveData, scale);
 	}
 
-	private void longVersion(ICommandSender sender, IExplosiveData explosiveData, String[] args) throws SyntaxErrorException {
+	private void longVersion(CommandSource sender, IExplosiveData explosiveData, String[] args) throws SyntaxErrorException {
 		final float scale = Float.parseFloat(args[5]);
 		if (scale <= 0) {
 			throw new SyntaxErrorException(TRANSLATION_ERROR_SCALE_ZERO);
@@ -133,7 +133,7 @@ public class CommandBlastTrigger extends SubCommand {
 	 * @param scale         - scale to apply, keep this small as its scale and not size (size defaults to 25 * scale of
 	 *                      2 = 50 size)
 	 */
-	private void trigger(ICommandSender sender, World world, double x, double y, double z, IExplosiveData explosiveData, float scale) {
+	private void trigger(CommandSource sender, World world, double x, double y, double z, IExplosiveData explosiveData, float scale) {
 		final BlastState result = ExplosiveHandler.createExplosion(null,
 			world, x, y, z,
 			explosiveData.getRegistryID(), scale,

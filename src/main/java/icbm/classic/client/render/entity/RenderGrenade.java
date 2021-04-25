@@ -39,7 +39,7 @@ public class RenderGrenade extends Render<EntityGrenade> {
 
 		//Apply data from entity
 		entityItem.setWorld(entity.world);
-		entityItem.setPosition(entity.posX, entity.posY, entity.posZ);
+		entityItem.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 		entityItem.setItem(entity.explosive.toStack());
 	}
 

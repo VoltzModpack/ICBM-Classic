@@ -1,7 +1,7 @@
 package icbm.classic.command.system;
 
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -23,14 +23,14 @@ public interface ISubCommand {
 	 * @param args   - arguments for the command
 	 * @throws CommandException - failed to run the command
 	 */
-	void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException;
+	void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException;
 
 	/**
 	 * Sends all help text to the sender
 	 *
 	 * @param sender
 	 */
-	default void displayHelp(ICommandSender sender) {
+	default void displayHelp(CommandSource sender) {
 		sender.sendMessage(new TextComponentString(getUsage(sender)));
 	}
 
@@ -43,7 +43,7 @@ public interface ISubCommand {
 	 * @param targetPos - block position for the command
 	 * @return empty list or list containing suggestions
 	 */
-	List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos);
+	List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args, @Nullable BlockPos targetPos);
 
 	/**
 	 * Name of the command
@@ -58,7 +58,7 @@ public interface ISubCommand {
 	 * @param sender - sender of the command
 	 * @return usage string (/parent + name)
 	 */
-	String getUsage(ICommandSender sender);
+	String getUsage(CommandSource sender);
 
 	/**
 	 * Sets the parent of the command

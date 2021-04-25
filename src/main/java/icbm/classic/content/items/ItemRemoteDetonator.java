@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,7 +38,7 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
 		ItemStack stack = player.getHeldItem(handIn);
 		if (!world.isRemote) {
 			if (!MinecraftForge.EVENT_BUS.post(new RemoteTriggerEvent(world, player, stack))) //event was not canceled
@@ -48,7 +48,7 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	}
 
 	@Override
-	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, PlayerEntity player) {
+	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return true;
 	}
 

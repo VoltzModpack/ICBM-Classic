@@ -3,7 +3,7 @@ package icbm.classic.client.models.mobs;
 import icbm.classic.content.entity.mobs.EntityXmasSkeletonBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 

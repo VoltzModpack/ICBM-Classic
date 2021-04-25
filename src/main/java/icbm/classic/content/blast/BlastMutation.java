@@ -21,16 +21,16 @@ public class BlastMutation extends Blast {
 				if (entity instanceof EntityPig) {
 					EntityPigZombie newEntity = new EntityPigZombie(world());
 					newEntity.preventEntitySpawning = true;
-					newEntity.setPosition(entity.posX, entity.posY, entity.posZ);
+					newEntity.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 					entity.setDead();
-					world().spawnEntity(newEntity);
+					world().addEntity(newEntity);
 				} else if (entity instanceof EntityVillager) {
 					ZombieEntityVillager newEntity = new ZombieEntityVillager(world());
 					newEntity.preventEntitySpawning = true;
-					newEntity.setPosition(entity.posX, entity.posY, entity.posZ);
+					newEntity.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 					newEntity.setForgeProfession(((EntityVillager) entity).getProfessionForge());
 					entity.setDead();
-					world().spawnEntity(newEntity);
+					world().addEntity(newEntity);
 				}
 			}
 		}

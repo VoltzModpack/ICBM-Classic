@@ -8,7 +8,7 @@ import icbm.classic.command.system.SubCommand;
 import icbm.classic.lib.explosive.ExplosiveHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.SyntaxErrorException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
@@ -36,7 +36,7 @@ public class CommandBlastSpread extends SubCommand {
 	}
 
 	@Override
-	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		if (args.length == 8) {
 			doCommand(sender, args);
 		} else {
@@ -44,7 +44,7 @@ public class CommandBlastSpread extends SubCommand {
 		}
 	}
 
-	private void doCommand(@Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	private void doCommand(@Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		final int count = CommandBase.parseInt(args[0], 1);
 		final int distance = CommandBase.parseInt(args[1], 1);
 

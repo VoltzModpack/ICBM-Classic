@@ -2,7 +2,7 @@ package icbm.classic.content.blocks.emptower;
 
 import icbm.classic.ICBMConstants;
 import icbm.classic.client.models.ModelEmpTower;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;

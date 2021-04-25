@@ -88,7 +88,7 @@ public abstract class EntityXmasMob extends EntityMob implements IRangedAttackMo
 		//this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 
 		//Spawn
-		this.world.spawnEntity(fragment);
+		this.world.addEntity(fragment);
 	}
 
 	protected float getProjectilePower() {

@@ -46,7 +46,7 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -54,7 +54,7 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Collections;
@@ -70,7 +70,7 @@ public class ClientReg {
 
 	private final static Map<IExplosiveData, ModelResourceLocation> grenadeModelMap = new HashMap();
 	private final static Map<IExplosiveData, ModelResourceLocation> missileModelMap = new HashMap();
-	private final static Map<IExplosiveData, Map<EnumFacing, ModelResourceLocation>> blockModelMap = new HashMap();
+	private final static Map<IExplosiveData, Map<Direction, ModelResourceLocation>> blockModelMap = new HashMap();
 	private final static Map<IExplosiveData, ModelResourceLocation> itemBlockModelMap = new HashMap();
 	private final static Map<IExplosiveData, ModelResourceLocation> cartModelMap = new HashMap();
 
@@ -191,22 +191,22 @@ public class ClientReg {
 		for (IExplosiveData data : ICBMClassicAPI.EX_BLOCK_REGISTRY.getExplosives()) //TODO run loop once for all 4 content types
 		{
 			//Add block state
-			final HashMap<EnumFacing, ModelResourceLocation> facingModelMap = new HashMap<>();
+			final HashMap<Direction, ModelResourceLocation> facingModelMap = new HashMap<>();
 			final String resourcePath = data.getRegistryName().getNamespace() + ":explosives/" + data.getRegistryName().getPath();
 
-			for (EnumFacing facing : EnumFacing.VALUES) {
+			for (Direction facing : Direction.VALUES) {
 				facingModelMap.put(facing, new ModelResourceLocation(resourcePath, "explosive=" + data.getRegistryName().toString().replace(":", "_") + ",rotation=" + facing));
 			}
 
 			blockModelMap.put(data, facingModelMap);
 
 			//Add item state
-			//BlockState state = BlockReg.blockExplosive.getDefaultState().withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
+			//BlockState state = BlockReg.blockExplosive.getDefaultState().withProperty(BlockICBM.ROTATION_PROP, Direction.UP);
 			// String properties_string = getPropertyString(state.getProperties());
 			itemBlockModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
 		}
 		//Block state mapper
-		ModelLoader.setCustomStateMapper(BlockReg.blockExplosive, new BlockModelMapperExplosive(blockModelMap, blockModelMap.get(ICBMExplosives.CONDENSED).get(EnumFacing.UP)));
+		ModelLoader.setCustomStateMapper(BlockReg.blockExplosive, new BlockModelMapperExplosive(blockModelMap, blockModelMap.get(ICBMExplosives.CONDENSED).get(Direction.UP)));
 		//Item state mapper
 		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockReg.blockExplosive), new ItemModelMapperExplosive(itemBlockModelMap, itemBlockModelMap.get(ICBMExplosives.CONDENSED)));
 		ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.blockExplosive), itemBlockModelMap.values()
@@ -226,7 +226,7 @@ public class ClientReg {
 			}
 		});
 		for (EnumTier tier : new EnumTier[] {EnumTier.ONE, EnumTier.TWO, EnumTier.THREE}) {
-			BlockState state = block.getDefaultState().withProperty(BlockICBM.TIER_PROP, tier).withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
+			BlockState state = block.getDefaultState().withProperty(BlockICBM.TIER_PROP, tier).withProperty(BlockICBM.ROTATION_PROP, Direction.UP);
 			String properties_string = getPropertyString(state.getProperties());
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), tier.ordinal(), new ModelResourceLocation(resourcePath, properties_string));
 		}

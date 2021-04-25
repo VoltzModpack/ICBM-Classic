@@ -4,7 +4,7 @@ import icbm.classic.ICBMConstants;
 import icbm.classic.client.models.ModelTier1LauncherScreen;
 import icbm.classic.client.models.ModelTier2LauncherScreen;
 import icbm.classic.client.models.ModelTier3LauncherScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;

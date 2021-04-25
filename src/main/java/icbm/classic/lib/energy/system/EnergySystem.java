@@ -3,7 +3,7 @@ package icbm.classic.lib.energy.system;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +19,19 @@ public final class EnergySystem {
 	private final static IEnergySystem NULL_SYSTEM = new EnergySystemNull();
 	private final static List<IEnergySystem> energySystems = new ArrayList();
 
-	public static IEnergySystem getSystem(TileEntity tile, EnumFacing side) {
+	public static IEnergySystem getSystem(TileEntity tile, Direction side) {
 		return getSystemForObject(tile, side);
 	}
 
-	public static IEnergySystem getSystem(Entity entity, EnumFacing side) {
+	public static IEnergySystem getSystem(Entity entity, Direction side) {
 		return getSystemForObject(entity, side);
 	}
 
-	public static IEnergySystem getSystem(ItemStack item, EnumFacing side) {
+	public static IEnergySystem getSystem(ItemStack item, Direction side) {
 		return getSystemForObject(item, side);
 	}
 
-	private static IEnergySystem getSystemForObject(Object object, EnumFacing side) {
+	private static IEnergySystem getSystemForObject(Object object, Direction side) {
 		for (IEnergySystem system : energySystems) {
 			if (system.canSupport(object, side)) {
 				return system;

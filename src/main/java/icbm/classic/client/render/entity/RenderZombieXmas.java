@@ -3,7 +3,7 @@ package icbm.classic.client.render.entity;
 import icbm.classic.ICBMConstants;
 import icbm.classic.client.models.mobs.ModelZombieXmas;
 import icbm.classic.content.entity.mobs.EntityXmasZombie;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;

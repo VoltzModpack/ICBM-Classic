@@ -25,8 +25,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerEntityMP;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -132,7 +132,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (capability == CapabilityEMP.EMP) {
 			if (capabilityEMP == null) {
 				capabilityEMP = new CapabilityEmpMissile(this);
@@ -147,7 +147,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		return capability == CapabilityEMP.EMP || super.hasCapability(capability, facing);
 	}
 
@@ -432,7 +432,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	}
 
 	@Override
-	public boolean processInitialInteract(PlayerEntity player, EnumHand hand) {
+	public boolean processInitialInteract(PlayerEntity player, Hand hand) {
 		//Allow missile to override interaction
 		if (ICBMClassicAPI.EX_MISSILE_REGISTRY.onInteraction(this, player, hand)) {
 			return true;
@@ -513,7 +513,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 			// Make sure the missile is not already exploding
 			if (!this.isExploding) {
 				//Log that the missile impacted
-				ICBMClassic.logger().info(this.getEntityName() + " (" + this.getEntityId() + ") exploded in " + (int) this.posX + ", " + (int) this.posY + ", " + (int) this.posZ);
+				ICBMClassic.logger().info(this.getEntityName() + " (" + this.getEntityId() + ") exploded in " + (int) this.posX + ", " + (int) this.posY + ", " + (int) this.getPosZ());
 
 				//Make sure to note we are currently exploding
 				this.isExploding = true;
@@ -522,7 +522,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 				setDead();
 
 				if (!this.world.isRemote) {
-					return ExplosiveHandler.createExplosion(this, this.world, this.posX, this.posY, this.posZ, explosiveID, 1, blastData);
+					return ExplosiveHandler.createExplosion(this, this.world, this.getPosX(), this.getPosY(), this.getPosZ(), explosiveID, 1, blastData);
 				}
 				return BlastState.TRIGGERED;
 			}

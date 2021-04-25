@@ -96,9 +96,9 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 
 				entity.motionZ -= (r - zDifference) * Math.abs(zDifference) * 0.0006;
 
-				if (new Pos(entity.posX, entity.posY, entity.posZ).distance(location) < 4) {
+				if (new Pos(entity.getPosX(), entity.getPosY(), entity.getPosZ()).distance(location) < 4) {
 					if (!explosionCreated && callCount % 5 == 0) {
-						world().spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, entity.posX, entity.posY, entity.posZ, 0.0D, 0.0D, 0.0D);
+						world().spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 0.0D, 0.0D, 0.0D);
 						explosionCreated = true;
 					}
 
@@ -123,7 +123,7 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 							this.teleportTarget = new Pos(checkX, checkY, checkZ);
 						}
 
-						this.world().playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						this.world().playSound(null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
 						if (entity instanceof PlayerEntityMP) {
 							((PlayerEntityMP) entity).connection.setPlayerLocation(this.teleportTarget.x() + 0.5, this.teleportTarget.y() + 0.5, this.teleportTarget.z() + 0.5, entity.rotationYaw, entity.rotationPitch);
@@ -152,7 +152,7 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 			{
 				EndermanEntity enderman = new EndermanEntity(world());
 				enderman.setPosition(this.location.x(), this.location.y(), this.location.z());
-				this.world().spawnEntity(enderman);
+				this.world().addEntity(enderman);
 			}
 		}
 	}

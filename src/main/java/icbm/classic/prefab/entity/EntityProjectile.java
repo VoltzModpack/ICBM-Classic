@@ -3,19 +3,20 @@ package icbm.classic.prefab.entity;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
@@ -57,7 +58,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 
 	//In ground data
 	public BlockPos tilePos = new BlockPos(0, 0, 0);
-	public EnumFacing sideTile = EnumFacing.UP;
+	public Direction sideTile = Direction.UP;
 	protected BlockState blockInside = Blocks.AIR.getDefaultState();
 	protected boolean inGround = false;
 
@@ -93,7 +94,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 			float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
 			double d4 = d0 / d3;
 			double d5 = d2 / d3;
-			this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f2, f3);
+			this.setLocationAndAngles(shooter.posX + d4, this.getPosY(), shooter.posZ + d5, f2, f3);
 			float f4 = (float) d3 * 0.2F;
 			this.shoot(d0, d1 + (double) f4, d2, p_i1755_4_, p_i1755_5_);
 		}
@@ -104,7 +105,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 	}
 
 	public EntityProjectile(World world, LivingEntity shooter, float f, float distanceScale) {
-		this(world, shooter.posX, shooter.posY + (double) shooter.getEyeHeight(), shooter.posZ, shooter.rotationYaw, shooter.rotationPitch, f, distanceScale);
+		this(world, shooter.getPosX(), shooter.posY + (double) shooter.getEyeHeight(), shooter.getPosZ(), shooter.rotationYaw, shooter.rotationPitch, f, distanceScale);
 	}
 
 	public EntityProjectile(World world, double x, double y, double z, float yaw, float pitch, float speedScale, float distanceScale) {
@@ -117,7 +118,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		this.posX -= (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F * distanceScale);
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F * distanceScale);
-		this.setPosition(this.posX, this.posY, this.posZ);
+		this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 		//this.yOffset = 0.0F;
 		this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
 		this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
@@ -146,7 +147,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		if (!state.getBlock().isAir(state, world, tilePos)) {
 			//Check if what we hit can be collided with
 			AxisAlignedBB axisalignedbb = state.getCollisionBoundingBox(this.world, tilePos);
-			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(tilePos).contains(new Vector3d(this.posX, this.posY, this.posZ))) {
+			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(tilePos).contains(new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()))) {
 				this.inGround = true;
 			}
 		}
@@ -178,12 +179,12 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 			}
 
 			//Do raytrace TODO move to prefab entity for reuse
-			Vector3d rayStart = new Vector3d(this.posX, this.posY, this.posZ);
+			Vector3d rayStart = new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 			Vector3d rayEnd = new Vector3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			RayTraceResult rayHit = this.world.rayTraceBlocks(rayStart, rayEnd, false, true, false);
 
 			//Reset data to do entity ray trace
-			rayStart = new Vector3d(this.posX, this.posY, this.posZ);
+			rayStart = new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 			rayEnd = new Vector3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			if (rayHit != null) {
 				rayEnd = new Vector3d(rayHit.hitVec.x, rayHit.hitVec.y, rayHit.hitVec.z);
@@ -260,7 +261,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 
 		this.motionX = (double) ((float) (movingobjectposition.hitVec.x - this.posX));
 		this.motionY = (double) ((float) (movingobjectposition.hitVec.y - this.posY));
-		this.motionZ = (double) ((float) (movingobjectposition.hitVec.z - this.posZ));
+		this.motionZ = (double) ((float) (movingobjectposition.hitVec.z - this.getPosZ()));
 
 		float velocity = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 		this.posX -= this.motionX / (double) velocity * 0.05000000074505806D;
@@ -362,7 +363,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		decreaseMotion();
 
 		//Set position
-		this.setPosition(this.posX, this.posY, this.posZ);
+		this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 
 		//Adjust for collision      TODO check if works, rewrite code to prevent clip through of block
 		this.doBlockCollisions();
@@ -429,7 +430,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(yy, (double) f) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch;
 			this.prevRotationYaw = this.rotationYaw;
-			this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+			this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
 			this.ticksInGround = 0;
 		}
 	}
@@ -468,9 +469,9 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 
 		if (nbt.contains(NBTConstants.SIDE_TILE)) {
 			//Legacy
-			this.sideTile = EnumFacing.byIndex(nbt.getShort(NBTConstants.SIDE_TILE));
+			this.sideTile = Direction.byIndex(nbt.getShort(NBTConstants.SIDE_TILE));
 		} else {
-			this.sideTile = EnumFacing.byIndex(nbt.getByte(NBTConstants.SIDE_TILE_POS));
+			this.sideTile = Direction.byIndex(nbt.getByte(NBTConstants.SIDE_TILE_POS));
 		}
 		this.ticksInGround = nbt.getShort(NBTConstants.LIFE);
 		if (nbt.contains(NBTConstants.IN_TILE)) {

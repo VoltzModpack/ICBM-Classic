@@ -11,7 +11,7 @@ import icbm.classic.command.FakeBlast;
 import icbm.classic.command.ICBMCommands;
 import icbm.classic.lib.explosive.reg.ExplosiveRegistry;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.AfterAll;
@@ -110,7 +110,7 @@ public class CommandBlastTriggerTest {
 	@ParameterizedTest
 	@MethodSource("provideBadCommandInputs")
 	void command_badInput(String[] commandArgs, String errorMessage, boolean player) {
-		final ICommandSender sender = player ? testManager.getPlayer() : testManager.getServer();
+		final CommandSource sender = player ? testManager.getPlayer() : testManager.getServer();
 
 		//Validate we throw the right error
 		final CommandException exception = Assertions.assertThrows(

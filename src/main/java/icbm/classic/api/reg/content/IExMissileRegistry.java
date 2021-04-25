@@ -4,7 +4,7 @@ import icbm.classic.api.caps.IMissile;
 import icbm.classic.api.data.EntityInteractionFunction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.function.Consumer;
@@ -51,6 +51,6 @@ public interface IExMissileRegistry extends IExplosiveContentRegistry {
 
 	void triggerFlightUpdate(IMissile missile);
 
-	boolean onInteraction(Entity entity, PlayerEntity player, EnumHand hand);
+	boolean onInteraction(Entity entity, PlayerEntity player, Hand hand);
 
 }

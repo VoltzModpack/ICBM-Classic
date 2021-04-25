@@ -4,7 +4,7 @@ import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.command.system.SubCommand;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
@@ -22,7 +22,7 @@ public class CommandBlastList extends SubCommand {
 	}
 
 	@Override
-	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		//Convert list of explosives to string registry names
 		String names = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosives().stream()
 			               .map(IExplosiveData::getRegistryName)

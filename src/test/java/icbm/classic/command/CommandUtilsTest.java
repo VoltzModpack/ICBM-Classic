@@ -155,33 +155,33 @@ public class CommandUtilsTest {
 		SheepEntity sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 10, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 11, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		//Sheep not in range
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(200, 12, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 300);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 500);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		//Should find 3 sheep
 		List<Entity> list = CommandUtils.getEntities(world, 100, 11, 100, 5, EntitySelectors.NOT_SPECTATING::test);
@@ -196,34 +196,34 @@ public class CommandUtilsTest {
 		SheepEntity sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 10, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 11, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		//Sheep not in range
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(200, 12, 100);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 300);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		sheep = new SheepEntity(world);
 		sheep.forceSpawn = true;
 		sheep.setPosition(100, 12, 500);
-		world.spawnEntity(sheep);
+		world.addEntity(sheep);
 
 		//Should find 3 sheep
 		List<Entity> list = CommandUtils.getEntities(world, 0, 0, 0, -1, EntitySelectors.NOT_SPECTATING::test);

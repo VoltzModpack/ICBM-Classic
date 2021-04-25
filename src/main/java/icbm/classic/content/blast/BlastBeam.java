@@ -68,7 +68,7 @@ public abstract class BlastBeam extends Blast implements IBlastTickable {
 			this.lightBeam.beamSize = 1;
 			this.lightBeam.beamGlowSize = 2;
 			this.lightBeam.setTargetBeamProgress(0.1f);
-			this.world().spawnEntity(this.lightBeam);
+			this.world().addEntity(this.lightBeam);
 		}
 
 		//Start first thread if not already started
@@ -94,7 +94,7 @@ public abstract class BlastBeam extends Blast implements IBlastTickable {
 						//Create an spawn
 						final EntityFlyingBlock entity = new EntityFlyingBlock(this.world(), blockPos, state);
 						entity.gravity = -0.01f;
-						if (world.spawnEntity(entity)) {
+						if (world.addEntity(entity)) {
 							flyingBlocks.add(entity);
 						}
 					}

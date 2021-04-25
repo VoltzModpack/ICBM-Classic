@@ -5,8 +5,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 
 /**
  * Version of the basic ISidedInventory that is designed to be used as a replacement for the conventional inventory used
@@ -53,7 +53,7 @@ public class ExternalInventory extends BasicInventory implements IExternalInvent
 	}
 
 	@Override
-	public int[] getSlotsForFace(EnumFacing facing) {
+	public int[] getSlotsForFace(Direction facing) {
 		if (openSlots == null || openSlots.length != this.getSizeInventory()) {
 			this.openSlots = new int[this.getSizeInventory()];
 			for (int i = 0; i < this.openSlots.length; i++) {
@@ -64,12 +64,12 @@ public class ExternalInventory extends BasicInventory implements IExternalInvent
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, EnumFacing side) {
+	public boolean canInsertItem(int i, ItemStack itemstack, Direction side) {
 		return this.isItemValidForSlot(i, itemstack) && host.canStore(itemstack, i, side);
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, EnumFacing side) {
+	public boolean canExtractItem(int i, ItemStack itemstack, Direction side) {
 		return host.canRemove(itemstack, i, side);
 	}
 
@@ -105,14 +105,14 @@ public class ExternalInventory extends BasicInventory implements IExternalInvent
 		this.inventoryMap.clear();
 	}
 
-	public void transferIntoInventory(PlayerEntity playerIn, EnumHand hand, ItemStack heldStack) {
+	public void transferIntoInventory(PlayerEntity playerIn, Hand hand, ItemStack heldStack) {
 		//Add stack to inventory, stack is consumed
 		heldStack = addItemToInventory(heldStack);
 
 		//Update player
-		if (hand == EnumHand.MAIN_HAND) {
+		if (hand == Hand.MAIN_HAND) {
 			playerIn.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldStack);
-		} else if (hand == EnumHand.OFF_HAND) {
+		} else if (hand == Hand.OFF_HAND) {
 			playerIn.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, heldStack);
 		}
 

@@ -14,18 +14,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 
@@ -50,7 +50,7 @@ public class BlockExplosive extends BlockICBM {
 	}
 
 	@Override
-	public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		IExplosiveData explosiveData = null;
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileEntityExplosive && ((TileEntityExplosive) tile).capabilityExplosive != null) {
@@ -64,12 +64,12 @@ public class BlockExplosive extends BlockICBM {
 	}
 
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(BlockState base_state, IBlockReader world, BlockPos pos, Direction side) {
 		return isNormalCube(base_state, world, pos);
 	}
 
@@ -94,7 +94,7 @@ public class BlockExplosive extends BlockICBM {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
 		ItemStack stack = placer.getHeldItem(hand);
 		BlockState state = getDefaultState().withProperty(ROTATION_PROP, facing);
 		IExplosiveData prop = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(stack.getDamage());
@@ -124,7 +124,7 @@ public class BlockExplosive extends BlockICBM {
 
 			// Check to see if there is fire nearby.
 			// If so, then detonate.
-			for (EnumFacing rotation : EnumFacing.HORIZONTALS) {
+			for (Direction rotation : Direction.HORIZONTALS) {
 				Pos position = new Pos(pos).add(rotation);
 				Block blockId = position.getBlock(world);
 
@@ -153,7 +153,7 @@ public class BlockExplosive extends BlockICBM {
 			BlockExplosive.triggerExplosive(world, pos, false);
 			return;
 		} else {
-			for (EnumFacing facing : EnumFacing.VALUES) //TODO recode
+			for (Direction facing : Direction.VALUES) //TODO recode
 			{
 				BlockState state = world.getBlockState(pos.add(facing.getDirectionVec()));
 				Block block = state.getBlock();
@@ -199,7 +199,7 @@ public class BlockExplosive extends BlockICBM {
 	 * block.
 	 */
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getTileEntity(pos);
 
 		if (entityPlayer.getHeldItem(hand) != null) {

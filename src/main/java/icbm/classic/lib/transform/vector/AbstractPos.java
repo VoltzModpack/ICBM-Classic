@@ -13,12 +13,14 @@ import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -49,7 +51,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	}
 
 	public AbstractPos(Entity entity) {
-		this(entity.posX, entity.posY, entity.posZ);
+		this(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 	}
 
 	public AbstractPos(IPos3D vec) {
@@ -68,7 +70,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		this(par1.getX(), par1.getY(), par1.getZ());
 	}
 
-	public AbstractPos(EnumFacing dir) {
+	public AbstractPos(Direction dir) {
 		this(dir.getXOffset(), dir.getYOffset(), dir.getZOffset());
 	}
 
@@ -96,9 +98,9 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return new Point(x(), z());
 	}
 
-	public EnumFacing toDirection() {
+	public Direction toDirection() {
 		//TODO maybe add a way to convert convert any vector into a direction from origin
-		for (EnumFacing dir : EnumFacing.values()) {
+		for (Direction dir : Direction.values()) {
 			if (xi() == dir.getXOffset() && yi() == dir.getYOffset() && zi() == dir.getZOffset()) {
 				return dir;
 			}
@@ -138,7 +140,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return add(other.getX(), other.getY(), other.getZ());
 	}
 
-	public R add(EnumFacing face) {
+	public R add(Direction face) {
 		return add(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
@@ -146,7 +148,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return add(vec.x, vec.y, vec.z);
 	}
 
-	public R sub(EnumFacing face) {
+	public R sub(Direction face) {
 		return sub(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
@@ -154,7 +156,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return add(vec.x, vec.y, vec.z);
 	}
 
-	public double distance(Vec3i vec) {
+	public double distance(Vector3i vec) {
 		return distance(vec.getX() + 0.5, vec.getY() + 0.5, vec.getZ() + 0.5);
 	}
 
@@ -163,10 +165,10 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	}
 
 	public double distance(Entity entity) {
-		return distance(entity.posX, entity.posY, entity.posZ);
+		return distance(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 	}
 
-	public R multiply(EnumFacing face) {
+	public R multiply(Direction face) {
 		return multiply(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
@@ -174,7 +176,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return multiply(vec.x, vec.y, vec.z);
 	}
 
-	public R divide(EnumFacing face) {
+	public R divide(Direction face) {
 		return divide(face.getXOffset(), face.getYOffset(), face.getZOffset());
 	}
 
@@ -359,7 +361,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return b != null && b == block;
 	}
 
-	public Block getBlock(IBlockAccess world) {
+	public Block getBlock(IBlockReader world) {
 		BlockState state = getBlockState(world);
 		if (world != null && state != null) //TODO check if chunk is loaded
 		{
@@ -369,7 +371,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		}
 	}
 
-	public BlockState getBlockState(IBlockAccess world) {
+	public BlockState getBlockState(IBlockReader world) {
 		if (world != null) //TODO check if chunk is loaded
 		{
 			return world.getBlockState(toBlockPos());
@@ -378,7 +380,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		}
 	}
 
-	public TileEntity getTileEntity(IBlockAccess world) {
+	public TileEntity getTileEntity(IBlockReader world) {
 		if (world != null) //TODO check if chunk is loaded
 		{
 			return world.getTileEntity(toBlockPos());
@@ -429,7 +431,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	 * @param cause - entity that triggered/is the explosion
 	 */
 	public float getResistance(World world, Entity cause) {
-		return getResistance(world, cause, cause.posX, cause.posY, cause.posZ);
+		return getResistance(world, cause, cause.getPosX(), cause.getPosY(), cause.getPosZ());
 	}
 
 	/**

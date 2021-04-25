@@ -16,7 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -30,7 +30,7 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	// How long the fuse is (in ticks)
 	public int fuse = -1;
 
-	private EnumFacing _facing = EnumFacing.NORTH;
+	private Direction _facing = Direction.NORTH;
 
 	//Capabilities
 	public final IEMPReceiver capabilityEMP = new CapabilityEmpKill(this);
@@ -43,7 +43,7 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 		//this.yOffset = this.height / 2.0F;
 	}
 
-	public EntityExplosive(World par1World, Pos position, EnumFacing orientation, ItemStack stack) {
+	public EntityExplosive(World par1World, Pos position, Direction orientation, ItemStack stack) {
 		this(par1World);
 		this.setPosition(position.x(), position.y(), position.z());
 		float var8 = (float) (Math.random() * Math.PI * 2.0D);
@@ -140,15 +140,15 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	}
 
 	@Override
-	public EnumFacing getDirection() {
+	public Direction getDirection() {
 		if (_facing == null) {
-			_facing = EnumFacing.NORTH;
+			_facing = Direction.NORTH;
 		}
 		return this._facing;
 	}
 
 	@Override
-	public void setDirection(EnumFacing facingDirection) {
+	public void setDirection(Direction facingDirection) {
 		this._facing = facingDirection;
 	}
 
@@ -162,7 +162,7 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	@Override
 	public void readSpawnData(ByteBuf data) {
 		this.fuse = data.readInt();
-		this._facing = EnumFacing.byIndex(data.readByte());
+		this._facing = Direction.byIndex(data.readByte());
 		getExplosiveCap().deserializeNBT(ByteBufUtils.readTag(data));
 	}
 
@@ -181,7 +181,7 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (capability == CapabilityEMP.EMP) {
 			return (T) capabilityEMP;
 		} else if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
@@ -191,7 +191,7 @@ public class EntityExplosive extends Entity implements IRotatable, IEntityAdditi
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		if (capability == CapabilityEMP.EMP) {
 			return true;
 		} else if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {

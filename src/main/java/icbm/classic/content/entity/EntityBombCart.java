@@ -13,13 +13,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
@@ -53,7 +53,7 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	@Override
 	protected void explodeCart(double par1) {
 		// TODO add event
-		this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+		this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
 		ExplosiveHandler.createExplosion(this, world, posX, posY, posZ, explosive, 1, data);
 		this.setDead();
 	}
@@ -90,7 +90,7 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 			this.world.setEntityState(this, (byte) 10);
 
 			if (!this.isSilent()) {
-				this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				this.world.playSound((PlayerEntity) null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 		}
 	}
@@ -124,7 +124,7 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	public BlockState getDefaultDisplayTile() {
 		return BlockReg.blockExplosive.getDefaultState()
 			       .withProperty(BlockExplosive.EX_PROP, ICBMClassicHelpers.getExplosive(explosive, false))
-			       .withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
+			       .withProperty(BlockICBM.ROTATION_PROP, Direction.UP);
 	}
 
 }

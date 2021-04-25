@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy {
 				if (missile.motionY > -1) {
 					if (missile.world.isRemote && missile.motionY > -1) {
 						if (missile.launcherHasAirBelow == -1) {
-							BlockPos bp = new BlockPos(Math.signum(missile.posX) * Math.floor(Math.abs(missile.posX)), missile.posY - 2, Math.signum(missile.posZ) * Math.floor(Math.abs(missile.posZ)));
+							BlockPos bp = new BlockPos(Math.signum(missile.posX) * Math.floor(Math.abs(missile.posX)), missile.posY - 2, Math.signum(missile.getPosZ()) * Math.floor(Math.abs(missile.getPosZ())));
 							missile.launcherHasAirBelow = missile.world.isAirBlock(bp) ? 1 : 0;
 						}
 						Pos position = new Pos((IPos3D) missile);

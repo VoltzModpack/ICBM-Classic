@@ -4,7 +4,7 @@ import icbm.classic.ICBMConstants;
 import icbm.classic.client.models.ModelCruiseLauncherTop;
 import icbm.classic.client.models.ModuleCruiseLauncherBottom;
 import icbm.classic.client.render.entity.RenderMissile;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;

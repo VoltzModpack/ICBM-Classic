@@ -3,7 +3,7 @@ package icbm.classic.command.sub;
 import icbm.classic.command.CommandUtils;
 import icbm.classic.command.system.SubCommand;
 import icbm.classic.lib.explosive.ExplosiveHandler;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -36,7 +36,7 @@ public class CommandLag extends SubCommand {
 	}
 
 	@Override
-	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) {
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) {
 		//Parse range
 		double range = args.length > 1 ? Double.parseDouble(args[1]) : 1000;
 

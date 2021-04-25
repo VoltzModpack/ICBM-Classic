@@ -7,11 +7,11 @@ import icbm.classic.prefab.tile.BlockICBM;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,7 +37,7 @@ public class RenderExBlock extends Render<EntityExplosive> {
 
 	public void renderBlock(EntityExplosive entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		final BlockState blockState = BlockReg.blockExplosive.getDefaultState()
-			                               .withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP) //TODO get direction from rotation
+			                               .withProperty(BlockICBM.ROTATION_PROP, Direction.UP) //TODO get direction from rotation
 			                               .withProperty(BlockExplosive.EX_PROP, entity.getExplosiveData());
 		final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 

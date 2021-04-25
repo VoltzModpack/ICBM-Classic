@@ -7,7 +7,7 @@ import icbm.classic.content.reg.BlockReg;
 import icbm.classic.lib.NBTConstants;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
@@ -81,13 +81,13 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 	}
 
 	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
 		return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY;
 	}
 
 	@Nullable
 	@Override
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
 			return (T) this;
 		}

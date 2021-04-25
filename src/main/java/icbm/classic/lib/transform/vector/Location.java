@@ -10,7 +10,7 @@ import net.minecraft.dispenser.ILocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -36,7 +36,7 @@ public class Location extends AbstractLocation<Location> implements IWorldPositi
 	}
 
 	public Location(Entity entity) {
-		this(entity.world, entity.posX, entity.posY, entity.posZ);
+		this(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ());
 	}
 
 	public Location(TileEntity tile) {
@@ -76,7 +76,7 @@ public class Location extends AbstractLocation<Location> implements IWorldPositi
 		world().playSound(x(), y(), z(), soundIn, category, volume, pitch, distanceDelay);
 	}
 
-	public boolean isSideSolid(EnumFacing side) {
+	public boolean isSideSolid(Direction side) {
 		BlockState state = getBlockState();
 		if (state != null && !state.getBlock().isAir(state, world, toBlockPos())) {
 			BlockFaceShape shape = state.getBlockFaceShape(world, toBlockPos(), side);

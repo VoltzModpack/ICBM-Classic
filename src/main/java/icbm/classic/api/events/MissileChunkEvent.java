@@ -3,8 +3,9 @@ package icbm.classic.api.events;
 import icbm.classic.content.entity.missile.LoadedChunkPair;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.common.world.ForgeChunkManager;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 public class MissileChunkEvent extends Event {
 

@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -43,7 +43,7 @@ public class PlayerEntitySeat extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	public boolean processInitialInteract(PlayerEntity player, EnumHand hand) {
+	public boolean processInitialInteract(PlayerEntity player, Hand hand) {
 		if (player.isSneaking()) {
 			return false;
 		} else if (this.isBeingRidden()) {
@@ -84,7 +84,7 @@ public class PlayerEntitySeat extends Entity implements IEntityAdditionalSpawnDa
 	@Override
 	public void updatePassenger(Entity passenger) {
 		if (this.isPassenger(passenger)) {
-			passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ); //TODO add rotation and position math
+			passenger.setPosition(this.getPosX(), this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ()); //TODO add rotation and position math
 		}
 	}
 

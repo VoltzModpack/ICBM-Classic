@@ -2,9 +2,9 @@ package icbm.classic.content.blocks.radarstation;
 
 import icbm.classic.ICBMConstants;
 import icbm.classic.client.models.ModelRadarStation;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -36,11 +36,11 @@ public class TESRRadarStation extends TileEntitySpecialRenderer<TileRadarStation
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FILE_OFF);
 		}
 
-		if (te.getRotation() == EnumFacing.NORTH) {
+		if (te.getRotation() == Direction.NORTH) {
 			GlStateManager.rotate(180F, 0.0F, 1F, 0);
-		} else if (te.getRotation() == EnumFacing.WEST) {
+		} else if (te.getRotation() == Direction.WEST) {
 			GlStateManager.rotate(90F, 0.0F, 1F, 0);
-		} else if (te.getRotation() == EnumFacing.EAST) {
+		} else if (te.getRotation() == Direction.EAST) {
 			GlStateManager.rotate(-90F, 0.0F, 1F, 0);
 		}
 

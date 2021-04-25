@@ -5,7 +5,7 @@ import icbm.classic.content.blocks.explosive.BlockExplosive;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 import java.util.Map;
 
@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public class BlockModelMapperExplosive extends DefaultStateMapper {
 
-	private final Map<IExplosiveData, Map<EnumFacing, ModelResourceLocation>> models;
+	private final Map<IExplosiveData, Map<Direction, ModelResourceLocation>> models;
 	private final ModelResourceLocation fallBack;
 
-	public BlockModelMapperExplosive(Map<IExplosiveData, Map<EnumFacing, ModelResourceLocation>> models, ModelResourceLocation fallBack) {
+	public BlockModelMapperExplosive(Map<IExplosiveData, Map<Direction, ModelResourceLocation>> models, ModelResourceLocation fallBack) {
 		this.models = models;
 		this.fallBack = fallBack;
 	}
@@ -27,7 +27,7 @@ public class BlockModelMapperExplosive extends DefaultStateMapper {
 		if (state.getPropertyKeys().contains(BlockExplosive.EX_PROP)) {
 			final IExplosiveData explosiveData = state.getValue(BlockExplosive.EX_PROP);
 			if (explosiveData != null) {
-				final Map<EnumFacing, ModelResourceLocation> facingModelMap = models.get(explosiveData);
+				final Map<Direction, ModelResourceLocation> facingModelMap = models.get(explosiveData);
 				if (facingModelMap != null) {
 					final ModelResourceLocation modelResourceLocation = facingModelMap.get(state.getValue(BlockExplosive.ROTATION_PROP));
 					if (modelResourceLocation != null) {

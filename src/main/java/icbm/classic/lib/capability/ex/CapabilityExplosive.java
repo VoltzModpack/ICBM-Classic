@@ -8,7 +8,7 @@ import icbm.classic.lib.NBTConstants;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -57,13 +57,13 @@ public class CapabilityExplosive implements IExplosive, ICapabilitySerializable<
 	}
 
 	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
 		return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY;
 	}
 
 	@Nullable
 	@Override
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
 			return (T) this;
 		}
@@ -98,7 +98,7 @@ public class CapabilityExplosive implements IExplosive, ICapabilitySerializable<
 		CapabilityManager.INSTANCE.register(IExplosive.class, new Capability.IStorage<IExplosive>() {
 				@Nullable
 				@Override
-				public NBTBase writeNBT(Capability<IExplosive> capability, IExplosive instance, EnumFacing side) {
+				public NBTBase writeNBT(Capability<IExplosive> capability, IExplosive instance, Direction side) {
 					if (instance instanceof CapabilityExplosive) {
 						return ((CapabilityExplosive) instance).serializeNBT();
 					}
@@ -106,7 +106,7 @@ public class CapabilityExplosive implements IExplosive, ICapabilitySerializable<
 				}
 
 				@Override
-				public void readNBT(Capability<IExplosive> capability, IExplosive instance, EnumFacing side, NBTBase nbt) {
+				public void readNBT(Capability<IExplosive> capability, IExplosive instance, Direction side, NBTBase nbt) {
 					if (instance instanceof CapabilityExplosive && nbt instanceof CompoundNBT) {
 						((CapabilityExplosive) instance).deserializeNBT((CompoundNBT) nbt);
 					}

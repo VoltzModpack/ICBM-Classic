@@ -7,7 +7,7 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.energy.storage.EnergyBuffer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -115,7 +115,7 @@ public class TilePoweredMachine extends TileMachine implements IEnergyBufferProv
 	}
 
 	@Override
-	public IEnergyBuffer getEnergyBuffer(EnumFacing side) {
+	public IEnergyBuffer getEnergyBuffer(Direction side) {
 		if (buffer == null) {
 			buffer = new PowerBuffer(this);
 		}
@@ -140,7 +140,7 @@ public class TilePoweredMachine extends TileMachine implements IEnergyBufferProv
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (capability == CapabilityEnergy.ENERGY && needsPower()) {
 			return (T) getEnergyBuffer(facing);
 		}
@@ -148,7 +148,7 @@ public class TilePoweredMachine extends TileMachine implements IEnergyBufferProv
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		if (capability == CapabilityEnergy.ENERGY) {
 			return needsPower();
 		}

@@ -9,7 +9,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.AfterAll;
@@ -44,13 +44,13 @@ public class TestItemGrenade {
 		player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
 
 		//Prevent normal set active logic as this will crash if run
-		doNothing().when(player).setActiveHand(EnumHand.MAIN_HAND);
+		doNothing().when(player).setActiveHand(Hand.MAIN_HAND);
 
 		//Trigger action
-		final ActionResult<ItemStack> result = itemGrenade.onItemRightClick(world, player, EnumHand.MAIN_HAND);
+		final ActionResult<ItemStack> result = itemGrenade.onItemRightClick(world, player, Hand.MAIN_HAND);
 
 		//Main hand should be set
-		verify(player, times(1)).setActiveHand(EnumHand.MAIN_HAND);
+		verify(player, times(1)).setActiveHand(Hand.MAIN_HAND);
 
 		//Check result
 		Assertions.assertEquals(itemGrenade, result.getResult().getItem());
@@ -68,7 +68,7 @@ public class TestItemGrenade {
 
 		//Check that we spawned the entity
 		final ArgumentCaptor<Entity> entityArgumentCaptor = ArgumentCaptor.forClass(Entity.class);
-		verify(world, times(1)).spawnEntity(entityArgumentCaptor.capture());
+		verify(world, times(1)).addEntity(entityArgumentCaptor.capture());
 
 		//Validate we spawned entity with the right settings
 		Entity entity = entityArgumentCaptor.getValue();
@@ -77,7 +77,7 @@ public class TestItemGrenade {
 		Assertions.assertEquals(stack.getItem(), ((EntityGrenade) entity).explosive.toStack().getItem());
 
 		//Check that we played a sound
-		verify(world, times(1)).playSound(Mockito.isNull(), eq(player.posX), eq(player.posY), eq(player.posZ), eq(SoundEvents.ENTITY_TNT_PRIMED), eq(SoundCategory.BLOCKS), Mockito.anyFloat(), Mockito.anyFloat());
+		verify(world, times(1)).playSound(Mockito.isNull(), eq(player.posX), eq(player.posY), eq(player.getPosZ()), eq(SoundEvents.ENTITY_TNT_PRIMED), eq(SoundCategory.BLOCKS), Mockito.anyFloat(), Mockito.anyFloat());
 
 		//Check that we called shrink
 		Assertions.assertEquals(1, stack.getCount());

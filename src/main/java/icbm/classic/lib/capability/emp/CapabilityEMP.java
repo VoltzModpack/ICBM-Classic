@@ -6,14 +6,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
 public class CapabilityEMP {
@@ -27,12 +27,12 @@ public class CapabilityEMP {
 	public static void register() {
 		CapabilityManager.INSTANCE.register(IEMPReceiver.class, new Capability.IStorage<IEMPReceiver>() {
 				@Override
-				public NBTBase writeNBT(Capability<IEMPReceiver> capability, IEMPReceiver instance, EnumFacing side) {
+				public NBTBase writeNBT(Capability<IEMPReceiver> capability, IEMPReceiver instance, Direction side) {
 					return null;
 				}
 
 				@Override
-				public void readNBT(Capability<IEMPReceiver> capability, IEMPReceiver instance, EnumFacing side, NBTBase nbt) {
+				public void readNBT(Capability<IEMPReceiver> capability, IEMPReceiver instance, Direction side, NBTBase nbt) {
 
 				}
 			},

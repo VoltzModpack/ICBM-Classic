@@ -24,7 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -109,9 +109,9 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 			final boolean shouldBeOn = checkExtract() && detectedEntities.size() > 0;
 			if (world.getBlockState(getPos()).getValue(BlockRadarStation.REDSTONE_PROPERTY) != shouldBeOn) {
 				world.setBlockState(getPos(), getBlockState().withProperty(BlockRadarStation.REDSTONE_PROPERTY, shouldBeOn));
-				for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+				for (Direction facing : Direction.HORIZONTALS) {
 					BlockPos pos = getPos().add(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
-					for (EnumFacing enumfacing : EnumFacing.values()) {
+					for (Direction enumfacing : Direction.values()) {
 						world.notifyNeighborsOfStateChange(pos.offset(enumfacing), getBlockType(), false);
 					}
 				}
@@ -124,7 +124,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 					for (int i = 0; i < detectedEntities.size(); i++) {
 						Entity entity = detectedEntities.get(i);
 						if (entity != null) {
-							guiDrawPoints.add(new Pos(entity.posX, entity.posZ, types[i].ordinal()));
+							guiDrawPoints.add(new Pos(entity.getPosX(), entity.getPosZ(), types[i].ordinal()));
 						}
 					}
 				}
@@ -296,7 +296,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 		return true;
 	}
 
-	public int getStrongRedstonePower(EnumFacing side) {
+	public int getStrongRedstonePower(Direction side) {
 		if (incomingMissiles.size() > 0) {
 			if (this.emitAll) {
 				return Math.min(15, 5 + incomingMissiles.size());
@@ -304,10 +304,10 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 
 			for (IMissile incomingMissile : this.incomingMissiles) {
 				Point position = new Point(incomingMissile.x(), incomingMissile.y());
-				EnumFacing missileTravelDirection = EnumFacing.DOWN;
+				Direction missileTravelDirection = Direction.DOWN;
 				double closest = -1;
 
-				for (EnumFacing rotation : EnumFacing.HORIZONTALS) {
+				for (Direction rotation : Direction.HORIZONTALS) {
 					double dist = position.distance(new Point(this.getPos().getX() + rotation.getXOffset(), this.getPos().getZ() + rotation.getZOffset()));
 
 					if (dist < closest || closest < 0) {

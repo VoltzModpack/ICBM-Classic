@@ -26,12 +26,12 @@ public class CommandEntryPoint extends CommandBase {
 	}
 
 	@Override
-	public String getUsage(ICommandSender sender) {
+	public String getUsage(CommandSource sender) {
 		return "/" + id;
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+	public void execute(MinecraftServer server, CommandSource sender, String[] args) throws CommandException {
 		commandGroup.handleCommand(server, sender, args);
 	}
 
@@ -41,7 +41,7 @@ public class CommandEntryPoint extends CommandBase {
 	}
 
 	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+	public List<String> getTabCompletions(MinecraftServer server, CommandSource sender, String[] args, @Nullable BlockPos targetPos) {
 		return commandGroup.getTabSuggestions(server, sender, args, targetPos);
 	}
 

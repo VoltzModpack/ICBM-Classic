@@ -6,7 +6,7 @@ import icbm.classic.command.system.SubCommand;
 import icbm.classic.content.entity.EntityExplosive;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
@@ -44,13 +44,13 @@ public class CommandRemove extends SubCommand {
 	}
 
 	@Override
-	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		if (args.length <= 0 || !doCommand(sender, args)) {
 			throw new WrongUsageException(ICBMCommands.TRANSLATION_UNKNOWN_COMMAND, getUsage(sender));
 		}
 	}
 
-	private boolean doCommand(@Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	private boolean doCommand(@Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		//Get type
 		final Predicate<Entity> entitySelector = buildSelector(args[0]);
 
@@ -128,7 +128,7 @@ public class CommandRemove extends SubCommand {
 	}
 
 	@Override
-	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
+	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
 		return args.length == 1 ? CommandBase.getListOfStringsMatchingLastWord(args, "all", "missile", "explosion") : new ArrayList<>();
 	}
 

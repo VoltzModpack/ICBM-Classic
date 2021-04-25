@@ -17,7 +17,7 @@ import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -92,7 +92,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 										entityMissile.explosiveID = explosiveID;
 										entityMissile.acceleration = 1;
 										entityMissile.capabilityMissile.launchNoTarget();
-										world.spawnEntity(entityMissile);
+										world.addEntity(entityMissile);
 
 										if (player.isSneaking()) {
 											player.startRiding(entityMissile);
@@ -119,7 +119,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand handIn) {
 		ItemStack itemstack = player.getHeldItem(handIn);
 
 		long clickMs = System.currentTimeMillis();

@@ -1,6 +1,7 @@
 package icbm.classic.lib;
 
 import icbm.classic.ICBMClassic;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;

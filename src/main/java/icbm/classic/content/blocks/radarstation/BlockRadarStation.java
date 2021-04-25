@@ -9,12 +9,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -36,7 +36,7 @@ public class BlockRadarStation extends BlockICBM {
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side) {
 		return true;
 	}
 
@@ -46,12 +46,12 @@ public class BlockRadarStation extends BlockICBM {
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 		return getStrongPower(blockState, blockAccess, pos, side);
 	}
 
 	@Override
-	public int getStrongPower(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 		TileEntity tile = blockAccess.getTileEntity(pos);
 		if (tile instanceof TileRadarStation) {
 			return ((TileRadarStation) tile).getStrongRedstonePower(side);
@@ -60,7 +60,7 @@ public class BlockRadarStation extends BlockICBM {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			//if (WrenchUtility.isUsableWrench(player, player.getHeldItem(hand), pos.getX(), pos.getY(), pos.getZ()))
 			if (player.getHeldItem(hand).getItem() == Items.REDSTONE) {

@@ -5,7 +5,7 @@ import icbm.classic.command.sub.CommandHelp;
 import icbm.classic.lib.MapWithDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
@@ -43,13 +43,13 @@ public class CommandGroup extends SubCommand implements ICommandGroup {
 	}
 
 	@Override
-	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+	public void handleCommand(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args) throws CommandException {
 		final String subCommand = args.length == 0 ? "help" : args[0].toLowerCase();
 		subCommandMap.get(subCommand).handleCommand(server, sender, CommandUtils.removeFront(args));
 	}
 
 	@Override
-	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
+	public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
 		if (args.length == 1) {
 			return CommandBase.getListOfStringsMatchingLastWord(args, subCommandMap.keySet());
 		} else if (args.length >= 2) {

@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -107,12 +107,12 @@ public class CapabilityMissileLauncher extends CapabilityPrefab implements IMiss
 		CapabilityManager.INSTANCE.register(IMissileLauncher.class, new Capability.IStorage<IMissileLauncher>() {
 				@Nullable
 				@Override
-				public NBTBase writeNBT(Capability<IMissileLauncher> capability, IMissileLauncher instance, EnumFacing side) {
+				public NBTBase writeNBT(Capability<IMissileLauncher> capability, IMissileLauncher instance, Direction side) {
 					return null;
 				}
 
 				@Override
-				public void readNBT(Capability<IMissileLauncher> capability, IMissileLauncher instance, EnumFacing side, NBTBase nbt) {
+				public void readNBT(Capability<IMissileLauncher> capability, IMissileLauncher instance, Direction side, NBTBase nbt) {
 
 				}
 			},

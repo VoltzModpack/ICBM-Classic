@@ -23,8 +23,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -63,7 +63,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
 		if (player.isSneaking()) // also clear the gps coord if the play is shift-rightclicking in the air
 		{
 			if (!world.isRemote) {
@@ -89,7 +89,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	}
 
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (world.isRemote) {
 			return EnumActionResult.SUCCESS;

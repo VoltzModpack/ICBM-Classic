@@ -13,12 +13,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -30,13 +30,13 @@ public class BlockLauncherBase extends BlockICBM {
 
 	public BlockLauncherBase() {
 		super("launcherbase", Material.IRON);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION_PROP, EnumFacing.NORTH).withProperty(TIER_PROP, EnumTier.ONE));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION_PROP, Direction.NORTH).withProperty(TIER_PROP, EnumTier.ONE));
 		this.blockHardness = 10f;
 		this.blockResistance = 10f;
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileLauncherBase) {
 			return ((TileLauncherBase) tile).onPlayerRightClick(playerIn, hand, playerIn.getHeldItem(hand));
@@ -52,7 +52,7 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side) {
 		return super.canPlaceBlockOnSide(worldIn, pos, side);
 	}
 
@@ -67,7 +67,7 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand) {
 		BlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
 		ItemStack stack = placer.getHeldItem(hand);
 
@@ -78,7 +78,7 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		EnumTier tier = EnumTier.ONE;
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileLauncherBase) {

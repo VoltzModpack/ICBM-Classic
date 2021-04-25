@@ -1,6 +1,6 @@
 package icbm.classic.api.energy;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
  * Applied to tiles that provide access to an energy buffer for a side. This should be the only interface needed to
@@ -21,6 +21,6 @@ public interface IEnergyBufferProvider {
 	 * @param side - side, null should be treated as unknown
 	 * @return energy buffer or null if none provider
 	 */
-	IEnergyBuffer getEnergyBuffer(EnumFacing side);
+	IEnergyBuffer getEnergyBuffer(Direction side);
 
 }

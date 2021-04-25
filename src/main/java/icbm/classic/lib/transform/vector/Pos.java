@@ -7,10 +7,10 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
 
 /**
  * Basic implementation of Pos3D that contains helper methods for interacting with MC worlds Created by robert on
@@ -19,12 +19,12 @@ import net.minecraft.util.math.Vec3i;
 public class Pos extends AbstractPos<Pos> implements IPos3D {
 
 	public static final Pos zero = new Pos();
-	public static final Pos up = new Pos(EnumFacing.UP);
-	public static final Pos down = new Pos(EnumFacing.DOWN);
-	public static final Pos north = new Pos(EnumFacing.NORTH);
-	public static final Pos south = new Pos(EnumFacing.SOUTH);
-	public static final Pos east = new Pos(EnumFacing.EAST);
-	public static final Pos west = new Pos(EnumFacing.WEST);
+	public static final Pos up = new Pos(Direction.UP);
+	public static final Pos down = new Pos(Direction.DOWN);
+	public static final Pos north = new Pos(Direction.NORTH);
+	public static final Pos south = new Pos(Direction.SOUTH);
+	public static final Pos east = new Pos(Direction.EAST);
+	public static final Pos west = new Pos(Direction.WEST);
 
 	public Pos() {
 		this(0, 0, 0);
@@ -47,7 +47,7 @@ public class Pos extends AbstractPos<Pos> implements IPos3D {
 	}
 
 	public Pos(Entity entity) {
-		this(entity.posX, entity.posY, entity.posZ);
+		this(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 	}
 
 	public Pos(IPos3D vec) {
@@ -70,7 +70,7 @@ public class Pos extends AbstractPos<Pos> implements IPos3D {
 		this(par1.getX(), par1.getY(), par1.getZ());
 	}
 
-	public Pos(EnumFacing dir) {
+	public Pos(Direction dir) {
 		this(dir.getDirectionVec());
 	}
 
@@ -78,7 +78,7 @@ public class Pos extends AbstractPos<Pos> implements IPos3D {
 		this(vec.x, vec.y, vec.z);
 	}
 
-	public Pos(Vec3i vec) {
+	public Pos(Vector3i vec) {
 		this(vec.getX(), vec.getY(), vec.getZ());
 	}
 

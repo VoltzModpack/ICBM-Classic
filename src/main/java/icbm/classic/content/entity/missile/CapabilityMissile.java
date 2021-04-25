@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -30,7 +30,7 @@ public class CapabilityMissile implements IMissile {
 	public void dropMissileAsItem() {
 		ItemStack stack = toStack();
 		if (stack != null && !stack.isEmpty() && world() != null) {
-			world().spawnEntity(new ItemEntity(world(), x(), y(), z(), stack));
+			world().addEntity(new ItemEntity(world(), x(), y(), z(), stack));
 		}
 		missile.setDead();
 	}
@@ -94,12 +94,12 @@ public class CapabilityMissile implements IMissile {
 		CapabilityManager.INSTANCE.register(IMissile.class, new Capability.IStorage<IMissile>() {
 				@Nullable
 				@Override
-				public NBTBase writeNBT(Capability<IMissile> capability, IMissile instance, EnumFacing side) {
+				public NBTBase writeNBT(Capability<IMissile> capability, IMissile instance, Direction side) {
 					return null;
 				}
 
 				@Override
-				public void readNBT(Capability<IMissile> capability, IMissile instance, EnumFacing side, NBTBase nbt) {
+				public void readNBT(Capability<IMissile> capability, IMissile instance, Direction side, NBTBase nbt) {
 
 				}
 			},

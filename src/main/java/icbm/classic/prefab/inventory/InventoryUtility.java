@@ -84,7 +84,7 @@ public class InventoryUtility {
 			}
 
 			entityitem.setPickupDelay(delay);
-			world.spawnEntity(entityitem);
+			world.addEntity(entityitem);
 			return entityitem;
 		}
 		return null;

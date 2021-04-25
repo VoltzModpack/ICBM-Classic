@@ -6,7 +6,7 @@ import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 
 public class GrenadeDispenseBehavior implements IBehaviorDispenseItem {
@@ -16,7 +16,7 @@ public class GrenadeDispenseBehavior implements IBehaviorDispenseItem {
 		if (itemStack.getCount() > 0) {
 			final World world = blockSource.getWorld();
 			if (!world.isRemote) {
-				world.spawnEntity(create(world, blockSource, itemStack));
+				world.addEntity(create(world, blockSource, itemStack));
 			}
 
 			return itemStack.splitStack(itemStack.getCount() - 1);
@@ -25,7 +25,7 @@ public class GrenadeDispenseBehavior implements IBehaviorDispenseItem {
 	}
 
 	private Entity create(World world, IBlockSource blockSource, ItemStack itemStack) {
-		final EnumFacing enumFacing = blockSource.getBlockState().getValue(BlockDispenser.FACING);
+		final Direction enumFacing = blockSource.getBlockState().getValue(BlockDispenser.FACING);
 
 		final EntityGrenade entity = new EntityGrenade(world);
 		entity.setPosition(blockSource.getX(), blockSource.getY(), blockSource.getZ());

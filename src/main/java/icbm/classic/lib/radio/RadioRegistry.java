@@ -6,7 +6,7 @@ import icbm.classic.api.tile.IRadioWaveSender;
 import icbm.classic.lib.transform.region.Cube;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 

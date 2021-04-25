@@ -155,7 +155,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3, var7) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch;
 			this.prevRotationYaw = this.rotationYaw;
-			this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+			this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 		if (iblockstate.getMaterial() != Material.AIR) {
 			AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, inTilePosition);
 
-			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(inTilePosition).contains(new Vector3d(this.posX, this.posY, this.posZ))) {
+			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(inTilePosition).contains(new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()))) {
 				this.inGround = true;
 			}
 		}
@@ -211,12 +211,12 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 			++this.ticksInAir;
 
 			//Check for block collision
-			Vector3d start = new Vector3d(this.posX, this.posY, this.posZ);
+			Vector3d start = new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 			Vector3d end = new Vector3d(this.posX + this.motionX * 2, this.posY + this.motionY * 2, this.posZ + this.motionZ * 2);
 			RayTraceResult raytraceresult = this.world.rayTraceBlocks(start, end, false, true, false);
 
 			//Reset start end
-			start = new Vector3d(this.posX, this.posY, this.posZ);
+			start = new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 			end = new Vector3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			//IF hit, change end to last block hit
@@ -302,7 +302,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 				}
 			}
 
-			this.setPosition(this.posX, this.posY, this.posZ);
+			this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 			this.doBlockCollisions();
 		}
 	}
@@ -370,7 +370,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 			this.inTile = this.world.getBlockState(inTilePosition);
 			this.motionX = (double) ((float) (raytraceResultIn.hitVec.x - this.posX));
 			this.motionY = (double) ((float) (raytraceResultIn.hitVec.y - this.posY));
-			this.motionZ = (double) ((float) (raytraceResultIn.hitVec.z - this.posZ));
+			this.motionZ = (double) ((float) (raytraceResultIn.hitVec.z - this.getPosZ()));
 			float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 			this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
 			this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
@@ -405,7 +405,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 	protected void playImpactAudio() {
 		if (this.world.rand.nextFloat() > 0.5f) {
 			if (this.isAnvil) {
-				this.world.playSound(this.posX, (int) this.posY, (int) this.posZ, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 1, 1, true);
+				this.world.playSound(this.getPosX(), (int) this.getPosY(), (int) this.getPosZ(), SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 1, 1, true);
 			} else {
 				this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 			}

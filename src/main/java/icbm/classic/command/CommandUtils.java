@@ -6,7 +6,7 @@ import icbm.classic.content.entity.EntityFlyingBlock;
 import icbm.classic.content.entity.EntityFragments;
 import icbm.classic.content.entity.EntityGrenade;
 import icbm.classic.content.entity.missile.EntityMissile;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
@@ -112,7 +112,7 @@ public class CommandUtils {
 	 * @return numeric value
 	 * @throws WrongUsageException - if ~ is used from the server console
 	 */
-	public static double getNumber(ICommandSender sender, String value, double alt) throws WrongUsageException {
+	public static double getNumber(CommandSource sender, String value, double alt) throws WrongUsageException {
 		if (value.equals("~")) {
 			if (!(sender instanceof MinecraftServer)) {
 				return alt;
@@ -137,7 +137,7 @@ public class CommandUtils {
 	 * @return world if found
 	 * @throws WrongUsageException - if input is invalid or world was not found
 	 */
-	public static World getWorld(ICommandSender sender, String value, World alt) throws WrongUsageException {
+	public static World getWorld(CommandSource sender, String value, World alt) throws WrongUsageException {
 		if (value.equals("~")) {
 			if (!(sender instanceof MinecraftServer)) {
 				return alt;

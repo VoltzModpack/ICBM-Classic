@@ -7,14 +7,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -39,7 +39,7 @@ public class RenderFragments extends Render<EntityFragments> {
 		if (entity.isAnvil) {
 			final BlockState blockState = Blocks.ANVIL.getDefaultState()
 				                               .withProperty(BlockAnvil.DAMAGE, entity.world.rand.nextInt(2))
-				                               .withProperty(BlockAnvil.FACING, EnumFacing.Plane.HORIZONTAL.facings()[entity.world.rand.nextInt(3)]);
+				                               .withProperty(BlockAnvil.FACING, Direction.Plane.HORIZONTAL.facings()[entity.world.rand.nextInt(3)]);
 			//TODO store rotation and damage in entity to reduce random nature
 
 			final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();

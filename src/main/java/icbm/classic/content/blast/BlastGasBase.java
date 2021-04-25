@@ -13,7 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -190,7 +190,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 			}
 
 			//Check that the entity is in range
-			return affectedBlocks.contains(checkPos.setPos(entity.posX, entity.posY, entity.posZ));
+			return affectedBlocks.contains(checkPos.setPos(entity.getPosX(), entity.getPosY(), entity.getPosZ()));
 		}
 		return false;
 	}
@@ -238,7 +238,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 			final BlockPos edge = edgeBlocks.poll();
 
 			//Loop all 6 sides of the edge
-			for (EnumFacing facing : EnumFacing.values()) {
+			for (Direction facing : Direction.values()) {
 				//Move our check pos to current target
 				checkPos.setPos(edge);
 				checkPos.move(facing);

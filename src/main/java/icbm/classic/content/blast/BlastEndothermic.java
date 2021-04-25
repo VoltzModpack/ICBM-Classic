@@ -8,10 +8,10 @@ import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -90,7 +90,7 @@ public class BlastEndothermic extends BlastBeam {
 			final BlockState blockStateUnder = world.getBlockState(pos.down());
 			if (blockState.getBlock().isReplaceable(world, pos)
 				    && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)
-				    && blockStateUnder.isSideSolid(world, pos.down(), EnumFacing.UP)) {
+				    && blockStateUnder.isSideSolid(world, pos.down(), Direction.UP)) {
 				world.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState()
 					                         .withProperty(BlockSnow.LAYERS, 1 + world.rand.nextInt(7)), 3);
 

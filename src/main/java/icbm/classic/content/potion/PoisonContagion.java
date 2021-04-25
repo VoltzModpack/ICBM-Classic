@@ -43,7 +43,7 @@ public class PoisonContagion extends CustomPotion {
 				if (entity != null && entity != entityLiving) {
 					if (entity instanceof PigEntity) {
 						ZombifiedPiglinEntity newEntity = new ZombifiedPiglinEntity(entity.world);
-						newEntity.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
+						newEntity.setLocationAndAngles(entity.getPosX(), entity.getPosY(), entity.getPosZ(), entity.rotationYaw, entity.rotationPitch);
 
 						if (!entity.world.isRemote) {
 							entity.world.addEntity(newEntity);

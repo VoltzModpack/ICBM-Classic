@@ -49,13 +49,13 @@ public class BlastShrapnel extends Blast {
 					arrow.posX -= (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 					arrow.posY -= 0.10000000149011612D;
 					arrow.posZ -= (MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
-					arrow.setPosition(arrow.posX, arrow.posY, arrow.posZ);
+					arrow.setPosition(arrow.getPosX(), arrow.getPosY(), arrow.getPosZ());
 					//arrow.yOffset = 0.0F;
 					arrow.motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
 					arrow.motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
 					arrow.motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
 					arrow.setArrowHeading(arrow.motionX * world().rand.nextFloat(), arrow.motionY * world().rand.nextFloat(), arrow.motionZ * world().rand.nextFloat(), 0.5f + (0.7f * world().rand.nextFloat()), 1.0F);
-					world().spawnEntity(arrow);
+					world().addEntity(arrow);
 
 				}
 			}

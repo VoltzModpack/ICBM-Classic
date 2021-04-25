@@ -30,7 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -306,7 +306,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 			entityMissile.explosiveID = this.getInventory().getStackInSlot(0).getDamage(); //TODO encode entire itemstack
 			entityMissile.acceleration = 1;
 			entityMissile.capabilityMissile.launchNoTarget();
-			world.spawnEntity(entityMissile);
+			world.addEntity(entityMissile);
 
 			//TODO we are missing the item NBT, this will prevent encoding data before using the missile
 
@@ -359,7 +359,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	}
 
 	@Override
-	public boolean canStore(ItemStack itemStack, EnumFacing side) {
+	public boolean canStore(ItemStack itemStack, Direction side) {
 		if (itemStack != null && itemStack.getItem() instanceof ItemMissile && this.getInventory().getStackInSlot(0) == null) {
 			return ICBMClassicAPI.EX_MISSILE_REGISTRY.isEnabled(itemStack.getDamage());
 		}

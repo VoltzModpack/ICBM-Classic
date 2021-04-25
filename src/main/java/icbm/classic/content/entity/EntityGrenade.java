@@ -11,7 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -73,14 +73,14 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	 */
 	public EntityGrenade aimFromThrower() //TODO figure out which hand threw the grenade so we can spawn over shoulder
 	{
-		this.setLocationAndAngles(thrower.posX, thrower.posY + thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
+		this.setLocationAndAngles(thrower.getPosX(), thrower.posY + thrower.getEyeHeight(), thrower.getPosZ(), thrower.rotationYaw, thrower.rotationPitch);
 
 		//Set position
 		final float horizontalOffset = 0.16F;
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * horizontalOffset;
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * horizontalOffset;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 
 		return this;
 	}
@@ -91,7 +91,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	 * @return this
 	 */
 	public EntityGrenade spawn() {
-		world.spawnEntity(this);
+		world.addEntity(this);
 		return this;
 	}
 
@@ -240,7 +240,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 			this.motionY *= 0.5;
 		} else {
 			this.motionY -= gravity;
-			//this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+			//this.pushOutOfBlocks(this.getPosX(), (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.getPosZ());
 		}
 
 		tickFuse();
@@ -261,8 +261,8 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	 * Triggers the explosion of the grenade
 	 */
 	protected void triggerExplosion() {
-		this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-		ExplosiveHandler.createExplosion(this, this.world, this.posX, this.posY + 0.3f, this.posZ, explosive.getExplosiveData().getRegistryID(), 1, explosive.getCustomBlastData());
+		this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+		ExplosiveHandler.createExplosion(this, this.world, this.getPosX(), this.posY + 0.3f, this.getPosZ(), explosive.getExplosiveData().getRegistryID(), 1, explosive.getCustomBlastData());
 		this.setDead();
 	}
 
@@ -294,13 +294,13 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
 			return ICBMClassicAPI.EXPLOSIVE_CAPABILITY.cast(explosive);
 		}

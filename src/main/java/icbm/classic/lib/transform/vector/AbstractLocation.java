@@ -62,7 +62,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
 	 * @param entity - entity in the world, should be valid
 	 */
 	public AbstractLocation(Entity entity) {
-		this(entity.world, entity.posX, entity.posY, entity.posZ);
+		this(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ());
 	}
 
 	/**

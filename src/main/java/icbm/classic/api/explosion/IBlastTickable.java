@@ -20,7 +20,7 @@ public interface IBlastTickable extends IBlast {
 	 *
 	 * @return
 	 */
-	default boolean spawnEntity() {
+	default boolean addEntity() {
 		//TODO consider making a method to create the ticking entity (or system) so we can have a different version per explosive
 		return true;
 	}

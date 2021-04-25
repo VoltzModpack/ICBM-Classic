@@ -125,7 +125,7 @@ public class BlastEMP extends Blast {
 							IEMPReceiver receiver = entity.getCapability(CapabilityEMP.EMP, null);
 							if (receiver != null) {
 								powerEntity = empEntity(entity, powerEntity, receiver);
-								doInventory = receiver.shouldEmpSubObjects(world, entity.posX, entity.posY, entity.posZ);
+								doInventory = receiver.shouldEmpSubObjects(world, entity.getPosX(), entity.getPosY(), entity.getPosZ());
 							}
 						} else if (ConfigEMP.DRAIN_ENERGY_ENTITY) {
 							IEnergySystem energySystem = EnergySystem.getSystem(entity, null);
@@ -156,7 +156,7 @@ public class BlastEMP extends Blast {
 
 	protected float empEntity(Entity entity, float powerEntity, IEMPReceiver receiver) {
 		if (receiver != null) {
-			powerEntity = receiver.applyEmpAction(world, entity.posX, entity.posY, entity.posZ, this, powerEntity, true);
+			powerEntity = receiver.applyEmpAction(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), this, powerEntity, true);
 			//TODO spawn effects on entity if items were effected
 			//TODO ICBMClassic.proxy.spawnShock(this.oldWorld(), this.position, new Pos(entity), 20);
 		}

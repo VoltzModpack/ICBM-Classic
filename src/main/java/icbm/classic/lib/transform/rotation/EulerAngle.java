@@ -8,7 +8,7 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
  * This object is not immutable like other vector objects. It is designed to take the player of storing 3 separate
@@ -67,11 +67,11 @@ public class EulerAngle implements Cloneable, ITransform, IByteBufWriter, IByteB
 	}
 
 	/**
-	 * Creates a new EulerAngle from a {@link EnumFacing}
+	 * Creates a new EulerAngle from a {@link Direction}
 	 *
 	 * @param direction - direction
 	 */
-	public EulerAngle(EnumFacing direction) {
+	public EulerAngle(Direction direction) {
 		switch (direction) {
 			case DOWN:
 				pitch = -90;

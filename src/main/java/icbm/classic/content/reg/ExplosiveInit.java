@@ -21,8 +21,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -196,7 +196,7 @@ public class ExplosiveInit {
 		return ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation(ICBMConstants.DOMAIN, name), tier, factory);
 	}
 
-	private static boolean enderMissileCoordSet(Entity entity, PlayerEntity player, EnumHand hand) {
+	private static boolean enderMissileCoordSet(Entity entity, PlayerEntity player, Hand hand) {
 		if (entity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null)) {
 			final IExplosive provider = entity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
 			final CompoundNBT tag = provider.getCustomBlastData();
@@ -220,7 +220,7 @@ public class ExplosiveInit {
 		return false;
 	}
 
-	private static boolean enderBlockCoordSet(World world, BlockPos pos, PlayerEntity entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	private static boolean enderBlockCoordSet(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		final ItemStack heldItem = entityPlayer.getHeldItem(hand);
 		if (heldItem.getItem() instanceof IWorldPosItem) {
 			final IWorldPosItem posItem = ((IWorldPosItem) heldItem.getItem());

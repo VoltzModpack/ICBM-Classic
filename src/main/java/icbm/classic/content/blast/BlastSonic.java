@@ -112,7 +112,7 @@ public class BlastSonic extends Blast implements IBlastTickable {
 								//Create floating block
 								if (!(block instanceof BlockFluidBase || block instanceof IFluidBlock)
 									    && this.world().rand.nextFloat() < 0.1) {
-									this.world().spawnEntity(new EntityFlyingBlock(this.world(), targetPosition, blockState));
+									this.world().addEntity(new EntityFlyingBlock(this.world(), targetPosition, blockState));
 								}
 							}
 						}

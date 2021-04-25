@@ -9,7 +9,7 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.mods.ic2.IC2Proxy;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -106,7 +106,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable Direction facing) {
 		if (getHost() instanceof TileEntity) {
 			return ((TileEntity) getHost()).hasCapability(capability, facing);
 		}
@@ -115,7 +115,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 
 	@Override
 	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (getHost() instanceof TileEntity) {
 			return ((TileEntity) getHost()).getCapability(capability, facing);
 		}
@@ -148,7 +148,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 
 	@Override
 	@Optional.Method(modid = "ic2")
-	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
+	public double injectEnergy(Direction directionFrom, double amount, double voltage) {
 		if (!ConfigIC2.DISABLED && hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage energyStorage = getCapability(CapabilityEnergy.ENERGY, null);
 			if (energyStorage != null) {
@@ -162,7 +162,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 
 	@Override
 	@Optional.Method(modid = "ic2")
-	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side) {
+	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side) {
 		return !ConfigIC2.DISABLED && hasCapability(CapabilityEnergy.ENERGY, side);
 	}
 
