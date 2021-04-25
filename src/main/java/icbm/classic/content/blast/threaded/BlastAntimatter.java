@@ -9,7 +9,7 @@ import icbm.classic.content.entity.EntityExplosion;
 import icbm.classic.lib.transform.BlockEditHandler;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class BlastAntimatter extends BlastThreaded {
 
-	private final IBlockState replaceState = Blocks.AIR.getDefaultState();
+	private final BlockState replaceState = Blocks.AIR.getDefaultState();
 
 	@Override
 	public boolean setupBlast() {
@@ -33,7 +33,7 @@ public class BlastAntimatter extends BlastThreaded {
 
 	@Override
 	public void destroyBlock(BlockPos blockPos) {
-		final IBlockState blockState = world.getBlockState(blockPos);
+		final BlockState blockState = world.getBlockState(blockPos);
 		if (!blockState.getBlock().isAir(blockState, world, blockPos)) {
 			if (blockState.getBlockHardness(world, blockPos) >= 0 || ConfigBlast.ANTIMATTER_DESTROY_UNBREAKABLE_BLOCKS) {
 				world.setBlockState(blockPos, replaceState, ConfigBlast.BLAST_DO_BLOCKUPDATES ? 3 : 2);
@@ -83,7 +83,7 @@ public class BlastAntimatter extends BlastThreaded {
 	}
 
 	protected boolean isFluid(BlockPos blockPos) {
-		IBlockState state = world.getBlockState(blockPos);
+		BlockState state = world.getBlockState(blockPos);
 		return state.getMaterial() == Material.WATER || state.getBlock() instanceof BlockFalling;
 	}
 

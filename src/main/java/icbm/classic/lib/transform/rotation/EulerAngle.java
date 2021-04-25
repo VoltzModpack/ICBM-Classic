@@ -7,7 +7,7 @@ import com.builtbroken.jlib.data.vector.ITransform;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 
 /**
@@ -53,7 +53,7 @@ public class EulerAngle implements Cloneable, ITransform, IByteBufWriter, IByteB
 	 *
 	 * @param tag - save
 	 */
-	public EulerAngle(NBTTagCompound tag) {
+	public EulerAngle(CompoundNBT tag) {
 		readFromNBT(tag);
 	}
 
@@ -466,18 +466,18 @@ public class EulerAngle implements Cloneable, ITransform, IByteBufWriter, IByteB
 		return this;
 	}
 
-	public NBTTagCompound writeNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeNBT(CompoundNBT nbt) {
 		nbt.setDouble(NBTConstants.YAW, yaw);
 		nbt.setDouble(NBTConstants.PITCH, pitch);
 		nbt.setDouble(NBTConstants.ROLL, roll);
 		return nbt;
 	}
 
-	public NBTTagCompound toNBT() {
-		return writeNBT(new NBTTagCompound());
+	public CompoundNBT toNBT() {
+		return writeNBT(new CompoundNBT());
 	}
 
-	public EulerAngle readFromNBT(NBTTagCompound nbt) {
+	public EulerAngle readFromNBT(CompoundNBT nbt) {
 		yaw = nbt.getDouble(NBTConstants.YAW);
 		pitch = nbt.getDouble(NBTConstants.PITCH);
 		roll = nbt.getDouble(NBTConstants.ROLL);

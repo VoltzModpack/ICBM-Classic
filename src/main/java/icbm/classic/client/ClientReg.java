@@ -27,7 +27,7 @@ import icbm.classic.content.entity.EntityFlyingBlock;
 import icbm.classic.content.entity.EntityFragments;
 import icbm.classic.content.entity.EntityGrenade;
 import icbm.classic.content.entity.EntityLightBeam;
-import icbm.classic.content.entity.EntityPlayerSeat;
+import icbm.classic.content.entity.PlayerEntitySeat;
 import icbm.classic.content.entity.missile.EntityMissile;
 import icbm.classic.content.entity.mobs.EntityXmasCreeper;
 import icbm.classic.content.entity.mobs.EntityXmasSkeleton;
@@ -41,7 +41,7 @@ import icbm.classic.content.reg.ItemReg;
 import icbm.classic.prefab.tile.BlockICBM;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
@@ -162,7 +162,7 @@ public class ClientReg {
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderGrenade(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityLightBeam.class, manager -> new RenderLightBeam(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityFragments.class, manager -> new RenderFragments(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityPlayerSeat.class, manager -> new RenderSeat(manager));
+		RenderingRegistry.registerEntityRenderingHandler(PlayerEntitySeat.class, manager -> new RenderSeat(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityMissile.class, manager -> RenderMissile.INSTANCE = new RenderMissile(manager));
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityXmasSkeleton.class, manager -> new RenderSkeletonXmas(manager));
@@ -201,7 +201,7 @@ public class ClientReg {
 			blockModelMap.put(data, facingModelMap);
 
 			//Add item state
-			//IBlockState state = BlockReg.blockExplosive.getDefaultState().withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
+			//BlockState state = BlockReg.blockExplosive.getDefaultState().withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
 			// String properties_string = getPropertyString(state.getProperties());
 			itemBlockModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
 		}
@@ -221,12 +221,12 @@ public class ClientReg {
 
 		ModelLoader.setCustomStateMapper(block, new DefaultStateMapper() {
 			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+			protected ModelResourceLocation getModelResourceLocation(BlockState state) {
 				return new ModelResourceLocation(resourcePath, getPropertyString(state.getProperties()));
 			}
 		});
 		for (EnumTier tier : new EnumTier[] {EnumTier.ONE, EnumTier.TWO, EnumTier.THREE}) {
-			IBlockState state = block.getDefaultState().withProperty(BlockICBM.TIER_PROP, tier).withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
+			BlockState state = block.getDefaultState().withProperty(BlockICBM.TIER_PROP, tier).withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
 			String properties_string = getPropertyString(state.getProperties());
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), tier.ordinal(), new ModelResourceLocation(resourcePath, properties_string));
 		}

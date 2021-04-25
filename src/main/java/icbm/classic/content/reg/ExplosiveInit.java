@@ -17,9 +17,9 @@ import icbm.classic.content.blast.threaded.BlastNuclear;
 import icbm.classic.lib.explosive.reg.ExplosiveRegistry;
 import icbm.classic.lib.transform.vector.Location;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -196,10 +196,10 @@ public class ExplosiveInit {
 		return ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation(ICBMConstants.DOMAIN, name), tier, factory);
 	}
 
-	private static boolean enderMissileCoordSet(Entity entity, EntityPlayer player, EnumHand hand) {
+	private static boolean enderMissileCoordSet(Entity entity, PlayerEntity player, EnumHand hand) {
 		if (entity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null)) {
 			final IExplosive provider = entity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
-			final NBTTagCompound tag = provider.getCustomBlastData();
+			final CompoundNBT tag = provider.getCustomBlastData();
 			if (tag != null) {
 				final ItemStack heldItem = player.getHeldItem(hand);
 				if (heldItem.getItem() instanceof IWorldPosItem) {
@@ -220,7 +220,7 @@ public class ExplosiveInit {
 		return false;
 	}
 
-	private static boolean enderBlockCoordSet(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	private static boolean enderBlockCoordSet(World world, BlockPos pos, PlayerEntity entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		final ItemStack heldItem = entityPlayer.getHeldItem(hand);
 		if (heldItem.getItem() instanceof IWorldPosItem) {
 			final IWorldPosItem posItem = ((IWorldPosItem) heldItem.getItem());
@@ -232,7 +232,7 @@ public class ExplosiveInit {
 				if (tileEntity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing)) {
 					IExplosive explosive = tileEntity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing);
 					if (explosive != null) {
-						NBTTagCompound tag = new NBTTagCompound();
+						CompoundNBT tag = new CompoundNBT();
 						((Location) link).writeIntNBT(tag);
 						explosive.getCustomBlastData().setTag("", tag);
 

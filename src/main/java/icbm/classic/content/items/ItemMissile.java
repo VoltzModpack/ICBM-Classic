@@ -9,10 +9,10 @@ import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import icbm.classic.prefab.item.ItemICBMBase;
 import icbm.classic.prefab.item.ItemStackCapProvider;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nullable;
@@ -29,7 +29,7 @@ public class ItemMissile extends ItemICBMBase {
 
 	@Override
 	@Nullable
-	public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+	public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		ItemStackCapProvider provider = new ItemStackCapProvider(stack);
 		//provider.add("missile", ICBMClassicAPI.MISSILE_CAPABILITY, new CapabilityMissile()); //TODO create an itemstack version
 		provider.add(NBTConstants.EXPLOSIVE, ICBMClassicAPI.EXPLOSIVE_CAPABILITY, new CapabilityExplosiveStack(stack));
@@ -43,7 +43,7 @@ public class ItemMissile extends ItemICBMBase {
 
 	@Override
 	public String getTranslationKey(ItemStack itemstack) {
-		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getItemDamage());
+		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getDamage());
 		if (data != null) {
 			return "missile." + data.getRegistryName();
 		}
@@ -65,12 +65,12 @@ public class ItemMissile extends ItemICBMBase {
 	}
 
 	@Override
-	protected boolean hasDetailedInfo(ItemStack stack, EntityPlayer player) {
+	protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List list) {
+	protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List list) {
 		//TODO add hook
 		((ItemBlockExplosive) Item.getItemFromBlock(BlockReg.blockExplosive)).getDetailedInfo(stack, player, list);
 	}

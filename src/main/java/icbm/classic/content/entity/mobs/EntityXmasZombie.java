@@ -2,7 +2,7 @@ package icbm.classic.content.entity.mobs;
 
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 /**
@@ -33,7 +33,7 @@ public class EntityXmasZombie extends EntityXmasMob {
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, PlayerEntity.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityXmasSkeleton.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityXmasSnowman.class, true));

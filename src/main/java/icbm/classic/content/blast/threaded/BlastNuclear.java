@@ -9,8 +9,8 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Location;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -101,7 +101,7 @@ public class BlastNuclear extends BlastThreaded {
 							continue;
 
 						//Get block state and block from position
-						final IBlockState state = world.getBlockState(blockPos);
+						final BlockState state = world.getBlockState(blockPos);
 						final Block block = state.getBlock();
 
 						//Ignore air blocks && Only break block that can be broken
@@ -129,7 +129,7 @@ public class BlastNuclear extends BlastThreaded {
 		return false;
 	}
 
-	public float getResistance(BlockPos pos, IBlockState state) {
+	public float getResistance(BlockPos pos, BlockState state) {
 		final Block block = state.getBlock();
 		if (state.getMaterial().isLiquid()) {
 			return 0.25f;
@@ -248,13 +248,13 @@ public class BlastNuclear extends BlastThreaded {
 	}
 
 	@Override
-	public void load(NBTTagCompound nbt) {
+	public void load(CompoundNBT nbt) {
 		super.load(nbt);
 		this.spawnMoreParticles = nbt.getBoolean(NBTConstants.SPAWN_MORE_PARTICLES);
 	}
 
 	@Override
-	public void save(NBTTagCompound nbt) {
+	public void save(CompoundNBT nbt) {
 		super.save(nbt);
 		nbt.setBoolean(NBTConstants.SPAWN_MORE_PARTICLES, this.spawnMoreParticles);
 	}

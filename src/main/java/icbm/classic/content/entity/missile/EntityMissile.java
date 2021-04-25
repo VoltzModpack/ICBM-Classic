@@ -21,10 +21,10 @@ import icbm.classic.lib.transform.vector.Pos;
 import icbm.classic.prefab.entity.EntityProjectile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerEntityMP;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -96,7 +96,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	// Used for the rocket launcher preventing the players from killing themselves.
 	private final HashSet<Entity> ignoreEntity = new HashSet<Entity>();
 
-	public NBTTagCompound blastData = new NBTTagCompound();
+	public CompoundNBT blastData = new CompoundNBT();
 
 	public IEMPReceiver capabilityEMP;
 	public final IMissile capabilityMissile = new CapabilityMissile(this);
@@ -122,7 +122,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 		this.ignoreFrustumCheck = true;
 	}
 
-	public EntityMissile(EntityLivingBase entity) {
+	public EntityMissile(LivingEntity entity) {
 		super(entity.world, entity, MISSILE_SPEED);
 		this.setSize(.5F, .5F);
 		this.launcherPos = new Pos(entity);
@@ -385,7 +385,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 		//TODO predict position, if traveling into unloaded chunk simulate
 
 		if (launcherPos != null) {
-			if (getPassengers().stream().anyMatch(entity -> entity instanceof EntityPlayerMP)) {
+			if (getPassengers().stream().anyMatch(entity -> entity instanceof PlayerEntityMP)) {
 				return false;
 			} else if (wasSimulated) {
 				return false;
@@ -432,7 +432,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	}
 
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+	public boolean processInitialInteract(PlayerEntity player, EnumHand hand) {
 		//Allow missile to override interaction
 		if (ICBMClassicAPI.EX_MISSILE_REGISTRY.onInteraction(this, player, hand)) {
 			return true;
@@ -537,7 +537,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	 * (abstract) Protected helper method to read subclass entity additionalMissileData from NBT.
 	 */
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(CompoundNBT nbt) {
 		super.readEntityFromNBT(nbt);
 		this.targetPos = new Pos(nbt.getCompoundTag(NBTConstants.TARGET));
 		this.launcherPos = new Pos(nbt.getCompoundTag(NBTConstants.LAUNCHER_POS));
@@ -555,7 +555,7 @@ public class EntityMissile extends EntityProjectile implements IEntityAdditional
 	 * (abstract) Protected helper method to write subclass entity additionalMissileData to NBT.
 	 */
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(CompoundNBT nbt) {
 		super.writeEntityToNBT(nbt);
 		if (this.targetPos != null) {
 			nbt.setTag(NBTConstants.TARGET, this.targetPos.toNBT());

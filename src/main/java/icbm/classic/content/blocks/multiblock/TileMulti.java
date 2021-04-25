@@ -7,7 +7,7 @@ import icbm.classic.api.tile.multiblock.IMultiTileHost;
 import icbm.classic.config.ConfigIC2;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.mods.ic2.IC2Proxy;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -75,7 +75,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey(NBTConstants.HOST_POS)) {
 			int[] data = compound.getIntArray(NBTConstants.HOST_POS);
@@ -84,7 +84,7 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public CompoundNBT writeToNBT(CompoundNBT compound) {
 		if (hostPosition != null) {
 			compound.setIntArray(NBTConstants.HOST_POS, new int[] {hostPosition.getX(), hostPosition.getY(), hostPosition.getZ()});
 		}
@@ -101,8 +101,8 @@ public class TileMulti extends TileEntity implements IMultiTile, IEnergySink {
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
+	public CompoundNBT getUpdateTag() {
+		return this.writeToNBT(new CompoundNBT());
 	}
 
 	@Override

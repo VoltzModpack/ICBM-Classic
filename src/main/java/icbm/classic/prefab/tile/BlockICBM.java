@@ -9,9 +9,9 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -44,22 +44,22 @@ public abstract class BlockICBM extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(ROTATION_PROP, EnumFacing.byIndex(meta));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(ROTATION_PROP).ordinal();
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
 		return getDefaultState().withProperty(ROTATION_PROP, placer.getHorizontalFacing());
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack) {
 		if (te instanceof IMultiTileHost) {
 			MultiBlockHelper.destroyMultiBlockStructure((IMultiTileHost) te, false, true, false);
 		}
@@ -67,7 +67,7 @@ public abstract class BlockICBM extends BlockContainer {
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof IMultiTileHost) {
 			MultiBlockHelper.destroyMultiBlockStructure((IMultiTileHost) tile, false, true, false);
@@ -76,7 +76,7 @@ public abstract class BlockICBM extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(World world, BlockPos pos, BlockState state) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof IInventoryProvider && ((IInventoryProvider) tile).getInventory() != null) {
 			InventoryHelper.dropInventoryItems(world, pos, ((IInventoryProvider) tile).getInventory());

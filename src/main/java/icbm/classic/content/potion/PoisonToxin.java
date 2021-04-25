@@ -1,6 +1,6 @@
 package icbm.classic.content.potion;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.potion.Potion;
@@ -16,7 +16,7 @@ public class PoisonToxin extends CustomPotion {
 	}
 
 	@Override
-	public void performEffect(EntityLivingBase par1EntityLiving, int amplifier) {
+	public void performEffect(LivingEntity par1EntityLiving, int amplifier) {
 		if (!(par1EntityLiving instanceof EntityZombie) && !(par1EntityLiving instanceof EntityPigZombie)) {
 			par1EntityLiving.attackEntityFrom(DamageSource.MAGIC, 1);
 		}

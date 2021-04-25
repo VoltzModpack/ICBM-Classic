@@ -1,7 +1,7 @@
 package icbm.classic.client.render.entity;
 
 import icbm.classic.content.entity.EntityFlyingBlock;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +26,7 @@ public class RenderEntityBlock extends Render<EntityFlyingBlock> {
 	public void doRender(EntityFlyingBlock entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
-		final IBlockState blockState = entity.getBlockState();
+		final BlockState blockState = entity.getBlockState();
 		final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 		GlStateManager.pushMatrix();

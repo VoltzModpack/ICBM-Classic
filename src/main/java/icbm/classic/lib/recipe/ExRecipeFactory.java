@@ -23,7 +23,7 @@ public class ExRecipeFactory implements IRecipeFactory {
 		JsonObject newResult = new JsonObject();
 		newResult.addProperty("item", resultStack.getItem().getRegistryName().toString());
 		if (resultStack.getHasSubtypes()) {
-			newResult.addProperty("data", resultStack.getItemDamage());
+			newResult.addProperty("data", resultStack.getDamage());
 		}
 		newResult.addProperty("count", JsonUtils.getInt(json, "count", 1));
 

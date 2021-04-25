@@ -1,7 +1,7 @@
 package icbm.classic.content.potion;
 
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.init.MobEffects;
 
 public class ContagiousPoison extends Poison {
@@ -14,7 +14,7 @@ public class ContagiousPoison extends Poison {
 	}
 
 	@Override
-	protected void doPoisonEntity(Pos emitPosition, EntityLivingBase entity, int amplifier) {
+	protected void doPoisonEntity(Pos emitPosition, LivingEntity entity, int amplifier) {
 		if (this.isContagious) {
 			entity.addPotionEffect(new CustomPotionEffect(PoisonContagion.INSTANCE, 45 * 20, amplifier, null));
 			entity.addPotionEffect(new CustomPotionEffect(MobEffects.BLINDNESS, 15 * 20, amplifier));

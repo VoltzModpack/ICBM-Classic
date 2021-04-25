@@ -4,9 +4,9 @@ import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -67,9 +67,9 @@ public abstract class EntityICBM extends Entity implements IWorldPosition {
 	 */
 	public boolean canDamage(Entity entity, DamageSource source) {
 		if (!entity.isEntityInvulnerable(source) && entity.isEntityAlive()) {
-			if (entity instanceof EntityLivingBase) {
-				if (entity instanceof EntityPlayer) {
-					if (((EntityPlayer) entity).capabilities.isCreativeMode) {
+			if (entity instanceof LivingEntity) {
+				if (entity instanceof PlayerEntity) {
+					if (((PlayerEntity) entity).capabilities.isCreativeMode) {
 						return false;
 					}
 				}
@@ -112,12 +112,12 @@ public abstract class EntityICBM extends Entity implements IWorldPosition {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(CompoundNBT nbt) {
 		setHealth(nbt.getFloat(NBTConstants.HEALTH));
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(CompoundNBT nbt) {
 		nbt.setFloat(NBTConstants.HEALTH, this.getHealth());
 	}
 

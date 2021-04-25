@@ -3,7 +3,7 @@ package icbm.classic.client.render.entity;
 import icbm.classic.ICBMConstants;
 import icbm.classic.content.entity.EntityFragments;
 import net.minecraft.block.BlockAnvil;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -37,7 +37,7 @@ public class RenderFragments extends Render<EntityFragments> {
 	public void doRender(EntityFragments entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		this.bindEntityTexture(entity);
 		if (entity.isAnvil) {
-			final IBlockState blockState = Blocks.ANVIL.getDefaultState()
+			final BlockState blockState = Blocks.ANVIL.getDefaultState()
 				                               .withProperty(BlockAnvil.DAMAGE, entity.world.rand.nextInt(2))
 				                               .withProperty(BlockAnvil.FACING, EnumFacing.Plane.HORIZONTAL.facings()[entity.world.rand.nextInt(3)]);
 			//TODO store rotation and damage in entity to reduce random nature

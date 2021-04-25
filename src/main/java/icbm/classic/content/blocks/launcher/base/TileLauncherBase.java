@@ -12,7 +12,7 @@ import icbm.classic.config.ConfigLauncher;
 import icbm.classic.content.blocks.launcher.frame.TileLauncherFrame;
 import icbm.classic.content.blocks.launcher.screen.TileLauncherScreen;
 import icbm.classic.content.blocks.multiblock.MultiBlockHelper;
-import icbm.classic.content.entity.EntityPlayerSeat;
+import icbm.classic.content.entity.PlayerEntitySeat;
 import icbm.classic.content.entity.missile.EntityMissile;
 import icbm.classic.content.items.ItemMissile;
 import icbm.classic.content.reg.BlockReg;
@@ -26,10 +26,10 @@ import icbm.classic.prefab.tile.BlockICBM;
 import icbm.classic.prefab.tile.TileMachine;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -82,7 +82,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	/**
 	 * Fake entity to allow player to mount the missile without using the missile entity itself
 	 */
-	public EntityPlayerSeat seat;
+	public PlayerEntitySeat seat;
 
 	// The tier of this launcher base
 	private boolean _destroyingStructure = false;
@@ -114,7 +114,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 				//Create seat if missile
 				if (!getMissileStack().isEmpty() && seat == null)  //TODO add hook to disable riding some missiles
 				{
-					seat = new EntityPlayerSeat(world);
+					seat = new PlayerEntitySeat(world);
 					seat.host = this;
 					seat.rideOffset = new Pos(getRotation()).multiply(0.5, 1, 0.5);
 					seat.setPosition(x() + 0.5, y() + 0.5, z() + 0.5);
@@ -245,7 +245,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 		final ItemStack stack = getMissileStack();
 		if (stack.getItem() == ItemReg.itemMissile) //TODO capability
 		{
-			IExplosiveData explosiveData = ICBMClassicHelpers.getExplosive(stack.getItemDamage(), true);
+			IExplosiveData explosiveData = ICBMClassicHelpers.getExplosive(stack.getDamage(), true);
 			if (explosiveData != null) {
 				target = applyInaccuracy(target);
 
@@ -326,7 +326,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
 		getInventory().load(nbt.getCompoundTag(NBTConstants.INVENTORY)); //TODO datafixer to replace inventory
 	}
@@ -335,8 +335,8 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		nbt.setTag(NBTConstants.INVENTORY, getInventory().save(new NBTTagCompound()));
+	public CompoundNBT writeToNBT(CompoundNBT nbt) {
+		nbt.setTag(NBTConstants.INVENTORY, getInventory().save(new CompoundNBT()));
 		return super.writeToNBT(nbt);
 	}
 
@@ -359,7 +359,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 		return getInventory().getStackInSlot(0);
 	}
 
-	public boolean onPlayerRightClick(EntityPlayer player, EnumHand hand, ItemStack heldItem) {
+	public boolean onPlayerRightClick(PlayerEntity player, EnumHand hand, ItemStack heldItem) {
 
 		if (!tryInsertMissile(player, hand, heldItem) && launchScreen != null) {
 			return BlockReg.blockLaunchScreen.onBlockActivated(world, launchScreen.getPos(), world.getBlockState(launchScreen.getPos()), player, hand, EnumFacing.NORTH, 0, 0, 0);
@@ -369,7 +369,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 		return true;
 	}
 
-	public boolean tryInsertMissile(EntityPlayer player, EnumHand hand, ItemStack heldItem) {
+	public boolean tryInsertMissile(PlayerEntity player, EnumHand hand, ItemStack heldItem) {
 		if (heldItem.getItem() instanceof ItemMissile && this.getMissileStack().isEmpty()) {
 			if (heldItem.getItem() instanceof ItemMissile) {
 				if (this.getMissileStack().isEmpty()) {
@@ -445,12 +445,12 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 	}
 
 	@Override
-	public boolean onMultiTileActivated(IMultiTile tile, EntityPlayer player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
+	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
 		return this.onPlayerRightClick(player, hand, player.getHeldItem(hand));
 	}
 
 	@Override
-	public void onMultiTileClicked(IMultiTile tile, EntityPlayer player) {
+	public void onMultiTileClicked(IMultiTile tile, PlayerEntity player) {
 
 	}
 

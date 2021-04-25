@@ -2,7 +2,7 @@ package icbm.classic.client.mapper;
 
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.blocks.explosive.BlockExplosive;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.util.EnumFacing;
@@ -23,7 +23,7 @@ public class BlockModelMapperExplosive extends DefaultStateMapper {
 	}
 
 	@Override
-	protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+	protected ModelResourceLocation getModelResourceLocation(BlockState state) {
 		if (state.getPropertyKeys().contains(BlockExplosive.EX_PROP)) {
 			final IExplosiveData explosiveData = state.getValue(BlockExplosive.EX_PROP);
 			if (explosiveData != null) {

@@ -8,13 +8,13 @@ import icbm.classic.content.reg.BlockReg;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import icbm.classic.prefab.item.ItemBase;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -35,7 +35,7 @@ public class ItemBombCart extends ItemBase {
 
 	@Override
 	@Nullable
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		CapabilityExplosiveStack capabilityExplosive = new CapabilityExplosiveStack(stack);
 		if (nbt != null) {
 			capabilityExplosive.deserializeNBT(nbt);
@@ -48,8 +48,8 @@ public class ItemBombCart extends ItemBase {
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
 	 */
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState iblockstate = worldIn.getBlockState(pos);
+	public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		BlockState iblockstate = worldIn.getBlockState(pos);
 
 		if (!BlockRailBase.isRailBlock(iblockstate)) {
 			return EnumActionResult.FAIL;
@@ -64,7 +64,7 @@ public class ItemBombCart extends ItemBase {
 					d0 = 0.5D;
 				}
 
-				EntityMinecart entityminecart = new EntityBombCart(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.0625D + d0, (double) pos.getZ() + 0.5D, itemstack.getItemDamage());
+				EntityMinecart entityminecart = new EntityBombCart(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.0625D + d0, (double) pos.getZ() + 0.5D, itemstack.getDamage());
 
 				if (itemstack.hasDisplayName()) {
 					entityminecart.setCustomNameTag(itemstack.getDisplayName());
@@ -85,7 +85,7 @@ public class ItemBombCart extends ItemBase {
 
 	@Override
 	public String getTranslationKey(ItemStack itemstack) {
-		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getItemDamage());
+		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getDamage());
 		if (data != null) {
 			return "bombcart." + data.getRegistryName();
 		}
@@ -107,12 +107,12 @@ public class ItemBombCart extends ItemBase {
 	}
 
 	@Override
-	protected boolean hasDetailedInfo(ItemStack stack, EntityPlayer player) {
+	protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List list) {
+	protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List list) {
 		//TODO change over to a hook
 		((ItemBlockExplosive) Item.getItemFromBlock(BlockReg.blockExplosive)).getDetailedInfo(stack, player, list);
 	}

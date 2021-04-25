@@ -7,11 +7,11 @@ import icbm.classic.client.ICBMSounds;
 import icbm.classic.content.potion.CustomPotionEffect;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.MobEffects;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -49,7 +49,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	private Queue<BlockPos> edgeBlocks = new LinkedList();
 
 	//Damage tracker for entities effected
-	private HashMap<EntityLivingBase, Integer> impactedEntityMap = new HashMap();
+	private HashMap<LivingEntity, Integer> impactedEntityMap = new HashMap();
 	//TODO turn into entity capability to prevent damage stacking of several explosives
 	//TODO use weak refs to not hold instances
 
@@ -112,11 +112,11 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 					location.x() - radius, location.y() - radius, location.z() - radius,
 					location.x() + radius, location.y() + radius, location.z() + radius);
 
-				final List<EntityLivingBase> entityList = world()
-					                                          .getEntitiesWithinAABB(EntityLivingBase.class, bounds, this::canGasEffect);
+				final List<LivingEntity> entityList = world()
+					                                          .getEntitiesWithinAABB(LivingEntity.class, bounds, this::canGasEffect);
 
 				//Loop all entities
-				for (EntityLivingBase entity : entityList) {
+				for (LivingEntity entity : entityList) {
 					//Track entities
 					if (!impactedEntityMap.containsKey(entity)) {
 						impactedEntityMap.put(entity, 1);
@@ -173,11 +173,11 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	 * @param entity
 	 * @return
 	 */
-	private boolean canGasEffect(EntityLivingBase entity) {
+	private boolean canGasEffect(LivingEntity entity) {
 		//Ignore dead things
 		if (entity.isEntityAlive()) {
 			//Always ignore non-gameplay characters
-			if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) {
+			if (entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) {
 				return false;
 			}
 
@@ -269,7 +269,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	}
 
 	private boolean isValidPath(BlockPos pos) {
-		IBlockState blockState = world.getBlockState(pos);
+		BlockState blockState = world.getBlockState(pos);
 		return !blockState.isFullBlock();
 	}
 
@@ -288,7 +288,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	}
 
 	@Override
-	public void load(NBTTagCompound nbt) {
+	public void load(CompoundNBT nbt) {
 		super.load(nbt);
 		this.duration = nbt.getInteger(NBTConstants.DURATION);
 		this.applyContagiousEffect = nbt.getBoolean(NBTConstants.IS_CONTAGIOUS);
@@ -302,7 +302,7 @@ public class BlastGasBase extends Blast implements IBlastTickable {
 	}
 
 	@Override
-	public void save(NBTTagCompound nbt) {
+	public void save(CompoundNBT nbt) {
 		super.save(nbt);
 		nbt.setInteger(NBTConstants.DURATION, this.duration);
 		nbt.setBoolean(NBTConstants.IS_CONTAGIOUS, this.applyContagiousEffect);

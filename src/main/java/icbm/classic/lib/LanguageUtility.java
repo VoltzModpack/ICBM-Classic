@@ -1,7 +1,7 @@
 package icbm.classic.lib;
 
 import icbm.classic.ICBMClassic;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
@@ -115,7 +115,7 @@ public class LanguageUtility {
 	 * @param player - player who will receive the message
 	 * @param key    - - translation key, Example 'tile.sometile.name' or 'tile.modname:sometile.name'
 	 */
-	public static void addChatToPlayer(EntityPlayer player, String key) {
+	public static void addChatToPlayer(PlayerEntity player, String key) {
 		if (player != null) {
 			player.sendMessage(getLocalChat(key));
 		} else if (ICBMClassic.runningAsDev) {

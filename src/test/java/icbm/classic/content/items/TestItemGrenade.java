@@ -3,7 +3,7 @@ package icbm.classic.content.items;
 import com.builtbroken.mc.testing.junit.TestManager;
 import icbm.classic.content.entity.EntityGrenade;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class TestItemGrenade {
 
 	@Test
 	void onItemRightClick_normal() {
-		final EntityPlayer player = spy(testManager.getPlayer());
+		final PlayerEntity player = spy(testManager.getPlayer());
 		final World world = testManager.getWorld();
 		final ItemStack stack = new ItemStack(itemGrenade, 1, 0);
 
@@ -59,7 +59,7 @@ public class TestItemGrenade {
 
 	@Test
 	void onPlayerStoppedUsing_normal() {
-		final EntityPlayer player = testManager.getPlayer();
+		final PlayerEntity player = testManager.getPlayer();
 		final World world = spy(testManager.getWorld());
 
 		ItemStack stack = new ItemStack(itemGrenade, 2, 0);

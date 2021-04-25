@@ -4,8 +4,8 @@ import icbm.classic.ICBMClassic;
 import icbm.classic.prefab.tile.BlockICBM;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -36,22 +36,22 @@ public class BlockRadarStation extends BlockICBM {
 	}
 
 	@Override
-	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+	public boolean canConnectRedstone(BlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
 		return true;
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state) {
+	public boolean canProvidePower(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public int getWeakPower(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return getStrongPower(blockState, blockAccess, pos, side);
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public int getStrongPower(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		TileEntity tile = blockAccess.getTileEntity(pos);
 		if (tile instanceof TileRadarStation) {
 			return ((TileRadarStation) tile).getStrongRedstonePower(side);
@@ -60,7 +60,7 @@ public class BlockRadarStation extends BlockICBM {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			//if (WrenchUtility.isUsableWrench(player, player.getHeldItem(hand), pos.getX(), pos.getY(), pos.getZ()))
 			if (player.getHeldItem(hand).getItem() == Items.REDSTONE) {
@@ -79,17 +79,17 @@ public class BlockRadarStation extends BlockICBM {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(BlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 

@@ -8,7 +8,7 @@ import icbm.classic.lib.transform.vector.Point;
 import icbm.classic.lib.transform.vector.Pos;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.ChunkPos;
@@ -56,7 +56,7 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		this(new Pos(bb.minX, bb.minY, bb.minZ), new Pos(bb.maxX, bb.maxY, bb.maxZ));
 	}
 
-	public Cube(NBTTagCompound nbt) {
+	public Cube(CompoundNBT nbt) {
 		super(nbt);
 		if (nbt.hasKey(NBTConstants.POINT_ONE)) {
 			pointOne = new Pos(nbt.getCompoundTag(NBTConstants.POINT_ONE));
@@ -109,16 +109,16 @@ public class Cube extends Shape3D implements Cloneable, IByteBufWriter {
 		return isValid() ? new Rectangle(new Point(min()), new Point(max())) : null;
 	}
 
-	public NBTTagCompound toNBT() {
-		return save(new NBTTagCompound());
+	public CompoundNBT toNBT() {
+		return save(new CompoundNBT());
 	}
 
-	public NBTTagCompound save(NBTTagCompound tag) {
+	public CompoundNBT save(CompoundNBT tag) {
 		if (pointOne != null) {
-			tag.setTag(NBTConstants.POINT_ONE, new Pos(pointOne).writeNBT(new NBTTagCompound()));
+			tag.setTag(NBTConstants.POINT_ONE, new Pos(pointOne).writeNBT(new CompoundNBT()));
 		}
 		if (pointTwo != null) {
-			tag.setTag(NBTConstants.POINT_TWO, new Pos(pointTwo).writeNBT(new NBTTagCompound()));
+			tag.setTag(NBTConstants.POINT_TWO, new Pos(pointTwo).writeNBT(new CompoundNBT()));
 		}
 		return tag;
 	}

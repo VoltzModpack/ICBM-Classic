@@ -4,9 +4,9 @@ import icbm.classic.lib.LanguageUtility;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.prefab.item.ItemICBMElectrical;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -26,7 +26,7 @@ public class ItemTracker extends ItemICBMElectrical {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List lines) {
+	protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List lines) {
 		Entity trackingEntity = getTrackingEntity(FMLClientHandler.instance().getClient().world, stack);
 
 		if (trackingEntity != null) {
@@ -38,7 +38,7 @@ public class ItemTracker extends ItemICBMElectrical {
 
 	public void setTrackingEntity(ItemStack itemStack, Entity entity) {
 		if (itemStack.getTagCompound() == null) {
-			itemStack.setTagCompound(new NBTTagCompound());
+			itemStack.setTagCompound(new CompoundNBT());
 		}
 
 		if (entity != null) {
@@ -57,17 +57,17 @@ public class ItemTracker extends ItemICBMElectrical {
 	}
 
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		super.onCreated(par1ItemStack, par2World, par3EntityPlayer);
-		setTrackingEntity(par1ItemStack, par3EntityPlayer);
+	public void onCreated(ItemStack par1ItemStack, World par2World, PlayerEntity par3PlayerEntity) {
+		super.onCreated(par1ItemStack, par2World, par3PlayerEntity);
+		setTrackingEntity(par1ItemStack, par3PlayerEntity);
 	}
 
 	@Override
 	public void onUpdate(ItemStack itemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		super.onUpdate(itemStack, par2World, par3Entity, par4, par5);
 
-		if (par3Entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) par3Entity;
+		if (par3Entity instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity) par3Entity;
 
 			if (player.inventory.getCurrentItem() != null) {
 				if (player.inventory.getCurrentItem().getItem() == this && par2World.getWorldTime() % 20 == 0) {
@@ -94,7 +94,7 @@ public class ItemTracker extends ItemICBMElectrical {
 	 * @return True to cancel the rest of the interaction.
 	 */
 	@Override
-	public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity) {
+	public boolean onLeftClickEntity(ItemStack itemStack, PlayerEntity player, Entity entity) {
 		if (!player.world.isRemote) {
 			boolean flag_ban = false;//FlagRegistry.getModFlag().getFlagWorld(player.worldObj).containsValue("ban_Tracker", "true", new Pos(entity));
 			if (!flag_ban) {

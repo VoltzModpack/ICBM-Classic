@@ -5,10 +5,10 @@ import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.dispenser.ILocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -43,7 +43,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
 	 *
 	 * @param nbt - valid data, can't be null
 	 */
-	public AbstractLocation(NBTTagCompound nbt) {
+	public AbstractLocation(CompoundNBT nbt) {
 		this(DimensionManager.getWorld(nbt.getInteger(NBTConstants.DIMENSION)), nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
 	}
 
@@ -135,7 +135,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
 	 * Conversions
 	 */
 	@Override
-	public NBTTagCompound writeNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeNBT(CompoundNBT nbt) {
 		nbt.setInteger(NBTConstants.DIMENSION, world != null && world.provider != null ? world.provider.getDimension() : 0);
 		nbt.setDouble(NBTConstants.X, x());
 		nbt.setDouble(NBTConstants.Y, y());
@@ -183,7 +183,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
 		}
 	}
 
-	public IBlockState getBlockState() {
+	public BlockState getBlockState() {
 		if (world != null && world.getChunkProvider().isChunkGeneratedAt(xi() / 16, zi() / 16)) {
 			return super.getBlockState(world);
 		} else {
@@ -233,7 +233,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
 	 * @param notify - notification level to use when placing the block
 	 * @return true if it was repalced
 	 */
-	public boolean setBlock(IBlockState block, int notify) {
+	public boolean setBlock(BlockState block, int notify) {
 		return super.setBlock(world, block, notify);
 	}
 
@@ -242,7 +242,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
 	 *
 	 * @return true if it was repalced
 	 */
-	public boolean setBlock(IBlockState state) {
+	public boolean setBlock(BlockState state) {
 		return super.setBlock(world, state, 3);
 	}
 

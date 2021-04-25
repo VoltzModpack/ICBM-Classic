@@ -8,7 +8,7 @@ import icbm.classic.prefab.gui.GuiContainerBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -24,7 +24,7 @@ public class GuiEMPTower extends GuiContainerBase {
 	private int containerWidth;
 	private int containerHeight;
 
-	public GuiEMPTower(EntityPlayer player, TileEMPTower tileEntity) {
+	public GuiEMPTower(PlayerEntity player, TileEMPTower tileEntity) {
 		super(new ContainerEMPTower(player, tileEntity));
 		this.tileEntity = tileEntity;
 		this.ySize = 166;

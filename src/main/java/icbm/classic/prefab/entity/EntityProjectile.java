@@ -4,12 +4,12 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -58,7 +58,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 	//In ground data
 	public BlockPos tilePos = new BlockPos(0, 0, 0);
 	public EnumFacing sideTile = EnumFacing.UP;
-	protected IBlockState blockInside = Blocks.AIR.getDefaultState();
+	protected BlockState blockInside = Blocks.AIR.getDefaultState();
 	protected boolean inGround = false;
 
 	//Timers
@@ -77,7 +77,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		this.sourceOfProjectile = new Pos(x, y, z);
 	}
 
-	public EntityProjectile(World world, EntityLivingBase shooter, EntityLivingBase target, float p_i1755_4_, float p_i1755_5_) {
+	public EntityProjectile(World world, LivingEntity shooter, LivingEntity target, float p_i1755_4_, float p_i1755_5_) {
 		this(world);
 		this.shootingEntity = shooter;
 		this.sourceOfProjectile = new Pos(shooter);
@@ -99,11 +99,11 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		}
 	}
 
-	public EntityProjectile(World world, EntityLivingBase shooter, float f) {
+	public EntityProjectile(World world, LivingEntity shooter, float f) {
 		this(world, shooter, f, 1);
 	}
 
-	public EntityProjectile(World world, EntityLivingBase shooter, float f, float distanceScale) {
+	public EntityProjectile(World world, LivingEntity shooter, float f, float distanceScale) {
 		this(world, shooter.posX, shooter.posY + (double) shooter.getEyeHeight(), shooter.posZ, shooter.rotationYaw, shooter.rotationPitch, f, distanceScale);
 	}
 
@@ -142,7 +142,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 		}
 
 		//Check if we hit the ground
-		IBlockState state = this.world.getBlockState(tilePos);
+		BlockState state = this.world.getBlockState(tilePos);
 		if (!state.getBlock().isAir(state, world, tilePos)) {
 			//Check if what we hit can be collided with
 			AxisAlignedBB axisalignedbb = state.getCollisionBoundingBox(this.world, tilePos);
@@ -312,7 +312,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 
 			//If entity takes damage add velocity to entity
 			if (impact_damageSource != null && entityHit.attackEntityFrom(impact_damageSource, (float) damage)) {
-				if (entityHit instanceof EntityLivingBase) {
+				if (entityHit instanceof LivingEntity) {
 					float vel_horizontal = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 					if (vel_horizontal > 0.0F) {
 						entityHit.addVelocity(this.motionX * 0.6000000238418579D / (double) vel_horizontal, 0.1D, this.motionZ * 0.6000000238418579D / (double) vel_horizontal);
@@ -435,7 +435,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(CompoundNBT nbt) {
 		if (tilePos != null) {
 			nbt.setInteger(NBTConstants.X_TILE_POS, this.tilePos.getX());
 			nbt.setInteger(NBTConstants.Y_TILE_POS, this.tilePos.getY());
@@ -458,7 +458,7 @@ public abstract class EntityProjectile extends EntityICBM implements IProjectile
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(CompoundNBT nbt) {
 		if (nbt.hasKey(NBTConstants.X_TILE)) {
 			//Legacy
 			tilePos = new BlockPos(nbt.getShort(NBTConstants.X_TILE), nbt.getShort(NBTConstants.Y_TILE), nbt.getShort(NBTConstants.Z_TILE));

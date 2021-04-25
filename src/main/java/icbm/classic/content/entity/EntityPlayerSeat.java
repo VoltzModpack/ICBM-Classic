@@ -3,8 +3,8 @@ package icbm.classic.content.entity;
 import icbm.classic.lib.transform.vector.Pos;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,12 +21,12 @@ import javax.annotation.Nullable;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 10/31/2017.
  */
-public class EntityPlayerSeat extends Entity implements IEntityAdditionalSpawnData {
+public class PlayerEntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
 	public TileEntity host;
 	public Pos rideOffset;
 
-	public EntityPlayerSeat(World world) {
+	public PlayerEntitySeat(World world) {
 		super(world);
 	}
 
@@ -43,7 +43,7 @@ public class EntityPlayerSeat extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+	public boolean processInitialInteract(PlayerEntity player, EnumHand hand) {
 		if (player.isSneaking()) {
 			return false;
 		} else if (this.isBeingRidden()) {
@@ -99,12 +99,12 @@ public class EntityPlayerSeat extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
+	protected void readEntityFromNBT(CompoundNBT p_70037_1_) {
 
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
+	protected void writeEntityToNBT(CompoundNBT p_70014_1_) {
 
 	}
 

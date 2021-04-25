@@ -15,7 +15,7 @@ import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -146,9 +146,9 @@ public class EntityExplosion extends Entity implements IEntityAdditionalSpawnDat
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(CompoundNBT nbt) {
 		try {
-			NBTTagCompound blastSave = nbt.getCompoundTag(NBTConstants.BLAST);
+			CompoundNBT blastSave = nbt.getCompoundTag(NBTConstants.BLAST);
 			this.blastYOffset = nbt.getDouble(NBTConstants.BLAST_POS_Y);
 			if (getBlast() == null) {
 				//Legacy code
@@ -179,14 +179,14 @@ public class EntityExplosion extends Entity implements IEntityAdditionalSpawnDat
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(CompoundNBT nbt) {
 		if (getBlast() != null && getBlast().getExplosiveData() != null) //TODO add save/load mechanic to bypass need for ex data
 		{
 			//Save position
 			nbt.setDouble(NBTConstants.BLAST_POS_Y, blastYOffset);
 
 			//Save explosive data
-			NBTTagCompound blastSave = new NBTTagCompound();
+			CompoundNBT blastSave = new CompoundNBT();
 			if (getBlast() instanceof IBlastRestore) {
 				((IBlastRestore) getBlast()).save(blastSave);
 			}

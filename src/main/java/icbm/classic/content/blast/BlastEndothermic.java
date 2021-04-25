@@ -6,7 +6,7 @@ import icbm.classic.content.potion.PoisonFrostBite;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
@@ -39,7 +39,7 @@ public class BlastEndothermic extends BlastBeam {
 			final double distance = Math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
 			final double distanceScale = 1 - (distance / radius);
 
-			IBlockState blockState = world.getBlockState(targetPosition);
+			BlockState blockState = world.getBlockState(targetPosition);
 
 			//Closer to center the better the chance of spawning blocks
 			if (distance <= radiusDecay || Math.random() < distanceScale) {
@@ -86,8 +86,8 @@ public class BlastEndothermic extends BlastBeam {
 	private static void tryPlaceSnow(World world, BlockPos pos, boolean random) {
 		if (!random || world.rand.nextBoolean()) {
 			//Place fire
-			final IBlockState blockState = world.getBlockState(pos);
-			final IBlockState blockStateUnder = world.getBlockState(pos.down());
+			final BlockState blockState = world.getBlockState(pos);
+			final BlockState blockStateUnder = world.getBlockState(pos.down());
 			if (blockState.getBlock().isReplaceable(world, pos)
 				    && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)
 				    && blockStateUnder.isSideSolid(world, pos.down(), EnumFacing.UP)) {

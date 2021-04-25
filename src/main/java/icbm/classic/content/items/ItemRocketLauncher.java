@@ -10,8 +10,8 @@ import icbm.classic.prefab.item.ItemICBMElectrical;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
@@ -46,7 +46,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 		super("rocketLauncher");
 		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
 				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
 			}
 		});
@@ -68,9 +68,9 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
-		if (entityLiving instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entityLiving;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entityLiving, int timeLeft) {
+		if (entityLiving instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity) entityLiving;
 			if (this.getEnergy(stack) >= ENERGY || player.capabilities.isCreativeMode) {
 				// Check the player's inventory and look for missiles.
 				for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++) {
@@ -79,7 +79,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 					if (inventoryStack != null) {
 						if (inventoryStack.getItem() instanceof ItemMissile) //TODO add capability
 						{
-							final int explosiveID = inventoryStack.getItemDamage();
+							final int explosiveID = inventoryStack.getDamage();
 							final IExplosiveData exData = ICBMClassicHelpers.getExplosive(explosiveID, true);
 
 							if (exData != null) {
@@ -119,7 +119,7 @@ public class ItemRocketLauncher extends ItemICBMElectrical {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, EnumHand handIn) {
 		ItemStack itemstack = player.getHeldItem(handIn);
 
 		long clickMs = System.currentTimeMillis();

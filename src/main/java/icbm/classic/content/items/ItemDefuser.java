@@ -9,7 +9,7 @@ import icbm.classic.prefab.item.ItemICBMElectrical;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -35,7 +35,7 @@ public class ItemDefuser extends ItemICBMElectrical {
 	 * @return True to cancel the rest of the interaction.
 	 */
 	@Override
-	public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity) {
+	public boolean onLeftClickEntity(ItemStack itemStack, PlayerEntity player, Entity entity) {
 		if (this.getEnergy(itemStack) >= ENERGY_COST) {
 			if (ICBMClassicHelpers.isExplosive(entity)) {
 				if (!entity.world.isRemote) {

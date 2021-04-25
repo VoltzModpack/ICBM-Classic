@@ -7,7 +7,7 @@ import icbm.classic.content.blast.threaded.BlastThreaded;
 import icbm.classic.content.entity.EntityFlyingBlock;
 import icbm.classic.lib.transform.PosDistanceSorter;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -69,7 +69,7 @@ public class BlastAntiGravitational extends BlastThreaded implements IBlastTicka
 						int blocksToTake = 20;
 
 						for (BlockPos targetPosition : results) {
-							final IBlockState blockState = world.getBlockState(targetPosition);
+							final BlockState blockState = world.getBlockState(targetPosition);
 							if (!blockState.getBlock().isAir(blockState, world, targetPosition) //don't pick up air
 								    && !blockState.getBlock().isReplaceable(world, targetPosition) //don't pick up replacable blocks like fire, grass, or snow (this does not include crops)
 								    && !(blockState.getBlock() instanceof IFluidBlock) && !(blockState.getBlock() instanceof BlockLiquid)) //don't pick up liquids

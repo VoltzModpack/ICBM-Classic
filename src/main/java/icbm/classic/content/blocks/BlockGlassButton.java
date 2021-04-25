@@ -3,8 +3,8 @@ package icbm.classic.content.blocks;
 import icbm.classic.ICBMConstants;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundCategory;
@@ -33,18 +33,18 @@ public class BlockGlassButton extends BlockButton {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	protected void playClickSound(@Nullable EntityPlayer player, World worldIn, BlockPos pos) {
+	protected void playClickSound(@Nullable PlayerEntity player, World worldIn, BlockPos pos) {
 		worldIn.playSound(player, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 	}
 
 	@Override
 	protected void playReleaseSound(World worldIn, BlockPos pos) {
-		worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+		worldIn.playSound((PlayerEntity) null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
 	}
 
 }

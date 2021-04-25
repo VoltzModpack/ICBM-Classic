@@ -13,10 +13,10 @@ import icbm.classic.prefab.FakeRadioSender;
 import icbm.classic.prefab.item.ItemICBMElectrical;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -50,7 +50,7 @@ public class ItemLaserDetonator extends ItemICBMElectrical implements IPacketIDR
 	private int cooldownRemaining = 0;
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand handIn) {
 		ItemStack stack = player.getHeldItem(handIn);
 		if (world.isRemote && cooldownRemaining <= 0) {
 			cooldownRemaining = maxCooldownTicks;
@@ -67,7 +67,7 @@ public class ItemLaserDetonator extends ItemICBMElectrical implements IPacketIDR
 	}
 
 	@Override
-	public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entityLiving) {
+	public ItemStack onItemUseFinish(ItemStack stack, World world, LivingEntity entityLiving) {
 
 		if (world.isRemote) // when releasing the right mouse button, reset the cooldown to allow immediate reuse of item
 			cooldownRemaining = 0;
@@ -83,7 +83,7 @@ public class ItemLaserDetonator extends ItemICBMElectrical implements IPacketIDR
 	}
 
 	@Override
-	public boolean read(ByteBuf buf, int id, EntityPlayer player, IPacket packet) {
+	public boolean read(ByteBuf buf, int id, PlayerEntity player, IPacket packet) {
 		ItemStack stack = player.inventory.getCurrentItem();
 		if (stack != null && stack.getItem() == this) {
 			if (!player.world.isRemote) {
@@ -107,12 +107,12 @@ public class ItemLaserDetonator extends ItemICBMElectrical implements IPacketIDR
 	}
 
 	@Override
-	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, EntityPlayer player) {
+	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, PlayerEntity player) {
 		return true;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+	public void addInformation(ItemStack stack, PlayerEntity player, List list, boolean b) {
 		list.add("Fires missiles remotely");
 		list.add("Right click launcher screen to encode");
 	}
@@ -138,7 +138,7 @@ public class ItemLaserDetonator extends ItemICBMElectrical implements IPacketIDR
 	 */
 	public void setBroadCastHz(ItemStack stack, float hz) {
 		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
+			stack.setTagCompound(new CompoundNBT());
 		}
 		stack.getTagCompound().setFloat(NBTConstants.HZ, hz);
 	}

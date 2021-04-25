@@ -9,7 +9,7 @@ import icbm.classic.prefab.gui.GuiContainerBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,7 +36,7 @@ public class GuiLauncherScreen extends GuiContainerBase {
 	private int containerWidth;
 	private int containerHeight;
 
-	public GuiLauncherScreen(EntityPlayer player, TileLauncherScreen tileEntity) {
+	public GuiLauncherScreen(PlayerEntity player, TileLauncherScreen tileEntity) {
 		super(new ContainerLaunchScreen(player, tileEntity));
 		this.tileEntity = tileEntity;
 		ySize = 166;

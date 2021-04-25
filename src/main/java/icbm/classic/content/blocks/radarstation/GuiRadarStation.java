@@ -11,7 +11,7 @@ import icbm.classic.lib.transform.vector.Pos;
 import icbm.classic.prefab.gui.GuiContainerBase;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.input.Mouse;
@@ -44,7 +44,7 @@ public class GuiRadarStation extends GuiContainerBase {
 
 	private String info2;
 
-	public GuiRadarStation(EntityPlayer player, TileRadarStation tileEntity) {
+	public GuiRadarStation(PlayerEntity player, TileRadarStation tileEntity) {
 		super(new ContainerRadarStation(player, tileEntity));
 		this.tileEntity = tileEntity;
 		mouseOverCoords = new Point(this.tileEntity.getPos().getX(), this.tileEntity.getPos().getZ());

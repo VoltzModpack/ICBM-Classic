@@ -2,13 +2,13 @@ package icbm.classic.content.potion;
 
 import icbm.classic.ICBMClassic;
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,7 +28,7 @@ public class PoisonContagion extends CustomPotion {
 	}
 
 	@Override
-	public void performEffect(EntityLivingBase entityLiving, int amplifier) {
+	public void performEffect(LivingEntity entityLiving, int amplifier) {
 		World world = entityLiving.world;
 		if (!(entityLiving instanceof EntityZombie) && !(entityLiving instanceof EntityPigZombie)) {
 			entityLiving.attackEntityFrom(DamageSource.MAGIC, 1);
@@ -37,9 +37,9 @@ public class PoisonContagion extends CustomPotion {
 		if (entityLiving.world.rand.nextFloat() > 0.8) {
 			int r = 13;
 			AxisAlignedBB entitySurroundings = new AxisAlignedBB(entityLiving.posX - r, entityLiving.posY - r, entityLiving.posZ - r, entityLiving.posX + r, entityLiving.posY + r, entityLiving.posZ + r);
-			List<EntityLivingBase> entities = entityLiving.world.getEntitiesWithinAABB(EntityLivingBase.class, entitySurroundings);
+			List<LivingEntity> entities = entityLiving.world.getEntitiesWithinAABB(LivingEntity.class, entitySurroundings);
 
-			for (EntityLivingBase entity : entities) {
+			for (LivingEntity entity : entities) {
 				if (entity != null && entity != entityLiving) {
 					if (entity instanceof EntityPig) {
 						EntityPigZombie newEntity = new EntityPigZombie(entity.world);
@@ -67,7 +67,7 @@ public class PoisonContagion extends CustomPotion {
 							}
 
 							world.spawnEntity(entityzombievillager);
-							world.playEvent((EntityPlayer) null, 1026, new BlockPos(entity), 0);
+							world.playEvent((PlayerEntity) null, 1026, new BlockPos(entity), 0);
 						}
 						entity.setDead();
 					}

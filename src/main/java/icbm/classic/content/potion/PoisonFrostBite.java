@@ -1,7 +1,7 @@
 package icbm.classic.content.potion;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
@@ -17,14 +17,14 @@ public class PoisonFrostBite extends CustomPotion {
 	}
 
 	@Override
-	public void performEffect(EntityLivingBase entity, int amplifier) {
+	public void performEffect(LivingEntity entity, int amplifier) {
 		if (entity.isBurning()) {
 			entity.extinguish();
 		}
 
-		if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).capabilities.isCreativeMode) {
-			if (entity instanceof EntityPlayer) {
-				((EntityPlayer) entity).addExhaustion(3F * (amplifier + 1));
+		if (!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).capabilities.isCreativeMode) {
+			if (entity instanceof PlayerEntity) {
+				((PlayerEntity) entity).addExhaustion(3F * (amplifier + 1));
 			}
 
 			// Check to see if it's on ice

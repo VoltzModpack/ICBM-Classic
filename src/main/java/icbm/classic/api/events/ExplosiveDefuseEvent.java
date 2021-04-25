@@ -2,7 +2,7 @@ package icbm.classic.api.events;
 
 import icbm.classic.api.caps.IExplosive;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -11,10 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class ExplosiveDefuseEvent extends Event {
 
-	public final EntityPlayer player;
+	public final PlayerEntity player;
 	public final Entity entityToDefuse;
 
-	public ExplosiveDefuseEvent(EntityPlayer player, Entity entityToDefuse) {
+	public ExplosiveDefuseEvent(PlayerEntity player, Entity entityToDefuse) {
 		this.player = player;
 		this.entityToDefuse = entityToDefuse;
 	}
@@ -27,7 +27,7 @@ public class ExplosiveDefuseEvent extends Event {
 
 		public final IExplosive explosive;
 
-		public ICBMExplosive(EntityPlayer player, Entity entityToDefuse, IExplosive explosive) {
+		public ICBMExplosive(PlayerEntity player, Entity entityToDefuse, IExplosive explosive) {
 			super(player, entityToDefuse);
 
 			this.explosive = explosive;
@@ -42,7 +42,7 @@ public class ExplosiveDefuseEvent extends Event {
 	@Cancelable
 	public static class TNTExplosive extends ExplosiveDefuseEvent {
 
-		public TNTExplosive(EntityPlayer player, Entity entityToDefuse) {
+		public TNTExplosive(PlayerEntity player, Entity entityToDefuse) {
 			super(player, entityToDefuse);
 		}
 
@@ -54,7 +54,7 @@ public class ExplosiveDefuseEvent extends Event {
 	@Cancelable
 	public static class ICBMBombCart extends ExplosiveDefuseEvent {
 
-		public ICBMBombCart(EntityPlayer player, Entity entityToDefuse) {
+		public ICBMBombCart(PlayerEntity player, Entity entityToDefuse) {
 			super(player, entityToDefuse);
 		}
 

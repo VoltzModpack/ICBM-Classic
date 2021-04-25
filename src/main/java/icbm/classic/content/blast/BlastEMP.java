@@ -9,7 +9,7 @@ import icbm.classic.lib.capability.emp.CapabilityEMP;
 import icbm.classic.lib.capability.emp.CapabilityEmpInventory;
 import icbm.classic.lib.energy.system.EnergySystem;
 import icbm.classic.lib.energy.system.IEnergySystem;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
@@ -65,7 +65,7 @@ public class BlastEMP extends Blast {
 									world().spawnParticle(EnumParticleTypes.SMOKE_LARGE, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, 0, 0, 0);
 								}
 
-								IBlockState iBlockState = world.getBlockState(blockPos);
+								BlockState iBlockState = world.getBlockState(blockPos);
 								float powerEntity = 1f;
 
 								//Fire event to allow canceling action on entity

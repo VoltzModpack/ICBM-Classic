@@ -16,8 +16,8 @@ import icbm.classic.prefab.FakeRadioSender;
 import icbm.classic.prefab.inventory.ExternalInventory;
 import icbm.classic.prefab.inventory.IInventoryProvider;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.TextComponentString;
@@ -105,7 +105,7 @@ public class TileLauncherScreen extends TileLauncherPrefab implements IPacketIDR
 	}
 
 	@Override
-	public boolean read(ByteBuf data, int id, EntityPlayer player, IPacket packet) {
+	public boolean read(ByteBuf data, int id, PlayerEntity player, IPacket packet) {
 		if (!super.read(data, id, player, packet)) {
 			switch (id) {
 				case DESCRIPTION_PACKET_ID: {
@@ -215,20 +215,20 @@ public class TileLauncherScreen extends TileLauncherPrefab implements IPacketIDR
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readFromNBT(par1NBTTagCompound);
-		//this.tier = par1NBTTagCompound.getInteger(NBTConstants.TIER);
-		this.lockHeight = par1NBTTagCompound.getShort(NBTConstants.TARGET_HEIGHT);
+	public void readFromNBT(CompoundNBT par1CompoundNBT) {
+		super.readFromNBT(par1CompoundNBT);
+		//this.tier = par1CompoundNBT.getInteger(NBTConstants.TIER);
+		this.lockHeight = par1CompoundNBT.getShort(NBTConstants.TARGET_HEIGHT);
 	}
 
 	/**
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		//par1NBTTagCompound.setInteger(NBTConstants.TIER, this.tier);
-		par1NBTTagCompound.setShort(NBTConstants.TARGET_HEIGHT, this.lockHeight);
-		return super.writeToNBT(par1NBTTagCompound);
+	public CompoundNBT writeToNBT(CompoundNBT par1CompoundNBT) {
+		//par1CompoundNBT.setInteger(NBTConstants.TIER, this.tier);
+		par1CompoundNBT.setShort(NBTConstants.TARGET_HEIGHT, this.lockHeight);
+		return super.writeToNBT(par1CompoundNBT);
 	}
 
 	@Override
@@ -254,12 +254,12 @@ public class TileLauncherScreen extends TileLauncherPrefab implements IPacketIDR
 	}
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player) {
+	public Object getServerGuiElement(int ID, PlayerEntity player) {
 		return new ContainerLaunchScreen(player, this);
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player) {
+	public Object getClientGuiElement(int ID, PlayerEntity player) {
 		return new GuiLauncherScreen(player, this);
 	}
 

@@ -53,7 +53,7 @@ public interface IEMPReceiver {
 	 * effects are required.
 	 * <p>
 	 * Common example is containers that are ItemHandlers or Inventories Ex: {@link
-	 * net.minecraft.entity.player.EntityPlayer}, {@link net.minecraft.tileentity.TileEntityChest}, {@link
+	 * net.minecraft.entity.player.PlayerEntity}, {@link net.minecraft.tileentity.TileEntityChest}, {@link
 	 * net.minecraft.entity.item.EntityMinecartChest}
 	 *
 	 * @param container - object containing this sub-object

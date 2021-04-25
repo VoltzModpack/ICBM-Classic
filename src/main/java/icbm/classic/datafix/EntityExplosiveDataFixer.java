@@ -7,13 +7,13 @@ import icbm.classic.content.reg.BlockReg;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.datafix.IFixableData;
 
 public class EntityExplosiveDataFixer implements IFixableData {
 
 	@Override
-	public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+	public CompoundNBT fixTagCompound(CompoundNBT compound) {
 		//Match to entity, we get all entity tags as input
 		if (compound.hasKey(NBTConstants.ID) && compound.getString(NBTConstants.ID).equalsIgnoreCase(ICBMEntities.BLOCK_EXPLOSIVE.toString())) {
 			//Fix explosive ID save

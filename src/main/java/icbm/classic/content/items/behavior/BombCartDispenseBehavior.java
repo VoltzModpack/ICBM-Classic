@@ -4,7 +4,7 @@ import icbm.classic.content.entity.EntityBombCart;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class BombCartDispenseBehavior extends BehaviorDefaultDispenseItem {
 		double y = Math.floor(source.getY()) + (double) enumfacing.getYOffset();
 		double z = source.getZ() + (double) enumfacing.getZOffset() * 1.125D;
 		BlockPos blockpos = source.getBlockPos().offset(enumfacing);
-		IBlockState iblockstate = world.getBlockState(blockpos);
+		BlockState iblockstate = world.getBlockState(blockpos);
 		BlockRailBase.EnumRailDirection rail =
 			(iblockstate.getBlock() instanceof BlockRailBase
 				 ? ((BlockRailBase) iblockstate.getBlock()).getRailDirection(world, blockpos, iblockstate, null)
@@ -43,7 +43,7 @@ public class BombCartDispenseBehavior extends BehaviorDefaultDispenseItem {
 				return this.behaviourDefaultDispenseItem.dispense(source, stack);
 			}
 
-			IBlockState blockB = world.getBlockState(blockpos.down());
+			BlockState blockB = world.getBlockState(blockpos.down());
 			BlockRailBase.EnumRailDirection railB =
 				(blockB.getBlock() instanceof BlockRailBase ?
 					 ((BlockRailBase) blockB.getBlock()).getRailDirection(world, blockpos.down(), blockB, null)
@@ -56,7 +56,7 @@ public class BombCartDispenseBehavior extends BehaviorDefaultDispenseItem {
 			}
 		}
 
-		EntityBombCart cart = new EntityBombCart(world, x, y + heightDelta, z, stack.getItemDamage());
+		EntityBombCart cart = new EntityBombCart(world, x, y + heightDelta, z, stack.getDamage());
 
 		if (stack.hasDisplayName()) {
 			cart.setCustomNameTag(stack.getDisplayName());

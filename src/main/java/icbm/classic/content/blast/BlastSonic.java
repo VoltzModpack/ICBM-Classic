@@ -10,9 +10,9 @@ import icbm.classic.content.blocks.explosive.TileEntityExplosive;
 import icbm.classic.content.entity.EntityFlyingBlock;
 import icbm.classic.content.reg.BlockReg;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -96,7 +96,7 @@ public class BlastSonic extends Blast implements IBlastTickable {
 							it.remove();
 
 							//Get data
-							final IBlockState blockState = world.getBlockState(targetPosition);
+							final BlockState blockState = world.getBlockState(targetPosition);
 							final Block block = blockState.getBlock();
 
 							//Only act on movable blocks
@@ -141,7 +141,7 @@ public class BlastSonic extends Blast implements IBlastTickable {
 		for (Entity entity : allEntities) {
 			if (entity instanceof IMissile) {
 				((IMissile) entity).destroyMissile(true); //TODO change from guided to dummy fire
-			} else if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isCreative()) {
+			} else if (!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative()) {
 				//Get difference
 				double xDelta = entity.posX - location.x();
 				double yDelta = entity.posY - location.y();

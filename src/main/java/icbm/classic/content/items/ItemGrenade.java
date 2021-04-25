@@ -6,12 +6,12 @@ import icbm.classic.content.entity.EntityGrenade;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import icbm.classic.prefab.item.ItemBase;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -34,7 +34,7 @@ public class ItemGrenade extends ItemBase {
 
 	@Override
 	@Nullable
-	public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+	public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new CapabilityExplosiveStack(stack);
 	}
 
@@ -49,14 +49,14 @@ public class ItemGrenade extends ItemBase {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		playerIn.setActiveHand(handIn);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityLivingBase entityLiving, int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack itemStack, World world, LivingEntity entityLiving, int timeLeft) {
 		if (!world.isRemote) {
 			//Play throw sound
 			world.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
@@ -72,7 +72,7 @@ public class ItemGrenade extends ItemBase {
 				.setThrowMotion(throwEnergy).spawn();
 
 			//Consume item
-			if (!(entityLiving instanceof EntityPlayer) || !((EntityPlayer) entityLiving).capabilities.isCreativeMode) {
+			if (!(entityLiving instanceof PlayerEntity) || !((PlayerEntity) entityLiving).capabilities.isCreativeMode) {
 				itemStack.shrink(1);
 			}
 		}
@@ -85,7 +85,7 @@ public class ItemGrenade extends ItemBase {
 
 	@Override
 	public String getTranslationKey(ItemStack itemstack) {
-		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getItemDamage());
+		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getDamage());
 		if (data != null) {
 			return "grenade." + data.getRegistryName();
 		}
@@ -98,12 +98,12 @@ public class ItemGrenade extends ItemBase {
 	}
 
 	@Override
-	protected boolean hasDetailedInfo(ItemStack stack, EntityPlayer player) {
+	protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List list) {
+	protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List list) {
 		//TODO ((ItemBlockExplosive) Item.getItemFromBlock(ICBMClassic.blockExplosive)).getDetailedInfo(stack, player, list);
 	}
 

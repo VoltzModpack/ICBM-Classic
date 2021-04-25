@@ -1,6 +1,6 @@
 package icbm.classic.prefab.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -96,7 +96,7 @@ public class ExternalInventory extends BasicInventory implements IExternalInvent
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+	public boolean isUsableByPlayer(PlayerEntity par1PlayerEntity) {
 		return true;
 	}
 
@@ -105,7 +105,7 @@ public class ExternalInventory extends BasicInventory implements IExternalInvent
 		this.inventoryMap.clear();
 	}
 
-	public void transferIntoInventory(EntityPlayer playerIn, EnumHand hand, ItemStack heldStack) {
+	public void transferIntoInventory(PlayerEntity playerIn, EnumHand hand, ItemStack heldStack) {
 		//Add stack to inventory, stack is consumed
 		heldStack = addItemToInventory(heldStack);
 

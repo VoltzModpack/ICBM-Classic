@@ -6,7 +6,7 @@ import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.reg.BlockReg;
 import icbm.classic.lib.NBTConstants;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -17,10 +17,10 @@ import javax.annotation.Nullable;
 /**
  * Used by any item that has an explosive capability Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
-public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializable<NBTTagCompound> {
+public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializable<CompoundNBT> {
 
 	private final ItemStack stack;
-	private NBTTagCompound custom_ex_data;
+	private CompoundNBT custom_ex_data;
 
 	public CapabilityExplosiveStack(ItemStack stack) {
 		this.stack = stack;
@@ -30,7 +30,7 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 		if (stack == null) {
 			return 0;
 		}
-		return stack.getItemDamage(); //TODO replace meta usage for 1.14 update
+		return stack.getDamage(); //TODO replace meta usage for 1.14 update
 	}
 
 	@Nullable
@@ -41,14 +41,14 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 
 	@Nullable
 	@Override
-	public NBTTagCompound getCustomBlastData() {
+	public CompoundNBT getCustomBlastData() {
 		if (custom_ex_data == null) {
-			custom_ex_data = new NBTTagCompound();
+			custom_ex_data = new CompoundNBT();
 		}
 		return custom_ex_data;
 	}
 
-	public void setCustomData(NBTTagCompound data) {
+	public void setCustomData(CompoundNBT data) {
 		this.custom_ex_data = data;
 	}
 
@@ -64,9 +64,9 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 	}
 
 	@Override
-	public NBTTagCompound serializeNBT() {
+	public CompoundNBT serializeNBT() {
 		//Do not save the stack itself as we are saving to its NBT
-		NBTTagCompound save = new NBTTagCompound();
+		CompoundNBT save = new CompoundNBT();
 		if (!getCustomBlastData().isEmpty()) {
 			save.setTag(NBTConstants.CUSTOM_EX_DATA, getCustomBlastData());
 		}
@@ -74,7 +74,7 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 	}
 
 	@Override
-	public void deserializeNBT(NBTTagCompound nbt) {
+	public void deserializeNBT(CompoundNBT nbt) {
 		if (nbt.hasKey(NBTConstants.CUSTOM_EX_DATA)) {
 			custom_ex_data = nbt.getCompoundTag(NBTConstants.CUSTOM_EX_DATA);
 		}

@@ -1,6 +1,6 @@
 package icbm.classic.api.data;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +12,6 @@ import net.minecraft.world.World;
 @FunctionalInterface
 public interface BlockActivateFunction {
 
-	boolean onActivate(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ);
+	boolean onActivate(World world, BlockPos pos, PlayerEntity entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ);
 
 }

@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +49,7 @@ public class PacketRedmatterSizeSync implements IPacket<PacketRedmatterSizeSync>
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleClientSide(EntityPlayer player) {
+	public void handleClientSide(PlayerEntity player) {
 		if (Minecraft.getMinecraft().world != null) {
 			final Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);
 			if (entity instanceof EntityExplosion && ((EntityExplosion) entity).getBlast() instanceof BlastRedmatter) {

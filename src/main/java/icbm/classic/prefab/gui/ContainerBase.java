@@ -1,7 +1,7 @@
 package icbm.classic.prefab.gui;
 
 import icbm.classic.prefab.inventory.IInventoryProvider;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -11,7 +11,7 @@ public class ContainerBase<H extends Object> extends Container {
 	protected int slotCount = 0;
 
 	protected IInventory inventory;
-	protected EntityPlayer player;
+	protected PlayerEntity player;
 	protected H host;
 
 	public ContainerBase(IInventory inventory) {
@@ -20,7 +20,7 @@ public class ContainerBase<H extends Object> extends Container {
 	}
 
 	@Deprecated
-	public ContainerBase(EntityPlayer player, IInventory inventory) {
+	public ContainerBase(PlayerEntity player, IInventory inventory) {
 		this(inventory);
 
 		this.player = player;
@@ -29,7 +29,7 @@ public class ContainerBase<H extends Object> extends Container {
 		}
 	}
 
-	public ContainerBase(EntityPlayer player, H node) {
+	public ContainerBase(PlayerEntity player, H node) {
 		if (node instanceof IInventory) {
 			inventory = (IInventory) node;
 		} else if (node instanceof IInventoryProvider) {
@@ -43,18 +43,18 @@ public class ContainerBase<H extends Object> extends Container {
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer entityplayer) {
+	public void onContainerClosed(PlayerEntity entityplayer) {
 		if (host instanceof IPlayerUsing && entityplayer.openContainer != this) {
 			((IPlayerUsing) host).removePlayerToUseList(entityplayer);
 		}
 		super.onContainerClosed(entityplayer);
 	}
 
-	public void addPlayerInventory(EntityPlayer player) {
+	public void addPlayerInventory(PlayerEntity player) {
 		addPlayerInventory(player, 8, 84);
 	}
 
-	public void addPlayerInventory(EntityPlayer player, int x, int y) {
+	public void addPlayerInventory(PlayerEntity player, int x, int y) {
 		if (this.inventory instanceof IPlayerUsing) {
 			((IPlayerUsing) this.inventory).getPlayersUsing().add(player);
 		}
@@ -73,7 +73,7 @@ public class ContainerBase<H extends Object> extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) {
+	public boolean canInteractWith(PlayerEntity entityplayer) {
 		return this.inventory.isUsableByPlayer(entityplayer);
 	}
 

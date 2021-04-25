@@ -6,7 +6,7 @@ import icbm.classic.config.ConfigMain;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.energy.storage.EnergyBuffer;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -68,13 +68,13 @@ public class TilePoweredMachine extends TileMachine implements IEnergyBufferProv
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
 		setEnergy(compound.getInteger(NBTConstants.ENERGY));
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public CompoundNBT writeToNBT(CompoundNBT compound) {
 		compound.setInteger(NBTConstants.ENERGY, getEnergy());
 		return super.writeToNBT(compound);
 	}

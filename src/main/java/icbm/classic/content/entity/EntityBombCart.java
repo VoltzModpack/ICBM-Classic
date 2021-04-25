@@ -9,15 +9,15 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.explosive.ExplosiveHandler;
 import icbm.classic.prefab.tile.BlockICBM;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecartTNT;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityBombCart extends EntityMinecartTNT implements IEntityAdditionalSpawnData {
 
 	public int explosive = -1; //TODO move to capability
-	public NBTTagCompound data; //TODO move to capability
+	public CompoundNBT data; //TODO move to capability
 
 	public EntityBombCart(World par1World) {
 		super(par1World);
@@ -90,7 +90,7 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 			this.world.setEntityState(this, (byte) 10);
 
 			if (!this.isSilent()) {
-				this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 		}
 	}
@@ -109,19 +109,19 @@ public class EntityBombCart extends EntityMinecartTNT implements IEntityAddition
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(CompoundNBT nbt) {
 		super.writeEntityToNBT(nbt);
 		nbt.setInteger(NBTConstants.EXPLOSIVE, explosive);
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(CompoundNBT nbt) {
 		super.readEntityFromNBT(nbt);
 		explosive = nbt.getInteger(NBTConstants.EXPLOSIVE);
 	}
 
 	@Override
-	public IBlockState getDefaultDisplayTile() {
+	public BlockState getDefaultDisplayTile() {
 		return BlockReg.blockExplosive.getDefaultState()
 			       .withProperty(BlockExplosive.EX_PROP, ICBMClassicHelpers.getExplosive(explosive, false))
 			       .withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);

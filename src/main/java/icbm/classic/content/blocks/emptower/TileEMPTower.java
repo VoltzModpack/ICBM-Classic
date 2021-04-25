@@ -17,8 +17,8 @@ import icbm.classic.prefab.inventory.IInventoryProvider;
 import icbm.classic.prefab.tile.IGuiTile;
 import icbm.classic.prefab.tile.TilePoweredMachine;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -104,7 +104,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	}
 
 	@Override
-	public boolean read(ByteBuf data, int id, EntityPlayer player, IPacket type) //TODO migrate to a packet handler
+	public boolean read(ByteBuf data, int id, PlayerEntity player, IPacket type) //TODO migrate to a packet handler
 	{
 		if (!super.read(data, id, player, type)) {
 			switch (id) {
@@ -145,7 +145,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound readFromNBT) {
+	public void readFromNBT(CompoundNBT readFromNBT) {
 		super.readFromNBT(readFromNBT);
 		this.empRadius = readFromNBT.getInteger(NBTConstants.EMP_RADIUS);
 		this.empMode = EMPMode.values()[readFromNBT.getByte(NBTConstants.EMP_MODE)];
@@ -155,7 +155,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound saveToNBT) {
+	public CompoundNBT writeToNBT(CompoundNBT saveToNBT) {
 		saveToNBT.setInteger(NBTConstants.EMP_RADIUS, this.empRadius);
 		saveToNBT.setByte(NBTConstants.EMP_MODE, (byte) this.empMode.ordinal());
 		return super.writeToNBT(saveToNBT);
@@ -255,7 +255,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	}
 
 	@Override
-	public boolean onMultiTileActivated(IMultiTile tile, EntityPlayer player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
+	public boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit) {
 		if (isServer()) {
 			openGui(player, 0);
 		}
@@ -263,7 +263,7 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	}
 
 	@Override
-	public void onMultiTileClicked(IMultiTile tile, EntityPlayer player) {
+	public void onMultiTileClicked(IMultiTile tile, PlayerEntity player) {
 
 	}
 
@@ -273,12 +273,12 @@ public class TileEMPTower extends TilePoweredMachine implements IMultiTileHost, 
 	}
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player) {
+	public Object getServerGuiElement(int ID, PlayerEntity player) {
 		return new ContainerEMPTower(player, this);
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player) {
+	public Object getClientGuiElement(int ID, PlayerEntity player) {
 		return new GuiEMPTower(player, this);
 	}
 

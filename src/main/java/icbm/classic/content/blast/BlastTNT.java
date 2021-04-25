@@ -5,11 +5,11 @@ import icbm.classic.lib.transform.region.Cube;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -130,7 +130,7 @@ public class BlastTNT extends Blast {
 
 								//Get block
 								BlockPos blockPos = new BlockPos(xi, yi, zi);
-								IBlockState blockState = world.getBlockState(blockPos);
+								BlockState blockState = world.getBlockState(blockPos);
 								Block block = blockState.getBlock();
 
 								//Only act on non-air blocks
@@ -173,7 +173,7 @@ public class BlastTNT extends Blast {
 				int zi = blownPosition.getZ();
 
 				//Get block
-				IBlockState blockState = world.getBlockState(blownPosition);
+				BlockState blockState = world.getBlockState(blownPosition);
 				Block block = blockState.getBlock();
 
 				///Generate effect TODO move to effect handler
@@ -248,10 +248,10 @@ public class BlastTNT extends Blast {
 				zDifference /= mag;
 
 				if (type == PushType.ATTRACT) {
-					double modifier = var13 * force * (entity instanceof EntityPlayer ? 0.5 : 1);
+					double modifier = var13 * force * (entity instanceof PlayerEntity ? 0.5 : 1);
 					entity.addVelocity(-xDifference * modifier, -yDifference * modifier, -zDifference * modifier);
 				} else if (type == PushType.REPEL) {
-					double modifier = (1.0D - var13) * force * (entity instanceof EntityPlayer ? 0.5 : 1);
+					double modifier = (1.0D - var13) * force * (entity instanceof PlayerEntity ? 0.5 : 1);
 					entity.addVelocity(xDifference * modifier, yDifference * modifier, zDifference * modifier);
 				}
 			}
@@ -259,14 +259,14 @@ public class BlastTNT extends Blast {
 	}
 
 	@Override
-	public void load(NBTTagCompound nbt) {
+	public void load(CompoundNBT nbt) {
 		super.load(nbt);
 		this.pushType = PushType.values()[nbt.getInteger(NBTConstants.PUSH_TYPE)];
 		this.destroyItem = nbt.getBoolean(NBTConstants.DESTROY_ITEM);
 	}
 
 	@Override
-	public void save(NBTTagCompound nbt) {
+	public void save(CompoundNBT nbt) {
 		super.save(nbt);
 		nbt.setInteger(NBTConstants.PUSH_TYPE, this.pushType.ordinal());
 		nbt.setBoolean(NBTConstants.DESTROY_ITEM, this.destroyItem);

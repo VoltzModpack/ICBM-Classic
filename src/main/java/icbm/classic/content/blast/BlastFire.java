@@ -2,7 +2,7 @@ package icbm.classic.content.blast;
 
 import icbm.classic.client.ICBMSounds;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
@@ -35,7 +35,7 @@ public class BlastFire extends Blast {
 							for (float var21 = 0.3F; var14 > 0.0F; var14 -= var21 * 0.75F) {
 								BlockPos targetPosition = new BlockPos(var15, var17, var19);
 								double distanceFromCenter = location.distance(targetPosition);
-								IBlockState blockState = world().getBlockState(targetPosition);
+								BlockState blockState = world().getBlockState(targetPosition);
 								Block block = blockState.getBlock();
 
 								if (!block.isAir(blockState, world, targetPosition)) {

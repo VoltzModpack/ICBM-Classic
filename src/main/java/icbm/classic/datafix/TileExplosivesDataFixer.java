@@ -4,17 +4,17 @@ import icbm.classic.ICBMConstants;
 import icbm.classic.content.reg.BlockReg;
 import icbm.classic.lib.NBTConstants;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.datafix.IFixableData;
 
 public class TileExplosivesDataFixer implements IFixableData {
 
 	@Override
-	public NBTTagCompound fixTagCompound(NBTTagCompound nbt) {
+	public CompoundNBT fixTagCompound(CompoundNBT nbt) {
 		String id = nbt.getString(NBTConstants.ID);
 
 		if (id.equals(ICBMConstants.PREFIX + "explosive")) {
-			NBTTagCompound newNbt = new NBTTagCompound();
+			CompoundNBT newNbt = new CompoundNBT();
 			int explosiveID = nbt.getInteger(NBTConstants.EXPLOSIVE_ID);
 
 			if (explosiveID == 14) //the S-Mine was removed, make it be the default explosive as a fallback

@@ -37,9 +37,9 @@ public class SpikeMeshDefinition implements ItemMeshDefinition {
 
 	@Override
 	public ModelResourceLocation getModelLocation(ItemStack stack) {
-		if (stack.getItemDamage() == 1) {
+		if (stack.getDamage() == 1) {
 			return poison;
-		} else if (stack.getItemDamage() == 2) {
+		} else if (stack.getDamage() == 2) {
 			return fire;
 		}
 		return base;

@@ -24,10 +24,10 @@ import icbm.classic.prefab.inventory.IInventoryProvider;
 import icbm.classic.prefab.tile.IGuiTile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -157,7 +157,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	}
 
 	@Override
-	public boolean read(ByteBuf data, int id, EntityPlayer player, IPacket type) {
+	public boolean read(ByteBuf data, int id, PlayerEntity player, IPacket type) {
 		if (!super.read(data, id, player, type)) {
 			switch (id) {
 				//set frequency packet from GUI
@@ -224,7 +224,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
 		getInventory().load(nbt.getCompoundTag(NBTConstants.INVENTORY));
 		currentAim.readFromNBT(nbt.getCompoundTag(NBTConstants.CURRENT_AIM));
@@ -235,9 +235,9 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		nbt.setTag(NBTConstants.INVENTORY, getInventory().save(new NBTTagCompound()));
-		nbt.setTag(NBTConstants.CURRENT_AIM, currentAim.writeNBT(new NBTTagCompound()));
+	public CompoundNBT writeToNBT(CompoundNBT nbt) {
+		nbt.setTag(NBTConstants.INVENTORY, getInventory().save(new CompoundNBT()));
+		nbt.setTag(NBTConstants.CURRENT_AIM, currentAim.writeNBT(new CompoundNBT()));
 		return super.writeToNBT(nbt);
 	}
 
@@ -265,7 +265,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 
 	protected boolean hasMissile() {
 		final ItemStack stackInSlot = this.getInventory().getStackInSlot(0);
-		return stackInSlot.getItem() == ItemReg.itemMissile && ICBMClassicAPI.EX_MISSILE_REGISTRY.isEnabled(stackInSlot.getItemDamage());
+		return stackInSlot.getItem() == ItemReg.itemMissile && ICBMClassicAPI.EX_MISSILE_REGISTRY.isEnabled(stackInSlot.getDamage());
 	}
 
 	protected boolean hasTarget() {
@@ -281,7 +281,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 		for (int x = -1; x < 2; x++) {
 			for (int z = -1; z < 2; z++) {
 				BlockPos pos = getPos().add(x, 1, z);
-				IBlockState state = world.getBlockState(pos);
+				BlockState state = world.getBlockState(pos);
 				Block block = state.getBlock();
 				if (!block.isAir(state, world, pos)) {
 					return false;
@@ -303,7 +303,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 
 			EntityMissile entityMissile = new EntityMissile(world, xi() + 0.5, yi() + 1.5, zi() + 0.5, -(float) currentAim.yaw() - 180, -(float) currentAim.pitch(), 2);
 			entityMissile.missileType = MissileFlightType.CRUISE_LAUNCHER;
-			entityMissile.explosiveID = this.getInventory().getStackInSlot(0).getItemDamage(); //TODO encode entire itemstack
+			entityMissile.explosiveID = this.getInventory().getStackInSlot(0).getDamage(); //TODO encode entire itemstack
 			entityMissile.acceleration = 1;
 			entityMissile.capabilityMissile.launchNoTarget();
 			world.spawnEntity(entityMissile);
@@ -361,7 +361,7 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	@Override
 	public boolean canStore(ItemStack itemStack, EnumFacing side) {
 		if (itemStack != null && itemStack.getItem() instanceof ItemMissile && this.getInventory().getStackInSlot(0) == null) {
-			return ICBMClassicAPI.EX_MISSILE_REGISTRY.isEnabled(itemStack.getItemDamage());
+			return ICBMClassicAPI.EX_MISSILE_REGISTRY.isEnabled(itemStack.getDamage());
 		}
 		return false;
 	}
@@ -372,12 +372,12 @@ public class TileCruiseLauncher extends TileLauncherPrefab implements IPacketIDR
 	}
 
 	@Override
-	public Object getServerGuiElement(int id, EntityPlayer player) {
+	public Object getServerGuiElement(int id, PlayerEntity player) {
 		return new ContainerCruiseLauncher(player, this);
 	}
 
 	@Override
-	public Object getClientGuiElement(int id, EntityPlayer player) {
+	public Object getClientGuiElement(int id, PlayerEntity player) {
 		return new GuiCruiseLauncher(player, this);
 	}
 

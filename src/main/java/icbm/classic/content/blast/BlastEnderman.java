@@ -7,9 +7,9 @@ import icbm.classic.lib.transform.vector.Location;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntityMP;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,7 +25,7 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 	private Pos teleportTarget;
 
 	@Override
-	public IBlastInit setCustomData(@Nonnull NBTTagCompound customData) {
+	public IBlastInit setCustomData(@Nonnull CompoundNBT customData) {
 		if (customData != null && customData.hasKey(NBT_LOCATION)) {
 			teleportTarget = new Pos(customData.getCompoundTag(NBT_LOCATION));
 			//TODO load world ID
@@ -125,8 +125,8 @@ public class BlastEnderman extends Blast implements IBlastTickable {
 
 						this.world().playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
-						if (entity instanceof EntityPlayerMP) {
-							((EntityPlayerMP) entity).connection.setPlayerLocation(this.teleportTarget.x() + 0.5, this.teleportTarget.y() + 0.5, this.teleportTarget.z() + 0.5, entity.rotationYaw, entity.rotationPitch);
+						if (entity instanceof PlayerEntityMP) {
+							((PlayerEntityMP) entity).connection.setPlayerLocation(this.teleportTarget.x() + 0.5, this.teleportTarget.y() + 0.5, this.teleportTarget.z() + 0.5, entity.rotationYaw, entity.rotationPitch);
 						} else {
 							entity.setPosition(this.teleportTarget.x() + 0.5, this.teleportTarget.y() + 0.5, this.teleportTarget.z() + 0.5);
 						}

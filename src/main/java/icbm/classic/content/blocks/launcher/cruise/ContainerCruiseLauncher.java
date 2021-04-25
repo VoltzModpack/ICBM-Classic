@@ -1,13 +1,13 @@
 package icbm.classic.content.blocks.launcher.cruise;
 
 import icbm.classic.prefab.gui.ContainerBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCruiseLauncher extends ContainerBase<TileCruiseLauncher> {
 
-	public ContainerCruiseLauncher(EntityPlayer player, TileCruiseLauncher tileEntity) {
+	public ContainerCruiseLauncher(PlayerEntity player, TileCruiseLauncher tileEntity) {
 		super(player, tileEntity);
 		// Missile Slot
 		this.addSlotToContainer(new Slot(tileEntity.getInventory(), 0, 151, 23));
@@ -20,7 +20,7 @@ public class ContainerCruiseLauncher extends ContainerBase<TileCruiseLauncher> {
 	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
 	 */
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex) {
+	public ItemStack transferStackInSlot(PlayerEntity par1PlayerEntity, int slotIndex) {
 		ItemStack targetItemStackCopy = null;
 		Slot targetSlot = (Slot) this.inventorySlots.get(slotIndex);
 
@@ -53,7 +53,7 @@ public class ContainerCruiseLauncher extends ContainerBase<TileCruiseLauncher> {
 				return ItemStack.EMPTY;
 			}
 
-			targetSlot.onTake(par1EntityPlayer, targetItemStack);
+			targetSlot.onTake(par1PlayerEntity, targetItemStack);
 		}
 
 		if (targetItemStackCopy == null) {

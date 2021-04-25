@@ -14,10 +14,10 @@ import icbm.classic.lib.network.packet.PacketTile;
 import icbm.classic.mods.ic2.IC2Proxy;
 import icbm.classic.prefab.gui.IPlayerUsing;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerEntityMP;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -57,7 +57,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	// Cache until block state can be updated
 	public EnumTier _tier = EnumTier.ONE;
 
-	List<EntityPlayer> playersWithGUI = new ArrayList();
+	List<PlayerEntity> playersWithGUI = new ArrayList();
 
 	@Override
 	public void update() {
@@ -96,7 +96,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	}
 
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+	public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate) {
 		return oldState.getBlock() != newSate.getBlock();
 	}
 
@@ -108,13 +108,13 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
 		_tier = EnumTier.get(compound.getInteger(NBTConstants.TIER));
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public CompoundNBT writeToNBT(CompoundNBT compound) {
 		compound.setInteger(NBTConstants.TIER, _tier.ordinal());
 		return super.writeToNBT(compound);
 	}
@@ -125,8 +125,8 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
+	public CompoundNBT getUpdateTag() {
+		return writeToNBT(new CompoundNBT());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -143,11 +143,11 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 
 	public void sendPacketToGuiUsers(IPacket packet) {
 		if (packet != null) {
-			Iterator<EntityPlayer> it = getPlayersUsing().iterator();
+			Iterator<PlayerEntity> it = getPlayersUsing().iterator();
 			while (it.hasNext()) {
-				final EntityPlayer player = it.next();
-				if (player instanceof EntityPlayerMP && isValidGuiUser(player)) {
-					ICBMClassic.packetHandler.sendToPlayer(packet, (EntityPlayerMP) player);
+				final PlayerEntity player = it.next();
+				if (player instanceof PlayerEntityMP && isValidGuiUser(player)) {
+					ICBMClassic.packetHandler.sendToPlayer(packet, (PlayerEntityMP) player);
 				} else {
 					it.remove();
 				}
@@ -155,17 +155,17 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 		}
 	}
 
-	protected boolean isValidGuiUser(EntityPlayer player) {
+	protected boolean isValidGuiUser(PlayerEntity player) {
 		return player.openContainer != null;
 	}
 
 	@Override
-	public final List<EntityPlayer> getPlayersUsing() {
+	public final List<PlayerEntity> getPlayersUsing() {
 		return playersWithGUI;
 	}
 
 	@Override
-	public boolean read(ByteBuf buf, int id, EntityPlayer player, IPacket type) {
+	public boolean read(ByteBuf buf, int id, PlayerEntity player, IPacket type) {
 		if (isClient()) {
 			if (id == DESC_PACKET_ID) {
 				readDescPacket(buf);
@@ -208,7 +208,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	}
 
 	public EnumFacing getRotation() {
-		IBlockState state = getBlockState();
+		BlockState state = getBlockState();
 		if (state.getProperties().containsKey(BlockICBM.ROTATION_PROP)) {
 			return state.getValue(BlockICBM.ROTATION_PROP);
 		}
@@ -219,7 +219,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 		//Only update if state has changed
 		if (facingDirection != getRotation()) {
 			//Update block state
-			IBlockState state = getBlockState();
+			BlockState state = getBlockState();
 			if (state.getProperties().containsKey(BlockICBM.ROTATION_PROP)) {
 				world.setBlockState(pos, getBlockState().withProperty(BlockICBM.ROTATION_PROP, facingDirection));
 			}
@@ -234,7 +234,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 		if (tier != getTier()) {
 			this._tier = tier;
 			if (isServer()) {
-				IBlockState state = getBlockState();
+				BlockState state = getBlockState();
 				if (state.getProperties().containsKey(BlockICBM.TIER_PROP)) {
 					world.setBlockState(pos, state.withProperty(BlockICBM.TIER_PROP, tier));
 				}
@@ -242,7 +242,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 		}
 	}
 
-	public IBlockState getBlockState() {
+	public BlockState getBlockState() {
 		return world.getBlockState(getPos());
 	}
 
@@ -277,7 +277,7 @@ public class TileMachine extends TileEntity implements IPacketIDReceiver, IWorld
 	}
 
 	@Override
-	public boolean openGui(EntityPlayer player, int requestedID) {
+	public boolean openGui(PlayerEntity player, int requestedID) {
 		player.openGui(ICBMClassic.INSTANCE, requestedID, world, xi(), yi(), zi());
 		return true;
 	}

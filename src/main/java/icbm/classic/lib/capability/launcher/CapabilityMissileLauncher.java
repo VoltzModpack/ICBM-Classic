@@ -9,7 +9,7 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -90,14 +90,14 @@ public class CapabilityMissileLauncher extends CapabilityPrefab implements IMiss
 	}
 
 	@Override
-	protected void save(NBTTagCompound tag) {
+	protected void save(CompoundNBT tag) {
 		tag.setDouble(NBTConstants.TARGET_X, target_x);
 		tag.setDouble(NBTConstants.TARGET_Y, target_y);
 		tag.setDouble(NBTConstants.TARGET_Z, target_z);
 	}
 
 	@Override
-	protected void load(NBTTagCompound nbt) {
+	protected void load(CompoundNBT nbt) {
 		target_x = nbt.getDouble(NBTConstants.TARGET_X);
 		target_y = nbt.getDouble(NBTConstants.TARGET_Y);
 		target_z = nbt.getDouble(NBTConstants.TARGET_Z);

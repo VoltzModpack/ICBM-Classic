@@ -10,9 +10,9 @@ import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import icbm.classic.prefab.item.ItemBlockAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -39,7 +39,7 @@ public class ItemBlockExplosive extends ItemBlockAbstract {
 
 	@Override
 	@Nullable
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		final CapabilityExplosiveStack capabilityExplosive = new CapabilityExplosiveStack(stack);
 		if (nbt != null) {
 			capabilityExplosive.deserializeNBT(nbt);
@@ -48,14 +48,14 @@ public class ItemBlockExplosive extends ItemBlockAbstract {
 	}
 
 	@Override
-	public void getDetailedInfo(ItemStack stack, @Nullable EntityPlayer player, List list) {
-		final IExplosiveData data = ICBMClassicHelpers.getExplosive(stack.getItemDamage(), true);
+	public void getDetailedInfo(ItemStack stack, @Nullable PlayerEntity player, List list) {
+		final IExplosiveData data = ICBMClassicHelpers.getExplosive(stack.getDamage(), true);
 		if (data != null) {
 			final EnumTier tierdata = data.getTier();
 			list.add(TextFormatting.DARK_RED + LanguageUtility.getLocal("info.misc.tier") + ": " + tierdata.getTooltipColor() + tierdata.getLocalizedName());
 		}
 
-		if (stack.getItemDamage() == ICBMExplosives.REDMATTER.getRegistryID()) //TODO add hook for any explosive via content reg
+		if (stack.getDamage() == ICBMExplosives.REDMATTER.getRegistryID()) //TODO add hook for any explosive via content reg
 		{
 			///Shhh!!! tell no one this exists, tis a surprise
 			boolean taunt = shouldTauntPlayer(player);
@@ -106,7 +106,7 @@ public class ItemBlockExplosive extends ItemBlockAbstract {
 		}
 	}
 
-	protected boolean shouldTauntPlayer(@Nullable EntityPlayer player) {
+	protected boolean shouldTauntPlayer(@Nullable PlayerEntity player) {
 		return player != null && player.getName() != null
 			       && (player.getName().toLowerCase().startsWith("sips_") || player.getName().toLowerCase().startsWith("sjin"));
 	}
@@ -127,7 +127,7 @@ public class ItemBlockExplosive extends ItemBlockAbstract {
 	}
 
 	@Override
-	protected boolean hasDetailedInfo(ItemStack stack, EntityPlayer player) {
+	protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player) {
 		return true;
 	}
 
@@ -147,7 +147,7 @@ public class ItemBlockExplosive extends ItemBlockAbstract {
 
 	@Override
 	public String getTranslationKey(ItemStack itemstack) {
-		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getItemDamage());
+		final IExplosiveData data = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(itemstack.getDamage());
 		if (data != null) {
 			return "explosive." + data.getRegistryName();
 		}

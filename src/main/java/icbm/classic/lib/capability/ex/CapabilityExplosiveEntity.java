@@ -8,7 +8,7 @@ import icbm.classic.api.reg.IExplosiveData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,11 +25,11 @@ public class CapabilityExplosiveEntity implements IExplosive {
 		this.entity = entity;
 	}
 
-	public NBTTagCompound serializeNBT() {
+	public CompoundNBT serializeNBT() {
 		return toStack().serializeNBT();
 	}
 
-	public void deserializeNBT(@Nonnull NBTTagCompound nbt) {
+	public void deserializeNBT(@Nonnull CompoundNBT nbt) {
 		stack = new ItemStack(nbt);
 	}
 
@@ -47,18 +47,18 @@ public class CapabilityExplosiveEntity implements IExplosive {
 	}
 
 	@Override
-	public NBTTagCompound getCustomBlastData() {
+	public CompoundNBT getCustomBlastData() {
 		final ItemStack stack = toStack();
 		if (stack.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null)) {
 			final IExplosive explosive = stack.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
 			if (explosive != null) {
-				final NBTTagCompound tag = explosive.getCustomBlastData();
+				final CompoundNBT tag = explosive.getCustomBlastData();
 				if (tag != null && !tag.isEmpty()) {
 					return tag;
 				}
 			}
 		}
-		return new NBTTagCompound();
+		return new CompoundNBT();
 	}
 
 	@Nonnull

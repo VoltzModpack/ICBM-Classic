@@ -2,10 +2,10 @@ package icbm.classic.prefab.inventory;
 
 import com.builtbroken.jlib.data.vector.IPos3D;
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,7 +30,7 @@ public class InventoryUtility {
 	public static List<EntityItem> dropBlockAsItem(World world, BlockPos pos, boolean destroy) {
 		List<EntityItem> entities = new ArrayList();
 		if (!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
+			BlockState state = world.getBlockState(pos);
 
 			if (state != null && !state.getBlock().isAir(state, world, pos)) {
 				List<ItemStack> items = state.getBlock().getDrops(world, pos, state, 0);
@@ -129,7 +129,7 @@ public class InventoryUtility {
 		return doTagsMatch(stackA.getTagCompound(), stackB.getTagCompound());
 	}
 
-	public static boolean doTagsMatch(final NBTTagCompound tag, final NBTTagCompound tag2) {
+	public static boolean doTagsMatch(final CompoundNBT tag, final CompoundNBT tag2) {
 		boolean firstTagEmpty = tag == null || tag.isEmpty();
 		boolean firstTagEmpty2 = tag2 == null || tag2.isEmpty();
 		if (firstTagEmpty && firstTagEmpty2) {

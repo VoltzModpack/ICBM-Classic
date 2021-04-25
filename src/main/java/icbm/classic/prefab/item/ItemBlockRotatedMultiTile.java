@@ -2,7 +2,7 @@ package icbm.classic.prefab.item;
 
 import icbm.classic.content.blocks.multiblock.MultiBlockHelper;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +28,7 @@ public class ItemBlockRotatedMultiTile extends ItemBlockSubTypes {
 	}
 
 	@Override
-	protected boolean canPlace(EntityPlayer player, World worldIn, BlockPos pos, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	protected boolean canPlace(PlayerEntity player, World worldIn, BlockPos pos, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (super.canPlace(player, worldIn, pos, itemstack, facing, hitX, hitY, hitZ)) {
 			List<BlockPos> multi_blocks = multiBlockGetter.apply(player.getHorizontalFacing());
 			if (multi_blocks != null) {

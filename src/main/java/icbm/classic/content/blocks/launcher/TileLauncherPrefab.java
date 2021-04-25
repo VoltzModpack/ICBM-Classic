@@ -10,7 +10,7 @@ import icbm.classic.lib.transform.region.Cube;
 import icbm.classic.lib.transform.vector.Pos;
 import icbm.classic.prefab.tile.TileFrequency;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.MinecraftForge;
 
 public abstract class TileLauncherPrefab extends TileFrequency implements IRadioWaveReceiver {
@@ -70,13 +70,13 @@ public abstract class TileLauncherPrefab extends TileFrequency implements IRadio
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
 		this._targetPos = new Pos(nbt.getCompoundTag(NBTConstants.TARGET));
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeToNBT(CompoundNBT nbt) {
 		if (this._targetPos != null) {
 			nbt.setTag(NBTConstants.TARGET, this._targetPos.toNBT());
 		}

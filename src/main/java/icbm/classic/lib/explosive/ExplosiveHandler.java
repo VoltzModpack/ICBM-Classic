@@ -11,7 +11,7 @@ import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.blast.Blast;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -84,7 +84,7 @@ public class ExplosiveHandler {
 		return createExplosion(cause, world, x, y, z, capabilityExplosive.getExplosiveData().getRegistryID(), 1, capabilityExplosive.getCustomBlastData());
 	}
 
-	public static BlastState createExplosion(Entity cause, World world, double x, double y, double z, int blastID, float scale, NBTTagCompound customData) {
+	public static BlastState createExplosion(Entity cause, World world, double x, double y, double z, int blastID, float scale, CompoundNBT customData) {
 		final IBlast blast = createNew(cause, world, x, y, z, blastID, scale, customData);
 		if (blast != null) {
 			return blast.runBlast();
@@ -92,12 +92,12 @@ public class ExplosiveHandler {
 		return BlastState.NULL;
 	}
 
-	public static IBlast createNew(Entity cause, World world, double x, double y, double z, int blastID, float scale, NBTTagCompound customData) {
+	public static IBlast createNew(Entity cause, World world, double x, double y, double z, int blastID, float scale, CompoundNBT customData) {
 		final IExplosiveData explosiveData = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(blastID);
 		return createNew(cause, world, x, y, z, explosiveData, scale, customData);
 	}
 
-	public static IBlast createNew(Entity cause, World world, double x, double y, double z, IExplosiveData data, float scale, NBTTagCompound customData) {
+	public static IBlast createNew(Entity cause, World world, double x, double y, double z, IExplosiveData data, float scale, CompoundNBT customData) {
 		if (data != null && data.getBlastFactory() != null) //TODO add way to hook blast builder to add custom blasts
 		{
 			final IBlastInit blast = data.getBlastFactory().create();

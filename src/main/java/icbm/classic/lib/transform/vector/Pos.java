@@ -5,7 +5,7 @@ import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +58,7 @@ public class Pos extends AbstractPos<Pos> implements IPos3D {
 		this(vec.x(), vec.y(), vec.z());
 	}
 
-	public Pos(NBTTagCompound nbt) {
+	public Pos(CompoundNBT nbt) {
 		this(nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
 	}
 

@@ -7,10 +7,10 @@ import icbm.classic.lib.explosive.ExplosiveHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
@@ -27,7 +27,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	/**
 	 * Entity that created the grenade and set it into motion
 	 */
-	private EntityLivingBase thrower;
+	private LivingEntity thrower;
 
 	/**
 	 * Explosive capability
@@ -57,12 +57,12 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	 * @param thrower - entity that threw the grenade
 	 * @return this
 	 */
-	public EntityGrenade setThrower(EntityLivingBase thrower) {
+	public EntityGrenade setThrower(LivingEntity thrower) {
 		this.thrower = thrower;
 		return this;
 	}
 
-	public EntityLivingBase getThrower() {
+	public LivingEntity getThrower() {
 		return thrower;
 	}
 
@@ -123,7 +123,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
-		explosive.deserializeNBT(Optional.ofNullable(ByteBufUtils.readTag(data)).orElseGet(NBTTagCompound::new));
+		explosive.deserializeNBT(Optional.ofNullable(ByteBufUtils.readTag(data)).orElseGet(CompoundNBT::new));
 	}
 
 	/**
@@ -282,14 +282,14 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData 
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(CompoundNBT nbt) {
 		if (nbt.hasKey(NBTConstants.EXPLOSIVE)) {
 			explosive.deserializeNBT(nbt.getCompoundTag(NBTConstants.EXPLOSIVE));
 		}
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(CompoundNBT nbt) {
 		nbt.setTag(NBTConstants.EXPLOSIVE, explosive.serializeNBT());
 	}
 

@@ -4,7 +4,7 @@ import icbm.classic.ICBMClassic;
 import icbm.classic.api.events.MissileChunkEvent;
 import icbm.classic.config.ConfigDebug;
 import icbm.classic.lib.NBTConstants;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -227,11 +227,11 @@ public class MissileTrackerWorld extends WorldSavedData {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		//Load missiles
 		NBTTagList list = nbt.getTagList(NBTConstants.MISSILES, 10);
 		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound missileSave = list.getCompoundTagAt(i);
+			CompoundNBT missileSave = list.getCompoundTagAt(i);
 			MissileTrackerData mtd = new MissileTrackerData(missileSave);
 			missileList.add(mtd);
 		}
@@ -239,18 +239,18 @@ public class MissileTrackerWorld extends WorldSavedData {
 		//Load missiles that will spawn
 		list = nbt.getTagList(NBTConstants.SPAWNS, 10);
 		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound missileSave = list.getCompoundTagAt(i);
+			CompoundNBT missileSave = list.getCompoundTagAt(i);
 			MissileTrackerData mtd = new MissileTrackerData(missileSave);
 			missileSpawnList.add(mtd);
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeToNBT(CompoundNBT nbt) {
 		//Save missiles
 		NBTTagList list = new NBTTagList();
 		for (MissileTrackerData mtd : missileList) {
-			NBTTagCompound compound = new NBTTagCompound();
+			CompoundNBT compound = new CompoundNBT();
 			mtd.writeToNBT(compound);
 			list.appendTag(compound);
 		}
@@ -259,7 +259,7 @@ public class MissileTrackerWorld extends WorldSavedData {
 		//Save missiles that will spawn
 		list = new NBTTagList();
 		for (MissileTrackerData mtd : missileSpawnList) {
-			NBTTagCompound compound = new NBTTagCompound();
+			CompoundNBT compound = new CompoundNBT();
 			mtd.writeToNBT(compound);
 			list.appendTag(compound);
 		}

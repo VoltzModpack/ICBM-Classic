@@ -6,7 +6,7 @@ import icbm.classic.lib.network.ex.PacketTileReadException;
 import icbm.classic.lib.transform.vector.Location;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -79,7 +79,7 @@ public class PacketTile extends PacketBase<PacketTile> {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleClientSide(EntityPlayer player) {
+	public void handleClientSide(PlayerEntity player) {
 		if (player != null) {
 			handle(player);
 		} else if (ICBMClassic.runningAsDev) {
@@ -88,7 +88,7 @@ public class PacketTile extends PacketBase<PacketTile> {
 	}
 
 	@Override
-	public void handleServerSide(EntityPlayer player) {
+	public void handleServerSide(PlayerEntity player) {
 		if (player != null) {
 			handle(player);
 		} else if (ICBMClassic.runningAsDev) {
@@ -101,7 +101,7 @@ public class PacketTile extends PacketBase<PacketTile> {
 	 *
 	 * @param player - player who received the packet
 	 */
-	public void handle(EntityPlayer player) {
+	public void handle(PlayerEntity player) {
 		if (player.getEntityWorld() == null) {
 			if (ICBMClassic.runningAsDev) {
 				ICBMClassic.logger().error("PacketTile#handle(" + player + ") - world is null for player while handling packet. ", new RuntimeException());
@@ -122,7 +122,7 @@ public class PacketTile extends PacketBase<PacketTile> {
 	 * @param player - player who received the packet
 	 * @param tile   - tile who is receiving the packet
 	 */
-	public void handle(EntityPlayer player, TileEntity tile) {
+	public void handle(PlayerEntity player, TileEntity tile) {
 		//TODO add checksum or hash to verify the packet is sent to the correct tile
 		final Location location = new Location(player.world, x, y, z);
 		if (tile == null) {

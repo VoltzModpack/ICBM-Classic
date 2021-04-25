@@ -5,7 +5,7 @@ import icbm.classic.api.tile.IRotatable;
 import icbm.classic.content.entity.missile.EntityMissile;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
@@ -80,7 +80,7 @@ public class BlastBreach extends BlastTNT {
 						p = new Pos((IPos3D) this).add(p); //TODO replace with BlockPos
 
 						//Get block
-						IBlockState state = p.getBlockState(world());
+						BlockState state = p.getBlockState(world());
 						Block block = state.getBlock();
 						if (!block.isAir(state, world(), p.toBlockPos())) {
 							// get explosion resistance, take the square root of it and then half that to make it weaker

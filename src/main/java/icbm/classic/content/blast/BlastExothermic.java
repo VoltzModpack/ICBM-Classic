@@ -3,7 +3,7 @@ package icbm.classic.content.blast;
 import icbm.classic.config.blast.ConfigBlast;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,7 +31,7 @@ public class BlastExothermic extends BlastBeam {
 			final double distance = Math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
 			final double distanceScale = 1 - (distance / radius);
 
-			IBlockState blockState = world.getBlockState(targetPosition);
+			BlockState blockState = world.getBlockState(targetPosition);
 			Block block = blockState.getBlock();
 
 			//Turn fluids and liquid like blocks to air
@@ -106,7 +106,7 @@ public class BlastExothermic extends BlastBeam {
 	private static void tryPlaceFire(World world, BlockPos pos, boolean random) {
 		if (!random || world.rand.nextBoolean()) {
 			//Place fire
-			final IBlockState blockState = world.getBlockState(pos);
+			final BlockState blockState = world.getBlockState(pos);
 			if (blockState.getBlock().isReplaceable(world, pos) && Blocks.FIRE.canPlaceBlockAt(world, pos)) {
 				world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 3);
 			}

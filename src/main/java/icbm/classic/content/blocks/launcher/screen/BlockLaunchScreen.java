@@ -12,10 +12,10 @@ import icbm.classic.lib.transform.vector.Pos;
 import icbm.classic.prefab.tile.BlockICBM;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -52,12 +52,12 @@ public class BlockLaunchScreen extends BlockICBM {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(BlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
 		if (state.getBlock() instanceof BlockLaunchScreen) //sometimes things happen that make this necessary
 		{
 			switch (state.getValue(TIER_PROP)) {
@@ -99,7 +99,7 @@ public class BlockLaunchScreen extends BlockICBM {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileLauncherScreen) {
@@ -148,7 +148,7 @@ public class BlockLaunchScreen extends BlockICBM {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 
@@ -171,17 +171,17 @@ public class BlockLaunchScreen extends BlockICBM {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(TIER_PROP).ordinal();
 	}
 
@@ -191,7 +191,7 @@ public class BlockLaunchScreen extends BlockICBM {
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
 		EnumTier tier = EnumTier.ONE;
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileLauncherScreen) {
@@ -201,18 +201,18 @@ public class BlockLaunchScreen extends BlockICBM {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
 		ItemStack stack = placer.getHeldItem(hand);
 
 		//set tier and horizontal facing. latter seems to be the other way around as for other BlockICBMs, so super is not called and the rotation is set here instead
-		return getDefaultState().withProperty(TIER_PROP, EnumTier.get(stack.getItemDamage())).withProperty(ROTATION_PROP, placer.getHorizontalFacing().getOpposite());
+		return getDefaultState().withProperty(TIER_PROP, EnumTier.get(stack.getDamage())).withProperty(ROTATION_PROP, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityLiving, ItemStack stack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entityLiving, ItemStack stack) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileLauncherScreen) {
-			((TileLauncherScreen) tile)._tier = EnumTier.get(stack.getItemDamage());
+			((TileLauncherScreen) tile)._tier = EnumTier.get(stack.getDamage());
 		}
 	}
 

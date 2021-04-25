@@ -5,10 +5,10 @@ import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.dispenser.ILocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
@@ -27,7 +27,7 @@ public class Location extends AbstractLocation<Location> implements IWorldPositi
 		super(world, x, y, z);
 	}
 
-	public Location(NBTTagCompound nbt) {
+	public Location(CompoundNBT nbt) {
 		this(DimensionManager.getWorld(nbt.getInteger(NBTConstants.DIMENSION)), nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
 	}
 
@@ -77,7 +77,7 @@ public class Location extends AbstractLocation<Location> implements IWorldPositi
 	}
 
 	public boolean isSideSolid(EnumFacing side) {
-		IBlockState state = getBlockState();
+		BlockState state = getBlockState();
 		if (state != null && !state.getBlock().isAir(state, world, toBlockPos())) {
 			BlockFaceShape shape = state.getBlockFaceShape(world, toBlockPos(), side);
 			return shape != null && shape == BlockFaceShape.SOLID;

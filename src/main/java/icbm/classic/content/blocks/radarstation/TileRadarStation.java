@@ -19,10 +19,10 @@ import icbm.classic.prefab.inventory.IInventoryProvider;
 import icbm.classic.prefab.tile.IGuiTile;
 import icbm.classic.prefab.tile.TileFrequency;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -141,7 +141,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	}
 
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+	public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState) {
 		return !(oldState.getBlock() == BlockReg.blockRadarStation && newState.getBlock() == BlockReg.blockRadarStation); //Don't kill tile if the radar station is still there
 	}
 
@@ -251,7 +251,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	}
 
 	@Override
-	public boolean read(ByteBuf data, int ID, EntityPlayer player, IPacket type) {
+	public boolean read(ByteBuf data, int ID, PlayerEntity player, IPacket type) {
 		if (!super.read(data, ID, player, type)) {
 			if (this.world.isRemote) {
 				if (ID == GUI_PACKET_ID) {
@@ -329,7 +329,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
 		this.safetyRange = nbt.getInteger(NBTConstants.SAFETY_RADIUS);
 		this.alarmRange = nbt.getInteger(NBTConstants.ALARM_RADIUS);
@@ -340,7 +340,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeToNBT(CompoundNBT nbt) {
 		nbt.setInteger(NBTConstants.SAFETY_RADIUS, this.safetyRange);
 		nbt.setInteger(NBTConstants.ALARM_RADIUS, this.alarmRange);
 		nbt.setBoolean(NBTConstants.EMIT_ALL, this.emitAll);
@@ -358,12 +358,12 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
 	}
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player) {
+	public Object getServerGuiElement(int ID, PlayerEntity player) {
 		return new ContainerRadarStation(player, this);
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player) {
+	public Object getClientGuiElement(int ID, PlayerEntity player) {
 		return new GuiRadarStation(player, this);
 	}
 

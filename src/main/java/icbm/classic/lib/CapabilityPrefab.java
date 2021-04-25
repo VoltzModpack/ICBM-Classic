@@ -1,6 +1,6 @@
 package icbm.classic.lib;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/9/19.
  */
-public abstract class CapabilityPrefab implements ICapabilitySerializable<NBTTagCompound> {
+public abstract class CapabilityPrefab implements ICapabilitySerializable<CompoundNBT> {
 
 	public abstract boolean isCapability(@Nonnull Capability<?> capability);
 
@@ -30,24 +30,24 @@ public abstract class CapabilityPrefab implements ICapabilitySerializable<NBTTag
 	}
 
 	@Override
-	public final NBTTagCompound serializeNBT() {
-		NBTTagCompound tagCompound = new NBTTagCompound();
+	public final CompoundNBT serializeNBT() {
+		CompoundNBT tagCompound = new CompoundNBT();
 		save(tagCompound);
 		return tagCompound;
 	}
 
 	@Override
-	public final void deserializeNBT(NBTTagCompound nbt) {
+	public final void deserializeNBT(CompoundNBT nbt) {
 		if (nbt != null && !nbt.isEmpty()) {
 			load(nbt);
 		}
 	}
 
-	protected void save(NBTTagCompound tag) {
+	protected void save(CompoundNBT tag) {
 
 	}
 
-	protected void load(NBTTagCompound tag) {
+	protected void load(CompoundNBT tag) {
 
 	}
 

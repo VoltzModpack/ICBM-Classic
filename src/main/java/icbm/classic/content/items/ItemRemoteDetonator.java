@@ -5,9 +5,9 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.radio.RadioRegistry;
 import icbm.classic.prefab.FakeRadioSender;
 import icbm.classic.prefab.item.ItemICBMElectrical;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -38,7 +38,7 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand handIn) {
 		ItemStack stack = player.getHeldItem(handIn);
 		if (!world.isRemote) {
 			if (!MinecraftForge.EVENT_BUS.post(new RemoteTriggerEvent(world, player, stack))) //event was not canceled
@@ -48,12 +48,12 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	}
 
 	@Override
-	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, EntityPlayer player) {
+	public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IBlockAccess world, BlockPos pos, PlayerEntity player) {
 		return true;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+	public void addInformation(ItemStack stack, PlayerEntity player, List list, boolean b) {
 		list.add("Fires missiles remotely");
 		list.add("Right click launcher screen to encode");
 	}
@@ -79,7 +79,7 @@ public class ItemRemoteDetonator extends ItemICBMElectrical {
 	 */
 	public void setBroadCastHz(ItemStack stack, float hz) {
 		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
+			stack.setTagCompound(new CompoundNBT());
 		}
 		stack.getTagCompound().setFloat(NBTConstants.HZ, hz);
 	}

@@ -1,7 +1,7 @@
 package icbm.classic.prefab;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.EnumDifficulty;
 
@@ -57,7 +57,7 @@ public abstract class CustomPotion extends Potion {
 	}
 
 	@Override
-	public void performEffect(EntityLivingBase ent, int amplifier) {
+	public void performEffect(LivingEntity ent, int amplifier) {
 		if (shouldRemoveEffect(ent, amplifier)) {
 			removeEffect(ent);
 		}
@@ -70,14 +70,14 @@ public abstract class CustomPotion extends Potion {
 	 * @param amplifier - level of the effect
 	 * @return true to remove
 	 */
-	public boolean shouldRemoveEffect(EntityLivingBase ent, int amplifier) {
+	public boolean shouldRemoveEffect(LivingEntity ent, int amplifier) {
 		// if disabled, dead, or has no hp left(basically dead)
 		if (!enable || ent.isDead || ent.getHealth() <= 0) {
 			return true;
 		}
 
 		//Remove any potion effect off of entities by default to avoid issues
-		if (disableCreative && ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.isCreativeMode) {
+		if (disableCreative && ent instanceof PlayerEntity && ((PlayerEntity) ent).capabilities.isCreativeMode) {
 			return true;
 		}
 
@@ -90,7 +90,7 @@ public abstract class CustomPotion extends Potion {
 	 *
 	 * @param entity - entity that may have the effect
 	 */
-	public void removeEffect(EntityLivingBase entity) {
+	public void removeEffect(LivingEntity entity) {
 		if (entity.isPotionActive(this)) {
 			entity.removePotionEffect(this);
 		}

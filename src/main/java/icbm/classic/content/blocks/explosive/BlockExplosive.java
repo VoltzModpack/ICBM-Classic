@@ -10,10 +10,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -40,17 +40,17 @@ public class BlockExplosive extends BlockICBM {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
 		return getItem(world, pos, getActualState(state, world, pos));
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(EX_PROP).getRegistryID();
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
 		IExplosiveData explosiveData = null;
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileEntityExplosive && ((TileEntityExplosive) tile).capabilityExplosive != null) {
@@ -64,27 +64,27 @@ public class BlockExplosive extends BlockICBM {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(BlockState state, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return isNormalCube(base_state, world, pos);
 	}
 
 	@Override
-	public boolean isTopSolid(IBlockState state) {
+	public boolean isTopSolid(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(BlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
@@ -94,10 +94,10 @@ public class BlockExplosive extends BlockICBM {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
 		ItemStack stack = placer.getHeldItem(hand);
-		IBlockState state = getDefaultState().withProperty(ROTATION_PROP, facing);
-		IExplosiveData prop = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(stack.getItemDamage());
+		BlockState state = getDefaultState().withProperty(ROTATION_PROP, facing);
+		IExplosiveData prop = ICBMClassicAPI.EXPLOSIVE_REGISTRY.getExplosiveData(stack.getDamage());
 		if (prop != null) {
 			return state.withProperty(EX_PROP, prop);
 		} else { // if the explosives id doesnt exist, then fallback to the one with the id 0
@@ -112,7 +112,7 @@ public class BlockExplosive extends BlockICBM {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityLiving, ItemStack itemStack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entityLiving, ItemStack itemStack) {
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityExplosive) {
 			TileEntityExplosive explosive = (TileEntityExplosive) tile;
@@ -147,7 +147,7 @@ public class BlockExplosive extends BlockICBM {
 	 * their own) Args: x, y, z, neighbor block
 	 */
 	@Override
-	public void neighborChanged(IBlockState thisBlock, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(BlockState thisBlock, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		int power = world.getRedstonePowerFromNeighbors(pos);
 		if (power > 0) {
 			BlockExplosive.triggerExplosive(world, pos, false);
@@ -155,7 +155,7 @@ public class BlockExplosive extends BlockICBM {
 		} else {
 			for (EnumFacing facing : EnumFacing.VALUES) //TODO recode
 			{
-				IBlockState state = world.getBlockState(pos.add(facing.getDirectionVec()));
+				BlockState state = world.getBlockState(pos.add(facing.getDirectionVec()));
 				Block block = state.getBlock();
 				if (block == Blocks.FIRE || block == Blocks.FLOWING_LAVA || block == Blocks.LAVA) {
 					BlockExplosive.triggerExplosive(world, pos, false);
@@ -199,7 +199,7 @@ public class BlockExplosive extends BlockICBM {
 	 * block.
 	 */
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getTileEntity(pos);
 
 		if (entityPlayer.getHeldItem(hand) != null) {

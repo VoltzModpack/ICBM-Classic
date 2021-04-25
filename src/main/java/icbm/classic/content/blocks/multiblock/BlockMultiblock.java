@@ -5,8 +5,8 @@ import icbm.classic.api.tile.multiblock.IMultiTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +36,7 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+	public void randomTick(World worldIn, BlockPos pos, BlockState state, Random random) {
 		if (!worldIn.isRemote) {
 			TileEntity tile = worldIn.getTileEntity(pos);
 			if (tile instanceof TileMulti) {
@@ -50,29 +50,29 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(BlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(BlockState state) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
 		final IMultiTile multiblock = getTile(world, pos);
 		if (multiblock != null && multiblock.getHost() instanceof TileEntity) {
 			//Get tile
 			TileEntity tileEntity = ((TileEntity) multiblock.getHost());
 
 			//Get state
-			IBlockState blockState = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+			BlockState blockState = tileEntity.getWorld().getBlockState(tileEntity.getPos());
 			Block block = blockState.getBlock();
 
 			//Get actual block state
@@ -91,12 +91,12 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return null;
 	}
 
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, BlockState state, int fortune) {
 		//Nothing
 	}
 
@@ -106,7 +106,7 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 		IMultiTile tile = getTile(world, pos);
 		if (tile != null && tile.getHost() != null) {
 			tile.getHost().onMultiTileAdded(tile);
@@ -115,7 +115,7 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(World world, BlockPos pos, BlockState state) {
 		IMultiTile tile = getTile(world, pos);
 		if (tile != null && tile.getHost() != null) {
 			tile.getHost().onMultiTileBroken(tile, null, true);
@@ -124,7 +124,7 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest) {
 		IMultiTile tile = getTile(world, pos);
 		if (tile != null && tile.getHost() != null) {
 			tile.getHost().onMultiTileBroken(tile, player, willHarvest);
@@ -141,7 +141,7 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileMulti tile = getTile(world, pos);
 		if (tile != null) {
 			//Kill check
@@ -159,7 +159,7 @@ public class BlockMultiblock extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
+	public void onBlockClicked(World world, BlockPos pos, PlayerEntity player) {
 		TileMulti tile = getTile(world, pos);
 		if (tile != null) {
 			//Kill check

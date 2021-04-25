@@ -1,7 +1,7 @@
 package icbm.classic.content.entity.mobs;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
@@ -66,7 +66,7 @@ public class EntityXmasSnowman extends EntityXmasSkeleton {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		final EntityXmasRPG fragment = new EntityXmasRPG(world);
 		fragment.shootingEntity = this;
 		fragment.setPosition(posX, posY + getEyeHeight(), posZ);

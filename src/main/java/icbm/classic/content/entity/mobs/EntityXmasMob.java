@@ -2,11 +2,11 @@ package icbm.classic.content.entity.mobs;
 
 import icbm.classic.content.entity.EntityFragments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -26,7 +26,7 @@ public abstract class EntityXmasMob extends EntityMob implements IRangedAttackMo
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.1D, getFireDelay(), 50.0F));
 		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
@@ -54,7 +54,7 @@ public abstract class EntityXmasMob extends EntityMob implements IRangedAttackMo
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		final EntityFragments fragment = getProjectile(target, distanceFactor);
 		fragment.shootingEntity = this;
 		fragment.isIce = isIceFaction();
@@ -103,11 +103,11 @@ public abstract class EntityXmasMob extends EntityMob implements IRangedAttackMo
 		return 3;
 	}
 
-	protected double getProjectileYOffset(EntityLivingBase target, double deltaY, double distance) {
+	protected double getProjectileYOffset(LivingEntity target, double deltaY, double distance) {
 		return getEyeHeight();
 	}
 
-	protected double getProjectileXOffset(EntityLivingBase target, double delta, double distance) {
+	protected double getProjectileXOffset(LivingEntity target, double delta, double distance) {
 		double r = getArmRotation();
 		final double armPos = (Math.cos(r) - Math.sin(r)) * getArmOffset();
 
@@ -117,7 +117,7 @@ public abstract class EntityXmasMob extends EntityMob implements IRangedAttackMo
 		return forwardOffset + armPos;
 	}
 
-	protected double getProjectileZOffset(EntityLivingBase target, double delta, double distance) {
+	protected double getProjectileZOffset(LivingEntity target, double delta, double distance) {
 		double r = getArmRotation();
 		final double armPos = (Math.sin(r) + Math.cos(r)) * getArmOffset();
 
@@ -143,7 +143,7 @@ public abstract class EntityXmasMob extends EntityMob implements IRangedAttackMo
 		return Math.toRadians(MathHelper.wrapDegrees(this.getRotationYawHead() - 45));
 	}
 
-	protected EntityFragments getProjectile(EntityLivingBase target, float distanceFactor) {
+	protected EntityFragments getProjectile(LivingEntity target, float distanceFactor) {
 		return new EntityFragments(world, posX, posY, posZ, false, false);
 	}
 

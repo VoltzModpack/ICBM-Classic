@@ -9,7 +9,7 @@ import icbm.classic.prefab.gui.GuiContainerBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -28,7 +28,7 @@ public class GuiCruiseLauncher extends GuiContainerBase {
 	private GuiTextField textFieldFreq;
 	private GuiButton launch_button;
 
-	public GuiCruiseLauncher(EntityPlayer player, TileCruiseLauncher tileEntity) {
+	public GuiCruiseLauncher(PlayerEntity player, TileCruiseLauncher tileEntity) {
 		super(new ContainerCruiseLauncher(player, tileEntity));
 		this.tileEntity = tileEntity;
 	}

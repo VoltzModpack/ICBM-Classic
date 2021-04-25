@@ -2,10 +2,10 @@ package icbm.classic.prefab.inventory;
 
 import icbm.classic.ICBMClassic;
 import icbm.classic.lib.NBTConstants;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -139,12 +139,12 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {
+	public void openInventory(PlayerEntity player) {
 
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
+	public void closeInventory(PlayerEntity player) {
 
 	}
 
@@ -193,18 +193,18 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+	public boolean isUsableByPlayer(PlayerEntity par1PlayerEntity) {
 		return true;
 	}
 
-	public void load(NBTTagCompound nbt) {
+	public void load(CompoundNBT nbt) {
 		_loading = true;
 		this.inventoryMap.clear();
 
 		NBTTagList nbtList = nbt.getTagList(NBTConstants.ITEMS, 10);
 
 		for (int i = 0; i < nbtList.tagCount(); ++i) {
-			NBTTagCompound stackTag = nbtList.getCompoundTagAt(i);
+			CompoundNBT stackTag = nbtList.getCompoundTagAt(i);
 			byte id = stackTag.getByte(NBTConstants.SLOT);
 
 			if (id >= 0 && id < this.getSizeInventory()) {
@@ -216,12 +216,12 @@ public class BasicInventory implements IInventory, Iterable<Map.Entry<Integer, I
 		_loading = false;
 	}
 
-	public NBTTagCompound save(NBTTagCompound nbt) {
+	public CompoundNBT save(CompoundNBT nbt) {
 		NBTTagList nbtList = new NBTTagList();
 
 		for (int i = shiftSlotStart; i < this.getSizeInventory() + shiftSlotStart; ++i) {
 			if (!this.getStackInSlot(i + shiftSlotStart).isEmpty()) {
-				NBTTagCompound var4 = new NBTTagCompound();
+				CompoundNBT var4 = new CompoundNBT();
 				var4.setByte(NBTConstants.SLOT, (byte) i);
 				this.getStackInSlot(i + shiftSlotStart).writeToNBT(var4);
 				nbtList.appendTag(var4);

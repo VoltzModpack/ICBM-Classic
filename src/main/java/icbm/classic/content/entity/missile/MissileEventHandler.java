@@ -4,7 +4,7 @@ import icbm.classic.ICBMConstants;
 import icbm.classic.api.events.MissileRideEvent;
 import icbm.classic.lib.radar.RadarMap;
 import icbm.classic.lib.radar.RadarRegistry;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,8 +23,8 @@ public class MissileEventHandler {
 	public static void onEntityMount(EntityMountEvent event) {
 		if (event.isDismounting()
 			    && event.getEntityBeingMounted() instanceof EntityMissile
-			    && event.getEntityMounting() instanceof EntityPlayer) {
-			event.setCanceled(MinecraftForge.EVENT_BUS.post(new MissileRideEvent.Stop((EntityMissile) event.getEntityBeingMounted(), (EntityPlayer) event.getEntityMounting())));
+			    && event.getEntityMounting() instanceof PlayerEntity) {
+			event.setCanceled(MinecraftForge.EVENT_BUS.post(new MissileRideEvent.Stop((EntityMissile) event.getEntityBeingMounted(), (PlayerEntity) event.getEntityMounting())));
 		}
 	}
 

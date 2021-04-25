@@ -5,12 +5,12 @@ import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumParticleTypes;
@@ -28,9 +28,9 @@ import java.util.List;
 public class EntityFragments extends Entity implements IEntityAdditionalSpawnData {
 
 	private BlockPos inTilePosition = new BlockPos(0, 0, 0);
-	private IBlockState inTile;
+	private BlockState inTile;
 
-	public EntityLivingBase shootingEntity;
+	public LivingEntity shootingEntity;
 
 	//Type settings
 	public boolean isExplosive; //TODO replace with ENUM
@@ -183,7 +183,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 			this.prevRotationPitch = this.rotationPitch;
 		}
 
-		IBlockState iblockstate = this.world.getBlockState(inTilePosition);
+		BlockState iblockstate = this.world.getBlockState(inTilePosition);
 
 		if (iblockstate.getMaterial() != Material.AIR) {
 			AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, inTilePosition);
@@ -443,7 +443,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(CompoundNBT nbt) {
 		nbt.setByte(NBTConstants.SHAKE, (byte) this.arrowShake);
 		nbt.setBoolean(NBTConstants.IS_EXPLOSIVE, this.isExplosive);
 	}
@@ -452,7 +452,7 @@ public class EntityFragments extends Entity implements IEntityAdditionalSpawnDat
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(CompoundNBT nbt) {
 		this.arrowShake = nbt.getByte(NBTConstants.SHAKE) & 255;
 		this.isExplosive = nbt.getBoolean(NBTConstants.IS_EXPLOSIVE);
 	}

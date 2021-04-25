@@ -1,6 +1,6 @@
 package icbm.classic.content.entity.mobs;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
@@ -46,7 +46,7 @@ public class EntityXmasCreeper extends EntityXmasZombie {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		super.attackEntityWithRangedAttack(target, distanceFactor);
 		altGun = !altGun;
 		super.attackEntityWithRangedAttack(target, distanceFactor);
@@ -68,7 +68,7 @@ public class EntityXmasCreeper extends EntityXmasZombie {
 	}
 
 	@Override
-	protected double getProjectileYOffset(EntityLivingBase target, double delta, double distance) {
+	protected double getProjectileYOffset(LivingEntity target, double delta, double distance) {
 		return 1;
 	}
 

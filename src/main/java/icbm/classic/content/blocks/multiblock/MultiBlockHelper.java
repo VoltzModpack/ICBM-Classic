@@ -4,7 +4,7 @@ import icbm.classic.api.tile.multiblock.IMultiTile;
 import icbm.classic.api.tile.multiblock.IMultiTileHost;
 import icbm.classic.content.reg.BlockReg;
 import icbm.classic.prefab.inventory.InventoryUtility;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -107,7 +107,7 @@ public class MultiBlockHelper {
 					}
 
 					//Get block
-					IBlockState block = world.getBlockState(location);
+					BlockState block = world.getBlockState(location);
 
 					//If not replaceable, do not place
 					if (!block.getBlock().isReplaceable(world, location)) {

@@ -6,10 +6,10 @@ import icbm.classic.content.blocks.multiblock.MultiBlockHelper;
 import icbm.classic.prefab.tile.BlockICBM;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -36,7 +36,7 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileLauncherBase) {
 			return ((TileLauncherBase) tile).onPlayerRightClick(playerIn, hand, playerIn.getHeldItem(hand));
@@ -67,18 +67,18 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
+	public BlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, EnumHand hand) {
+		BlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
 		ItemStack stack = placer.getHeldItem(hand);
 
 		//Set tier
-		state = state.withProperty(TIER_PROP, EnumTier.get(stack.getItemDamage()));
+		state = state.withProperty(TIER_PROP, EnumTier.get(stack.getDamage()));
 
 		return state;
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
 		EnumTier tier = EnumTier.ONE;
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileLauncherBase) {
@@ -88,11 +88,11 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityLiving, ItemStack stack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entityLiving, ItemStack stack) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileLauncherBase) {
 			//Set tier data
-			((TileLauncherBase) tile)._tier = EnumTier.get(stack.getItemDamage());
+			((TileLauncherBase) tile)._tier = EnumTier.get(stack.getDamage());
 
 			//Build multiblock
 			MultiBlockHelper.buildMultiBlock(world, (IMultiTileHost) tile, true, true);
@@ -101,7 +101,7 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
 		TileEntity tileEntity = world.getTileEntity(pos);
 
 		if (tileEntity instanceof TileLauncherBase) {
@@ -119,27 +119,27 @@ public class BlockLauncherBase extends BlockICBM {
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World worldIn, BlockPos pos, BlockState state) {
 
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(TIER_PROP).ordinal();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(BlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 

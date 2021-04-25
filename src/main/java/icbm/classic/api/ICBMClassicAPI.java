@@ -71,7 +71,7 @@ public final class ICBMClassicAPI {
 	public static Capability<IMissileLauncher> MISSILE_LAUNCHER_CAPABILITY = null;
 
 	/**
-	 * Called to register an EMP handler for the {@link Block} and related {@link net.minecraft.block.state.IBlockState}
+	 * Called to register an EMP handler for the {@link Block} and related {@link net.minecraft.block.state.BlockState}
 	 * <p>
 	 * Allows several receiver to be registered per block.
 	 *

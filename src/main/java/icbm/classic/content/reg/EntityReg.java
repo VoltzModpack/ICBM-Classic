@@ -9,7 +9,7 @@ import icbm.classic.content.entity.EntityFlyingBlock;
 import icbm.classic.content.entity.EntityFragments;
 import icbm.classic.content.entity.EntityGrenade;
 import icbm.classic.content.entity.EntityLightBeam;
-import icbm.classic.content.entity.EntityPlayerSeat;
+import icbm.classic.content.entity.PlayerEntitySeat;
 import icbm.classic.content.entity.missile.EntityMissile;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -37,7 +37,7 @@ public final class EntityReg {
 		event.getRegistry().register(buildEntityEntry(EntityLightBeam.class, ICBMEntities.BEAM, 80, 5));
 		event.getRegistry().register(buildEntityEntry(EntityGrenade.class, ICBMEntities.GRENADE, 50, 5));
 		event.getRegistry().register(buildEntityEntry(EntityBombCart.class, ICBMEntities.BOMB_CART, 50, 2));
-		event.getRegistry().register(buildEntityEntry(EntityPlayerSeat.class, ICBMEntities.MISSILE_SEAT, 50, 2));
+		event.getRegistry().register(buildEntityEntry(PlayerEntitySeat.class, ICBMEntities.MISSILE_SEAT, 50, 2));
 
         /*
         //Green team

@@ -9,7 +9,7 @@ import icbm.classic.content.entity.mobs.EntityXmasSnowman;
 import icbm.classic.content.entity.mobs.EntityXmasZombie;
 import icbm.classic.content.entity.mobs.EntityXmasZombieBoss;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -71,7 +71,7 @@ public class BlastXmas extends Blast implements IBlastTickable {
 			final BlockPos pos = blocksToPath.poll();
 
 			//Get block
-			IBlockState blockState = world.getBlockState(pos);
+			BlockState blockState = world.getBlockState(pos);
 			Block block = blockState.getBlock();
 
 			//If is replaceable add to edit list

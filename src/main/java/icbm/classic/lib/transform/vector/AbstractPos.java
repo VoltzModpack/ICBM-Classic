@@ -8,10 +8,10 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.rotation.EulerAngle;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -56,7 +56,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		this(vec.x(), vec.y(), vec.z());
 	}
 
-	public AbstractPos(NBTTagCompound nbt) {
+	public AbstractPos(CompoundNBT nbt) {
 		this(nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
 	}
 
@@ -191,22 +191,22 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	//========NBT==============
 	//=========================
 
-	public NBTTagCompound toNBT() {
-		return writeNBT(new NBTTagCompound());
+	public CompoundNBT toNBT() {
+		return writeNBT(new CompoundNBT());
 	}
 
-	public NBTTagCompound toIntNBT() {
-		return writeIntNBT(new NBTTagCompound());
+	public CompoundNBT toIntNBT() {
+		return writeIntNBT(new CompoundNBT());
 	}
 
-	public NBTTagCompound writeNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeNBT(CompoundNBT nbt) {
 		nbt.setDouble(NBTConstants.X, x());
 		nbt.setDouble(NBTConstants.Y, y());
 		nbt.setDouble(NBTConstants.Z, z());
 		return nbt;
 	}
 
-	public NBTTagCompound writeIntNBT(NBTTagCompound nbt) {
+	public CompoundNBT writeIntNBT(CompoundNBT nbt) {
 		nbt.setInteger(NBTConstants.X, xi());
 		nbt.setInteger(NBTConstants.Y, yi());
 		nbt.setInteger(NBTConstants.Z, zi());
@@ -302,11 +302,11 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		return setBlock(world, block.getDefaultState());
 	}
 
-	public boolean setBlock(World world, IBlockState state) {
+	public boolean setBlock(World world, BlockState state) {
 		return setBlock(world, state, 3);
 	}
 
-	public boolean setBlock(World world, IBlockState block, int notify) {
+	public boolean setBlock(World world, BlockState block, int notify) {
 		if (world != null && block != null) {
 			return world.setBlockState(toBlockPos(), block, notify);
 		} else {
@@ -341,7 +341,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	 */
 	public boolean isReplaceable(World world) {
 		BlockPos pos = toBlockPos();
-		IBlockState block = world.getBlockState(pos);
+		BlockState block = world.getBlockState(pos);
 		return block == null || block.getBlock().isAir(block, world, pos) || block.getBlock().isAir(block, world, toBlockPos()) || block.getBlock().isReplaceable(world, toBlockPos());
 	}
 
@@ -360,7 +360,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	}
 
 	public Block getBlock(IBlockAccess world) {
-		IBlockState state = getBlockState(world);
+		BlockState state = getBlockState(world);
 		if (world != null && state != null) //TODO check if chunk is loaded
 		{
 			return state.getBlock();
@@ -369,7 +369,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 		}
 	}
 
-	public IBlockState getBlockState(IBlockAccess world) {
+	public BlockState getBlockState(IBlockAccess world) {
 		if (world != null) //TODO check if chunk is loaded
 		{
 			return world.getBlockState(toBlockPos());
@@ -387,7 +387,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	}
 
 	public float getHardness(World world) {
-		IBlockState state = getBlockState(world);
+		BlockState state = getBlockState(world);
 		if (state != null && !state.getBlock().isAir(state, world, toBlockPos())) {
 			return state.getBlock().getBlockHardness(state, world, toBlockPos());
 		} else {
@@ -460,7 +460,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 	 */
 	public void markForUpdate(World world) {
 		BlockPos pos = toBlockPos();
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		if (state != null && !state.getBlock().isAir(state, world, toBlockPos())) {
 			world.notifyBlockUpdate(pos, state, state, 3);
 		}

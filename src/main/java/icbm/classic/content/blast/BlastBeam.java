@@ -8,7 +8,7 @@ import icbm.classic.lib.explosive.ThreadWorkBlast;
 import icbm.classic.lib.thread.IThreadWork;
 import icbm.classic.lib.thread.WorkerThreadManager;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public abstract class BlastBeam extends Blast implements IBlastTickable {
 
 				//Edit blocks and queue spawning
 				for (BlockPos blockPos : blocksToRemove) {
-					final IBlockState state = world.getBlockState(blockPos); //TODO filter what can turn into a flying block
+					final BlockState state = world.getBlockState(blockPos); //TODO filter what can turn into a flying block
 
 					//Remove block
 					if (world.setBlockToAir(blockPos)) {
@@ -168,7 +168,7 @@ public abstract class BlastBeam extends Blast implements IBlastTickable {
 				blockPos.setPos(location.x() + x, location.y() + y, location.z() + z);
 
 				//Get block
-				final IBlockState state = world.getBlockState(blockPos);
+				final BlockState state = world.getBlockState(blockPos);
 				final Block block = state.getBlock();
 
 				//Validate TODO rework to not access blockstates, instead just collect positions

@@ -16,10 +16,10 @@ import icbm.classic.lib.network.packet.PacketRedmatterSizeSync;
 import icbm.classic.lib.transform.region.Cube;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -165,7 +165,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 
 		//We are looping in a shell orbit around the center
 		if (dist < this.currentBlockDestroyRadius && dist > this.currentBlockDestroyRadius - 2) {
-			final IBlockState blockState = world.getBlockState(blockPos);
+			final BlockState blockState = world.getBlockState(blockPos);
 			if (shouldRemoveBlock(blockPos, blockState)) //TODO calculate a pressure or pull force to destroy weaker blocks before stronger blocks
 			{
 				//TODO handle multi-blocks
@@ -189,7 +189,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 	 * @param blockState - state of the block
 	 * @return true to remove
 	 */
-	protected boolean shouldRemoveBlock(BlockPos blockPos, IBlockState blockState) {
+	protected boolean shouldRemoveBlock(BlockPos blockPos, BlockState blockState) {
 		final Block block = blockState.getBlock();
 		final boolean isFluid = isFluid(blockState);
 		//Ignore air blocks and unbreakable blocks
@@ -198,19 +198,19 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 
 	}
 
-	protected boolean isFluid(IBlockState blockState) {
+	protected boolean isFluid(BlockState blockState) {
 		return blockState.getBlock() instanceof BlockLiquid || blockState.getBlock() instanceof IFluidBlock;
 	}
 
-	protected boolean isFlowingWater(IBlockState blockState) {
+	protected boolean isFlowingWater(BlockState blockState) {
 		return blockState.getBlock() instanceof BlockLiquid && blockState.getValue(BlockLiquid.LEVEL) < 7;
 	}
 
-	protected boolean canTurnIntoFlyingBlock(IBlockState blockState) {
+	protected boolean canTurnIntoFlyingBlock(BlockState blockState) {
 		return ConfigBlast.REDMATTER.SPAWN_FLYING_BLOCKS && !isFluid(blockState);
 	}
 
-	protected void spawnFlyingBlock(BlockPos blockPos, IBlockState blockState) {
+	protected void spawnFlyingBlock(BlockPos blockPos, BlockState blockState) {
 		final EntityFlyingBlock entity = new EntityFlyingBlock(this.world(), blockPos, blockState);
 		entity.yawChange = 50 * this.world().rand.nextFloat();
 		entity.pitchChange = 50 * this.world().rand.nextFloat();
@@ -240,7 +240,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 		}
 
 		//Ignore players that are in creative mode or can't be harmed TODO may need to check for spectator?
-		if (entity instanceof EntityPlayer && (((EntityPlayer) entity).capabilities.isCreativeMode || ((EntityPlayer) entity).capabilities.disableDamage)) {
+		if (entity instanceof PlayerEntity && (((PlayerEntity) entity).capabilities.isCreativeMode || ((PlayerEntity) entity).capabilities.disableDamage)) {
 			return false;
 		}
 
@@ -279,7 +279,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 		entity.addVelocity(velX, velY, velZ); //TODO add API to allow modifying this value
 
 		// if player send packet because motion is handled client side
-		if (entity instanceof EntityPlayer) {
+		if (entity instanceof PlayerEntity) {
 			entity.velocityChanged = true;
 		} else if (entity instanceof EntityExplosion) {
 			final IBlast blast = ((EntityExplosion) entity).getBlast();
@@ -346,7 +346,7 @@ public class BlastRedmatter extends Blast implements IBlastTickable, IBlastMovab
 			} else if (entity instanceof EntityExplosive) //TODO move to capability
 			{
 				((EntityExplosive) entity).explode(); //TODO should trigger the explosive capability
-			} else if (entity instanceof EntityLiving || entity instanceof EntityPlayer) {
+			} else if (entity instanceof EntityLiving || entity instanceof PlayerEntity) {
 				entity.attackEntityFrom(new DamageSourceRedmatter(this), 2000);
 			} else {
 				//Kill entity in the center of the ball

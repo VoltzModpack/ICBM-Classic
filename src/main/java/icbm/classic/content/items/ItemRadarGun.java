@@ -17,9 +17,9 @@ import icbm.classic.lib.transform.vector.Location;
 import icbm.classic.prefab.item.ItemBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -63,7 +63,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand handIn) {
 		if (player.isSneaking()) // also clear the gps coord if the play is shift-rightclicking in the air
 		{
 			if (!world.isRemote) {
@@ -89,7 +89,7 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (world.isRemote) {
 			return EnumActionResult.SUCCESS;
@@ -138,15 +138,15 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	}
 
 	@Override
-	public boolean read(ByteBuf buf, int id, EntityPlayer player, IPacket packet) {
+	public boolean read(ByteBuf buf, int id, PlayerEntity player, IPacket packet) {
 		return trace(buf.readInt(), buf.readInt(), buf.readInt(), player);
 	}
 
-	public boolean trace(int x, int y, int z, EntityPlayer player) {
+	public boolean trace(int x, int y, int z, PlayerEntity player) {
 		return trace(new BlockPos(x, y, z), player);
 	}
 
-	public boolean trace(BlockPos pos, EntityPlayer player) {
+	public boolean trace(BlockPos pos, PlayerEntity player) {
 		ItemStack stack = player.inventory.getCurrentItem();
 		if (stack != null && stack.getItem() == this) {
 			RadarGunTraceEvent event = new RadarGunTraceEvent(player.world, pos, player);
@@ -177,10 +177,10 @@ public class ItemRadarGun extends ItemBase implements IWorldPosItem, IPacketIDRe
 	public void setLocation(ItemStack stack, IWorldPosition loc) {
 		if (loc != null) {
 			if (stack.getTagCompound() == null) {
-				stack.setTagCompound(new NBTTagCompound());
+				stack.setTagCompound(new CompoundNBT());
 			}
 
-			NBTTagCompound save = new NBTTagCompound();
+			CompoundNBT save = new CompoundNBT();
 			if (loc instanceof Location) {
 				((Location) loc).writeNBT(save);
 			} else {

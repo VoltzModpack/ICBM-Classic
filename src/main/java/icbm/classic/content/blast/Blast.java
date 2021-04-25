@@ -18,9 +18,9 @@ import icbm.classic.lib.explosive.ExplosiveHandler;
 import icbm.classic.lib.transform.vector.Location;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -258,7 +258,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 	}
 
 	protected void playExplodeSound() {
-		this.world.playSound((EntityPlayer) null,
+		this.world.playSound((PlayerEntity) null,
 			this.x, this.y, this.z,
 			SoundEvents.ENTITY_GENERIC_EXPLODE,
 			SoundCategory.BLOCKS,
@@ -359,7 +359,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 	}
 
 	@Override
-	public void load(NBTTagCompound nbt) {
+	public void load(CompoundNBT nbt) {
 		this.callCount = nbt.getInteger(NBTConstants.CALL_COUNT);
 		this.size = nbt.getFloat(NBTConstants.EXPLOSION_SIZE);
 
@@ -369,7 +369,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 	}
 
 	@Override
-	public void save(NBTTagCompound nbt) {
+	public void save(CompoundNBT nbt) {
 		nbt.setInteger(NBTConstants.CALL_COUNT, this.callCount);
 		nbt.setFloat(NBTConstants.EXPLOSION_SIZE, this.size);
 
@@ -516,7 +516,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
 	}
 
 	@Override
-	public IBlastInit setCustomData(@Nonnull NBTTagCompound customData) {
+	public IBlastInit setCustomData(@Nonnull CompoundNBT customData) {
 		return this;
 	}
 

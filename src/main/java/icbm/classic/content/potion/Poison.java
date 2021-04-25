@@ -3,8 +3,9 @@ package icbm.classic.content.potion;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -59,25 +60,25 @@ public abstract class Poison {
 	 * @amiplifier - The amplification value.
 	 * @armorRequired - The amount of pieces of armor required to be protected.
 	 */
-	public void poisonEntity(Pos emitPosition, EntityLivingBase entity, int amplifier) {
+	public void poisonEntity(Pos emitPosition, LivingEntity entity, int amplifier) {
 		if (!isEntityProtected(emitPosition, entity, amplifier)) {
 			doPoisonEntity(emitPosition, entity, amplifier);
 		}
 	}
 
-	public void poisonEntity(Pos emitPosition, EntityLivingBase entity) {
+	public void poisonEntity(Pos emitPosition, LivingEntity entity) {
 		this.poisonEntity(emitPosition, entity, 0);
 	}
 
-	public boolean isEntityProtected(Pos emitPosition, EntityLivingBase entity, int amplifier) {
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode) {
+	public boolean isEntityProtected(Pos emitPosition, LivingEntity entity, int amplifier) {
+		if (entity instanceof PlayerEntity && ((PlayerEntity) entity).capabilities.isCreativeMode) {
 			return true;
 		}
         /* EnumSet<ArmorType> armorWorn = EnumSet.noneOf(ArmorType.class);
 
-        if (entity instanceof EntityPlayer)
+        if (entity instanceof PlayerEntity)
         {
-            EntityPlayer entityPlayer = (EntityPlayer) entity;
+            PlayerEntity entityPlayer = (PlayerEntity) entity;
 
             for (int i = 0; i < entityPlayer.inventory.armorInventory.length; i++)
             {
@@ -136,6 +137,6 @@ public abstract class Poison {
 		return 0;
 	}
 
-	protected abstract void doPoisonEntity(Pos emitPosition, EntityLivingBase entity, int amplifier);
+	protected abstract void doPoisonEntity(Pos emitPosition, LivingEntity entity, int amplifier);
 
 }

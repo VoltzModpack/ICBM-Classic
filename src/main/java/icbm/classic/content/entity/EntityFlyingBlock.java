@@ -2,12 +2,13 @@ package icbm.classic.content.entity;
 
 import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.MoverType;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,7 +26,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 
 	public static final float GRAVITY_DEFAULT = 0.045f;
 
-	private IBlockState _blockState;
+	private BlockState _blockState;
 
 	public float yawChange = 0;
 	public float pitchChange = 0;
@@ -41,7 +42,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 		this.setSize(0.98F, 0.98F);
 	}
 
-	public EntityFlyingBlock(World world, BlockPos position, IBlockState state) {
+	public EntityFlyingBlock(World world, BlockPos position, BlockState state) {
 		this(world);
 		this.setPosition(position.getX() + 0.5, position.getY(), position.getZ() + 0.5);
 		this.motionX = 0D;
@@ -50,7 +51,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 		this._blockState = state;
 	}
 
-	public EntityFlyingBlock(World world, BlockPos position, IBlockState state, float gravity) {
+	public EntityFlyingBlock(World world, BlockPos position, BlockState state, float gravity) {
 		this(world, position, state);
 		this.gravity = gravity;
 	}
@@ -59,7 +60,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 		gravity = GRAVITY_DEFAULT;
 	}
 
-	public IBlockState getBlockState() {
+	public BlockState getBlockState() {
 		if (_blockState == null) {
 			_blockState = Blocks.STONE.getDefaultState();
 		}
@@ -73,7 +74,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 
 	@Override
 	public void writeSpawnData(ByteBuf data) {
-		ByteBufUtils.writeTag(data, NBTUtil.writeBlockState(new NBTTagCompound(), getBlockState()));
+		ByteBufUtils.writeTag(data, NBTUtil.writeBlockState(new CompoundNBT(), getBlockState()));
 		data.writeFloat(this.gravity);
 		data.writeFloat(yawChange);
 		data.writeFloat(pitchChange);
@@ -147,7 +148,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 
 			final BlockPos pos = new BlockPos(i, j, k);
 
-			final IBlockState currentState = world.getBlockState(pos);
+			final BlockState currentState = world.getBlockState(pos);
 
 			if (currentState.getBlock().isReplaceable(this.world, pos)) {
 				this.world.setBlockState(pos, getBlockState(), 3);
@@ -178,15 +179,15 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	protected void writeEntityToNBT(CompoundNBT nbttagcompound) {
 		if (_blockState != null) {
-			nbttagcompound.setTag(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new NBTTagCompound(), _blockState));
+			nbttagcompound.setTag(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new CompoundNBT(), _blockState));
 		}
 		nbttagcompound.setFloat(NBTConstants.GRAVITY, this.gravity);
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+	protected void readEntityFromNBT(CompoundNBT nbttagcompound) {
 		if (nbttagcompound.hasKey(NBTConstants.BLOCK_STATE)) {
 			_blockState = NBTUtil.readBlockState(nbttagcompound.getCompoundTag(NBTConstants.BLOCK_STATE));
 		}

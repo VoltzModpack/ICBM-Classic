@@ -1,7 +1,7 @@
 package icbm.classic.prefab.item;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -18,7 +18,7 @@ import java.util.Map;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/21/2018.
  */
-public class ItemStackCapProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
+public class ItemStackCapProvider implements ICapabilityProvider, INBTSerializable<CompoundNBT> {
 
 	public final ItemStack host;
 	public HashMap<Capability, Object> capTypeToCap = new HashMap();
@@ -48,8 +48,8 @@ public class ItemStackCapProvider implements ICapabilityProvider, INBTSerializab
 	}
 
 	@Override
-	public NBTTagCompound serializeNBT() {
-		NBTTagCompound tag = new NBTTagCompound();
+	public CompoundNBT serializeNBT() {
+		CompoundNBT tag = new CompoundNBT();
 		for (Map.Entry<String, Object> entry : keyToCap.entrySet()) {
 			if (entry.getValue() instanceof INBTSerializable) {
 				tag.setTag(entry.getKey(), ((INBTSerializable) entry.getValue()).serializeNBT());
@@ -59,7 +59,7 @@ public class ItemStackCapProvider implements ICapabilityProvider, INBTSerializab
 	}
 
 	@Override
-	public void deserializeNBT(NBTTagCompound nbt) {
+	public void deserializeNBT(CompoundNBT nbt) {
 		for (Map.Entry<String, Object> entry : keyToCap.entrySet()) {
 			if (entry.getValue() instanceof INBTSerializable) {
 				((INBTSerializable) entry.getValue()).deserializeNBT(nbt.getTag(entry.getKey()));

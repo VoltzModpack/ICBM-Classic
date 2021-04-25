@@ -5,7 +5,7 @@ import icbm.classic.api.explosion.IBlastTickable;
 import icbm.classic.content.blast.threaded.BlastThreaded;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,7 +30,7 @@ public class BlastRot extends BlastThreaded implements IBlastTickable {
 	@Override
 	public void destroyBlock(BlockPos targetPosition) {
 		//get block
-		final IBlockState blockState = world.getBlockState(targetPosition);
+		final BlockState blockState = world.getBlockState(targetPosition);
 		final Block block = blockState.getBlock();
 
 		if (block == Blocks.GRASS || block == Blocks.SAND) {

@@ -6,7 +6,7 @@ import icbm.classic.api.caps.IMissile;
 import icbm.classic.api.caps.IMissileLauncher;
 import icbm.classic.api.refs.ICBMExplosives;
 import icbm.classic.api.reg.IExplosiveData;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -99,7 +99,7 @@ public final class ICBMClassicHelpers {
 	}
 
 	@Deprecated //Will be placed in a registry/handler
-	public static boolean hasEmpHandler(IBlockState iBlockState) {
+	public static boolean hasEmpHandler(BlockState iBlockState) {
 		return false; //TODO implement
 	}
 

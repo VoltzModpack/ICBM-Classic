@@ -1,15 +1,18 @@
 package icbm.classic.prefab.item;
 
 import icbm.classic.lib.LanguageUtility;
+import net.java.games.input.Keyboard;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -29,7 +32,7 @@ import java.util.List;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 12/20/2016.
  */
-public class ItemBlockAbstract extends ItemBlock {
+public class ItemBlockAbstract extends BlockItem {
 
 	//Make sure to mirror all changes to other abstract class
 	public ItemBlockAbstract(Block p_i45328_1_) {
@@ -37,8 +40,8 @@ public class ItemBlockAbstract extends ItemBlock {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState iblockstate = worldIn.getBlockState(pos);
+	public ActionResultType onItemUse(PlayerEntity player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		BlockState iblockstate = worldIn.getBlockState(pos);
 		Block block = iblockstate.getBlock();
 
 		if (!block.isReplaceable(worldIn, pos)) {
@@ -49,7 +52,7 @@ public class ItemBlockAbstract extends ItemBlock {
 
 		if (!itemstack.isEmpty() && canPlace(player, worldIn, pos, itemstack, facing, hitX, hitY, hitZ)) {
 			int i = this.getMetadata(itemstack.getMetadata());
-			IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
+			BlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
 			if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
 				iblockstate1 = worldIn.getBlockState(pos);
@@ -58,9 +61,9 @@ public class ItemBlockAbstract extends ItemBlock {
 				itemstack.shrink(1);
 			}
 
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		} else {
-			return EnumActionResult.FAIL;
+			return ActionResultType.FAIL;
 		}
 	}
 
@@ -79,7 +82,7 @@ public class ItemBlockAbstract extends ItemBlock {
 	 * @param hitZ
 	 * @return
 	 */
-	protected boolean canPlace(EntityPlayer player, World worldIn, BlockPos pos, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	protected boolean canPlace(PlayerEntity player, World worldIn, BlockPos pos, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		return player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.block, pos, false, facing, (Entity) null);
 	}
 
@@ -87,7 +90,7 @@ public class ItemBlockAbstract extends ItemBlock {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List list, ITooltipFlag flag) {
 		//Get player, don't run tool tips without
-		EntityPlayer player = Minecraft.getMinecraft().player;
+		PlayerEntity player = Minecraft.getMinecraft().player;
 		try {
 			//Generic info
 			String translationKey = getTranslationKey() + ".info";
@@ -120,7 +123,7 @@ public class ItemBlockAbstract extends ItemBlock {
 	 * @param player
 	 * @param list
 	 */
-	protected void getDetailedInfo(ItemStack stack, @Nullable EntityPlayer player, List list) {
+	protected void getDetailedInfo(ItemStack stack, @Nullable PlayerEntity player, List list) {
 		//Per item detailed info
 		String translationKey = getTranslationKey(stack) + ".info";
 		String translation = LanguageUtility.getLocal(translationKey);
@@ -138,7 +141,7 @@ public class ItemBlockAbstract extends ItemBlock {
 	 * @param player
 	 * @param list
 	 */
-	protected void getShiftDetailedInfo(ItemStack stack, @Nullable EntityPlayer player, List list) {
+	protected void getShiftDetailedInfo(ItemStack stack, @Nullable PlayerEntity player, List list) {
 		//Per item detailed info
 		String translationKey = getTranslationKey(stack) + ".info.detailed";
 		String translation = LanguageUtility.getLocal(translationKey);
@@ -154,7 +157,7 @@ public class ItemBlockAbstract extends ItemBlock {
 	 * @param player
 	 * @return
 	 */
-	protected boolean hasDetailedInfo(ItemStack stack, @Nullable EntityPlayer player) {
+	protected boolean hasDetailedInfo(ItemStack stack, @Nullable PlayerEntity player) {
 		String translationKey = getTranslationKey() + ".info";
 		String translationKey2 = getTranslationKey(stack) + ".info";
 		return !translationKey.equals(translationKey2);
@@ -167,7 +170,7 @@ public class ItemBlockAbstract extends ItemBlock {
 	 * @param player
 	 * @return
 	 */
-	protected boolean hasShiftInfo(ItemStack stack, @Nullable EntityPlayer player) {
+	protected boolean hasShiftInfo(ItemStack stack, @Nullable PlayerEntity player) {
 		return false;
 	}
 
